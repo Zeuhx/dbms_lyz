@@ -32,7 +32,7 @@ public class DBDef {
     }
 	
 	/**
-	 * Constructeur
+	 * Constructeur Willy
 	 */
 	public static void init() {
 		relDefTab = new ArrayList<>();
