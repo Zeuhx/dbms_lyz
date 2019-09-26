@@ -40,7 +40,7 @@ public class DBDef {
 	
 	
 	public static void finish() {
-		
+		System.out.println("ici le finish");
 	}
 	
 	/**
