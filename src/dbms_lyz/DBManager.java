@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DBManager {
 	
-	/** Constructeur priv�sSs */
+	/** Constructeur priv�sSs */
 	private DBManager(){}
 	
 	/** Instance unique non préinitialisée */
@@ -35,13 +35,6 @@ public class DBManager {
 		return(rd);
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DBManager.init();
-		
-		// Boucle de gestion de commande
-		
-		
-	}
+
 
 }
