@@ -26,7 +26,7 @@ public class DBManager {
 		DBDef.finish();
 	}
 	
-	public void processCommand() {
+	public void processCommand(String command) {
 		
 	}
 	
@@ -37,7 +37,10 @@ public class DBManager {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		DBManager.init();
+		
+		// Boucle de gestion de commande
+		
 	}
 
 }
