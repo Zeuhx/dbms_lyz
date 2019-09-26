@@ -5,19 +5,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class DBManager {
-
-	/** Constructeur priv�sSs */
-	private DBManager(){}
-
-	/** Instance unique non préinitialisée */
-	private static DBManager INSTANCE = null ;
-
-	/** Point d'accès pour l'instance unique du singleton */
-	public static DBManager getInstance(){           
-		if (INSTANCE == null){   
-			INSTANCE = new DBManager(); 
-		}
-		return INSTANCE;
+	
+	public DBManager() {
+		
 	}
 
 	public static void init() {
@@ -65,6 +55,16 @@ public class DBManager {
 			}
 		}
 		
+		/**
+		 * Verification
+		 */
+		for(int i=0 ; i<typeCol.size(); i++) {
+			System.out.println(typeCol.get(i) + ", ");
+		}
+		
+		/**
+		 * Appel de la fonction
+		 */
 		createRelation(nomRelation, nbCol, typeCol);
 
 	}
