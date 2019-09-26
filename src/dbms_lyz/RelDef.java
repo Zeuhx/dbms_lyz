@@ -5,7 +5,7 @@ import java.util.List;
 
 
 /**
- * @author Le Marcel, Yu Willy, Zhang Cedric
+ * @author Le Marcel, Yu Willy,  Zhang Cedric
  * Garde les infos de schema d'une relation
  *
  */
