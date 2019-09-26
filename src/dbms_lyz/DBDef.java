@@ -18,7 +18,6 @@ public class DBDef {
 	
 	/** Constructeur privé */
 	private DBDef(){}
-	// jj
 	
 	/** Instance unique non préinitialisée */
 	private static DBDef INSTANCE = null ;
