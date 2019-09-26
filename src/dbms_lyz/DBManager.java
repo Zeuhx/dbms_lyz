@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DBManager {
 	
-	/** Constructeur privés */
+	/** Constructeur privésS */
 	private DBManager(){}
 	
 	/** Instance unique non prÃ©initialisÃ©e */
