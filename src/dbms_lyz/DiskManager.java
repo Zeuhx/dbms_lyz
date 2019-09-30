@@ -1,12 +1,16 @@
 package dbms_lyz;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-
+import java.io.RandomAccessFile;
+/**
+ * 
+ * @author LYZ
+ * API : Important!
+ * Cette classe comporte une unique instance
+ *
+ */
 public class DiskManager {
 	/** Constructeur prive */
 	private DiskManager(){}
@@ -30,8 +34,16 @@ public class DiskManager {
 	 * 
 	 */
 	public static void createFile(int fileIdx) {
-		File f = new File("/DB/Data_"+fileIdx+".rf");
-		System.out.println(" Data_"+fileIdx+".rf" + f.getPath()); //chemin des répertoires
+		/**
+		 * f file already exists then it is opened else the file is created and then opened
+		 */
+		RandomAccessFile rf ;
+		try {
+			rf = new RandomAccessFile(new File("/DB/Data_"+fileIdx+".rf"),"rw");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -39,38 +51,24 @@ public class DiskManager {
 	 * (c’est à dire, elle rajoute pageSize octets à la fin du fichier) 
 	 * et retourne un PageId correspondant à la page
 	 * nouvellement rajoutée !
+	 * @throws FileNotFoundException 
 	 */
-//	public PageId addPage(int fileIdx) {
-//		// FileInputStream fis = new FileInputStream;
-//
-//	}
-	
-	/**
-	 * 
-	 * @param fichier_source
-	 * @param fichier_dest
-	 * @throws IOException
-	 * Ajoute le fichier_source au fichier_dest avec les exceptions 
-	 */
-	private static void copier(String fichier_source, String fichier_dest) throws IOException{
-		FileInputStream src = new FileInputStream(fichier_source);
-		FileOutputStream dest = new FileOutputStream(fichier_dest);
-		
-		FileChannel inChannel = src.getChannel();
-		FileChannel outChannel = dest.getChannel();
-		
-		for (ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
-				inChannel.read(buffer) != -1;
-				buffer.clear()) {
-			buffer.flip();
-			while (buffer.hasRemaining()) outChannel.write(buffer);
+	public void addPage(int fileIdx) {
+		RandomAccessFile rf = null;
+		try {
+			rf = new RandomAccessFile(new File("/DB/Data_"+fileIdx+".rf"),"rw");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		
-		inChannel.close();
-		outChannel.close();
-		src.close();
-		dest.close();
+		try {
+			rf.write(Constants.pageSize);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
 
 	public void readPage() {
 
