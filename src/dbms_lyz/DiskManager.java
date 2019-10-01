@@ -79,14 +79,32 @@ public class DiskManager {
 		return(p);
 	}
 	
-
+	/**
+	 * 
+	 * @param pageId un identifiant de page
+	 * @param buff un buffer
+	 * @return Remplir l’argument buff avec le contenu disque de la page identifiée par
+	 * l’argument pageId.
+	 * c’est l’appelant de cette méthode qui crée et fournit le buffer à remplir!
+	 */
 	public ByteBuffer readPage(PageId pageId, ByteBuffer buff) {
+		
+		/**
+		 * Creation d'un tableau a 5Mo
+		 */
+		byte data[] = new byte[40960];
+		buff = ByteBuffer.wrap(data);
+		/**
+		 * Avance 4 par 4
+		 */
+		int i = buff.getInt();
+		
 		RandomAccessFile rf = null ;
 		try {
 			rf= new RandomAccessFile(new File("/DB/Data_"+pageId.getFileIdx()+".rf"),"rw");
 			
 			try {
-				for(int i=0 ; i<rf.length() ; i++) {
+				for(i=0 ; i<rf.length() ; i++) {
 					buff.put(rf.readByte());
 				}
 			} catch (IOException e) {
@@ -106,7 +124,7 @@ public class DiskManager {
 		return(buff);
 	}
 
-	public void writePage() {
+	public void writePage(PageId pageId, ByteBuffer buff) {
 
 	}
 }
