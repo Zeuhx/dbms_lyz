@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 /**
  * 
  * @author LYZ
@@ -53,7 +54,7 @@ public class DiskManager {
 	 * nouvellement rajoutée !
 	 * @throws FileNotFoundException 
 	 */
-	public void addPage(int fileIdx) {
+	public PageId addPage(int fileIdx) {
 		RandomAccessFile rf = null;
 		try {
 			rf = new RandomAccessFile(new File("/DB/Data_"+fileIdx+".rf"),"rw");
@@ -67,11 +68,14 @@ public class DiskManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		PageId p = new PageId("/DB/Data_"+fileIdx+".rf");
+		return(p);
 	}
 	
 
-	public void readPage() {
-
+	public void readPage(int pageId, ByteBuffer buff) {
+	
 	}
 
 	public void writePage() {

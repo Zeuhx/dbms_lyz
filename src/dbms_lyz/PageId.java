@@ -8,7 +8,8 @@ public class PageId {
 	
 	public PageId(String nomFichier) {
 		fileIdx = IdFichier(nomFichier);
-		ID += 1; 
+		ID += 1 ;
+		pageIdx = ID ;
 	}
 	
 	/**
@@ -22,4 +23,14 @@ public class PageId {
 		id = Integer.parseInt(s);
 		return(id);
 	}
+	
+	public int getFileIdx(){
+		return(fileIdx);
+	}
+	
+	public int getPageIdx() {
+		return(pageIdx);
+	}
+	
+	
 }
