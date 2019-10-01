@@ -74,8 +74,8 @@ public class DiskManager {
 	}
 	
 
-	public void readPage(int pageId, ByteBuffer buff) {
-	
+	public void readPage(PageId pageId, ByteBuffer buff) {
+		
 	}
 
 	public void writePage() {
