@@ -8,8 +8,8 @@ public class PageId {
 	
 	public PageId(String nomFichier) {
 		fileIdx = IdFichier(nomFichier);
-		ID += 1 ;
 		pageIdx = ID ;
+		ID += 1 ;
 	}
 	
 	/**

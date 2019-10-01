@@ -38,10 +38,16 @@ public class DiskManager {
 		/**
 		 * f file already exists then it is opened else the file is created and then opened
 		 */
-		RandomAccessFile rf ;
+		RandomAccessFile rf = null;
 		try {
 			rf = new RandomAccessFile(new File("/DB/Data_"+fileIdx+".rf"),"rw");
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rf.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -74,8 +80,30 @@ public class DiskManager {
 	}
 	
 
-	public void readPage(PageId pageId, ByteBuffer buff) {
-		
+	public ByteBuffer readPage(PageId pageId, ByteBuffer buff) {
+		RandomAccessFile rf = null ;
+		try {
+			rf= new RandomAccessFile(new File("/DB/Data_"+pageId.getFileIdx()+".rf"),"rw");
+			
+			try {
+				for(int i=0 ; i<rf.length() ; i++) {
+					buff.put(rf.readByte());
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} catch(FileNotFoundException e1) {
+			
+		}
+		try {
+			rf.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return(buff);
 	}
 
 	public void writePage() {
