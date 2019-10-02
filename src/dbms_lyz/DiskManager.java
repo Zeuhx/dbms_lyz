@@ -125,6 +125,30 @@ public class DiskManager {
 	}
 
 	public void writePage(PageId pageId, ByteBuffer buff) {
-
-	}
+		byte data[] = new byte[40960];
+		buff = ByteBuffer.wrap(data);
+		RandomAccessFile rf = null ;
+		int i = buff.getInt();
+		try {
+			rf= new RandomAccessFile(new File("/DB/Data_"+pageId.getFileIdx()+".rf"),"rw");
+			try {
+				for(i=0 ; i<rf.length() ; i++) {
+					rf.write(buff.get());
+				}
+			} 
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch(FileNotFoundException e1) {
+			
+		}
+		try {
+			rf.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}	
 }

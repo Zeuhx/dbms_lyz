@@ -40,6 +40,7 @@ public class BufferManager {
      */
     public ByteBuffer getPage(PageId pageId) {
     	ByteBuffer bf = null ;
+    	
     	return(bf);
     }
     
@@ -52,7 +53,12 @@ public class BufferManager {
      * @param valdirty
      */
     public void freePage(PageId pageId, boolean valdirty) {
-    	
+    	if(!valdirty)
+    	{
+    		valdirty = true;
+    		
+    	}
+    		
     }
    
     /**
