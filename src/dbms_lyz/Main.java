@@ -1,16 +1,13 @@
 package dbms_lyz;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.ByteBuffer;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		DBManager manager = new DBManager();
-		manager.init();
+		DBManager.init();
 		Scanner scan = new Scanner(System.in);
 		String choix = "";
 		String commande = "";
@@ -40,12 +37,22 @@ public class Main {
 			manager.processCommand(commande);
 			
 		} while(!choix.equals("exit"));
+		/**
+		 * TD2
+		 */
+		
+		ByteBuffer buff = ByteBuffer.allocate(4096) ;
+		
+		DiskManager.createFile(1);
+		/*
+		 * try { DiskManager.getInstance().readPage(1, buff); } catch (IOException e) {
+		 * // TODO Auto-generated catch block e.printStackTrace(); }
+		 */
+
 
 	}
+
 	
-	/**
-	 * TD2
-	 */
 	
 	//public File file 
 
