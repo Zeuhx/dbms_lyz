@@ -20,10 +20,10 @@ public class RelDef {
 		this.typeCol = new ArrayList<Object>() ;
 	}
 	
-	public RelDef(String nomRelation, int nbCol, List<Object> typeCol) {
+	public RelDef(String nomRelation, int nbCol, List<Object> typeCol2) {
 		this.nomRelation = nomRelation ;
 		this.nbCol = nbCol ;
-		this.typeCol = typeCol;
+		this.typeCol = typeCol2;
 	}
 	
 	public String getNomRelation() {
