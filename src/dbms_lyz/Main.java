@@ -41,7 +41,7 @@ public class Main {
 		 * TD2
 		 */
 		
-		ByteBuffer buff = ByteBuffer.allocate(4096) ;
+		ByteBuffer buff = ByteBuffer.allocate(Constants.pageSize) ;
 		
 		DiskManager.createFile(1);
 		/*

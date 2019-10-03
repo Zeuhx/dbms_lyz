@@ -26,10 +26,6 @@ public class BufferManager {
      */
     public Frame searchFrame(PageId page) {
     	Frame f = null ;
-    	RandomAccessFile rf = null ;
-		File fichier = new File("DB/Data_"+page.getFileIdx()+".rf");
-		
-		if()
 		
     	return(f);
     }
@@ -47,6 +43,12 @@ public class BufferManager {
      */
     public ByteBuffer getPage(PageId pageId) {
     	ByteBuffer bf = null ;
+    	Frame f = INSTANCE.searchFrame(pageId);
+    	if(f != null)
+    	{
+    		
+    	}
+    		
     	
     	return(bf);
     }
