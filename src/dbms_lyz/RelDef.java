@@ -12,19 +12,30 @@ import java.util.List;
 public class RelDef {
 	private String nomRelation ; 
 	private int nbCol ;
-	private List<String> typeCol ; 
+	private List<Object> typeCol ; 
 	
 	public RelDef(String nomRelation, int nbCol) {
 		this.nomRelation = nomRelation ;
 		this.nbCol = nbCol ;
-		this.typeCol = new ArrayList<String>() ;
+		this.typeCol = new ArrayList<Object>() ;
 	}
 	
-	public RelDef(String nomRelation, int nbCol, List<String> typeCol)
-	{
+	public RelDef(String nomRelation, int nbCol, List<Object> typeCol) {
 		this.nomRelation = nomRelation ;
 		this.nbCol = nbCol ;
 		this.typeCol = typeCol;
+	}
+	
+	public String getNomRelation() {
+		return(nomRelation);
+	}
+	
+	public int getNbCol() {
+		return(nbCol);
+	}
+	
+	public List<Object> getTypeCol(){
+		return(typeCol);
 	}
 	
 }
