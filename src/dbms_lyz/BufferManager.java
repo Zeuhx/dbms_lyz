@@ -1,5 +1,7 @@
 package dbms_lyz;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 
 public class BufferManager {
@@ -24,6 +26,8 @@ public class BufferManager {
      */
     public Frame searchFrame(PageId page) {
     	Frame f = null ;
+    	RandomAccessFile rf = null ;
+		File fichier = new File("DB/Data_"+page.getFileIdx()+".rf");
     	return(f);
     }
     

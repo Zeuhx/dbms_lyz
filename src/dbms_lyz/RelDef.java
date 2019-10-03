@@ -20,5 +20,12 @@ public class RelDef {
 		this.typeCol = new ArrayList<String>() ;
 	}
 	
+	public RelDef(String nomRelation, int nbCol, List<String> typeCol)
+	{
+		this.nomRelation = nomRelation ;
+		this.nbCol = nbCol ;
+		this.typeCol = typeCol;
+	}
+	
 }
 

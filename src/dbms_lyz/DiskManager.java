@@ -117,7 +117,7 @@ public class DiskManager {
 		// Obtention du flux de donnee du ficheir rf
 		FileChannel channel = null ;
 
-		rf= new RandomAccessFile(f,"r");
+		rf= new RandomAccessFile(f,"rw");
 		/**
 		 * Relier buff et fichier via le channel
 		 */
