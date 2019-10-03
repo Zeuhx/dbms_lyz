@@ -18,5 +18,9 @@ public class Frame {
 	public PageId getPageId() {
 		return pageId;
 	}
+	
+	public ByteBuffer getBuffer() {
+		return buff;
+	}
 
 }

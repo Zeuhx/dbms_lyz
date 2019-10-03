@@ -93,7 +93,7 @@ public class DiskManager {
 	 * c’est l’appelant de cette méthode qui crée et fournit le buffer à remplir!
 	 * @throws IOException 
 	 */
-	public void readPage(PageId j, ByteBuffer buff) throws IOException,FileNotFoundException {		
+	public static void readPage(PageId j, ByteBuffer buff) throws IOException,FileNotFoundException {		
 		RandomAccessFile rf = null ;
 		File f = new File("DB/Data_"+j.getFileIdx()+".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
@@ -110,7 +110,7 @@ public class DiskManager {
 
 	}
 	
-	public void writePage(PageId pageId, ByteBuffer buff) throws IOException,FileNotFoundException {		
+	public static void writePage(PageId pageId, ByteBuffer buff) throws IOException,FileNotFoundException {		
 		RandomAccessFile rf = null ;
 		File f = new File("DB/Data_"+pageId.getFileIdx()+".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
