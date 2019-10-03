@@ -24,12 +24,12 @@ public class BufferManager {
      * @param page
      * @return le Frame correspondant au PageId
      */
-    public Frame searchFrame(PageId page) {
+    public Frame searchFrame(PageId pageId) {
     	Frame f = null ;
-    	RandomAccessFile rf = null ;
-		File fichier = new File("DB/Data_"+page.getFileIdx()+".rf");
 		
-		if()
+		if(f.getPageId().equals(pageId)) {
+			f = new Frame(pageId);
+		}
 		
     	return(f);
     }

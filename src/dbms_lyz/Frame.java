@@ -15,9 +15,8 @@ public class Frame {
 		flag_dirty = 0 ;
 	}
 	
-	public PageId getPageId()
-	{
+	public PageId getPageId() {
 		return pageId;
 	}
-	
+
 }
