@@ -25,6 +25,7 @@ public class Frame {
 	}
 	
 	
+	
 	public void free(boolean flag_dirty){
 		if(pin_count != 0)	
 			pin_count --;
