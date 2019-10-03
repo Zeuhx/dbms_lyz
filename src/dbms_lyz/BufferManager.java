@@ -28,6 +28,9 @@ public class BufferManager {
     	Frame f = null ;
     	RandomAccessFile rf = null ;
 		File fichier = new File("DB/Data_"+page.getFileIdx()+".rf");
+		
+		if()
+		
     	return(f);
     }
     
