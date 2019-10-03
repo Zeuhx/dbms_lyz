@@ -56,7 +56,7 @@ public class BufferManager {
 	}
 
 	/**
-	 * A FAIRE !!
+	 *
 	 * 
 	 * Cette méthode devra décrémenter le pin_count 
 	 * et actualiser le flag dirty de la page.
