@@ -7,6 +7,8 @@ import java.nio.ByteBuffer;
 
 public class BufferManager {
 
+	private Frame frame1 = new Frame();
+	private Frame frame2 = new Frame();
 	private BufferManager(){}
 
 	private static BufferManager INSTANCE = null ;
@@ -32,6 +34,20 @@ public class BufferManager {
 		return(f);
 	}
 
+	/**
+	 * 
+	 * @return la derniere page
+	 */
+	public Frame LRU() {
+		Frame frame = null;
+		if(frame1.getLast_LRU()) {
+			return frame2;
+		}
+		else if (!frame1.getLast_LRU() && !frame2.getLast_LRU()) {
+			return frame1;
+		}
+		else return frame1;
+	}
 	/**
 	 * Cette méthode doit répondre à une demande de page venant 
 	 * des couches plus hautes, et donc

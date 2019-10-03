@@ -41,7 +41,7 @@ public class DiskManager {
 		 * f file already exists then it is opened else the file is created and then opened
 		 */
 
-		File f = new File("DB/Data_"+fileIdx+".txt");
+		File f = new File("DB/Data_"+fileIdx+".rf");
 
 		try {
 			if(f.createNewFile()) {
@@ -65,8 +65,9 @@ public class DiskManager {
 	 * nouvellement rajoutée !
 	 * @throws FileNotFoundException 
 	 */
-	public PageId addPage(int fileIdx) {
+	public static PageId addPage(int fileIdx) {
 		RandomAccessFile rf = null;
+		byte[] bt = new byte[4096];
 		try {
 			rf = new RandomAccessFile(new File("DB/Data_"+fileIdx+".rf"),"rw");
 		} catch (FileNotFoundException e1) {
@@ -74,7 +75,7 @@ public class DiskManager {
 			e1.printStackTrace();
 		}
 		try {
-			rf.write(Constants.pageSize);
+			rf.write(bt);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
