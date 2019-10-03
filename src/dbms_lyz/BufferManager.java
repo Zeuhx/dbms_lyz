@@ -40,10 +40,10 @@ public class BufferManager {
 	 */
 	public Frame LRU() {
 		Frame frame = null;
-		if(frame1.getLast_LRU()) {
+		if(frame1.getLRU_change()) {
 			return frame2;
 		}
-		else if (!frame1.getLast_LRU() && !frame2.getLast_LRU()) {
+		else if (!frame1.getLRU_change() && !frame2.getLRU_change()) {
 			return frame1;
 		}
 		else return frame1;

@@ -67,7 +67,7 @@ public class DiskManager {
 	 */
 	public static PageId addPage(int fileIdx) {
 		RandomAccessFile rf = null;
-		byte[] bt = new byte[4096];
+		byte[] bt = new byte[Constants.getpageSize()];
 		try {
 			rf = new RandomAccessFile(new File("DB/Data_"+fileIdx+".rf"),"rw");
 		} catch (FileNotFoundException e1) {
