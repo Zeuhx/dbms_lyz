@@ -19,7 +19,7 @@ public class PageId {
 	 */
 	public int IdFichier(String nomFichier) {
 		int id ;
-		String s = new String(nomFichier.substring("Data_".length(), nomFichier.indexOf(".rf")));
+		String s = new String(nomFichier.substring("Data_".length()+3, nomFichier.indexOf(".rf")));
 		id = Integer.parseInt(s);
 		return(id);
 	}

@@ -22,35 +22,39 @@ public class Main {
 		 * On doit rentrer la commande 
 		 * Et c'est bon
 		 */
-		do {
-
-			System.out.println("Quelles commandes voulez vous saisir ?");
-			System.out.println("choix : [exit] [commande]");
-			choix = scan.nextLine();
-
-			if(choix.equals("exit")){
-				DBManager.finish();
-			}
-			System.out.println("Saisir votre commande de processCommand");
-			System.out.println("Ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
-			commande = scan.nextLine();
-			manager.processCommand(commande);
-			
-		} while(!choix.equals("exit"));
-		/**
-		 * TD2
-		 */
+//		do {
+//
+//			System.out.println("Quelles commandes voulez vous saisir ?");
+//			System.out.println("choix : [exit] [commande]");
+//			choix = scan.nextLine();
+//
+//			if(choix.equals("exit")){
+//				DBManager.finish();
+//			}
+//			System.out.println("Saisir votre commande de processCommand");
+//			System.out.println("Ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
+//			commande = scan.nextLine();
+//			manager.processCommand(commande);
+//			
+//		} while(!choix.equals("exit"));
+//		/**
+//		 * TD2
+//		 */
 		
 		ByteBuffer buff = ByteBuffer.allocate(Constants.pageSize) ;
 		
-		DiskManager.createFile(1);
+		DiskManager.createFile(2);
 		/*
 		 * try { DiskManager.getInstance().readPage(1, buff); } catch (IOException e) {
 		 * // TODO Auto-generated catch block e.printStackTrace(); }
 		 */
 
-
+		PageId pageId = null;
+		pageId = DiskManager.addPage(2);
+		
+		
 	}
+
 
 	
 	

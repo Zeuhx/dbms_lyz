@@ -8,12 +8,20 @@ public class Frame {
 	private PageId pageId ;
 	private int pin_count ;
 	private boolean flag_dirty ;
+	private boolean LRU_change;
 	
 	public Frame(PageId pageId) {
 		this.pageId = pageId ;
 		buff = ByteBuffer.allocate(4096);
 		pin_count = 0 ;
 		flag_dirty = false ;
+		LRU_change = true;
+	}
+	public Frame() {
+		this(null);
+	}
+	public void setLRU_change(boolean b) {
+		LRU_change = b;
 	}
 	
 	public PageId getPageId() {
@@ -24,16 +32,21 @@ public class Frame {
 		return buff;
 	}
 	
-	
-	
-	public void free(boolean flag_dirty){
+	public void free(boolean flag_dirty, Frame f){
 		if(pin_count != 0)	
 			pin_count --;
 		
 		if(flag_dirty== false)
 			this.flag_dirty = true;
-		
-		
+		//Dans quel cas LRU_change => True
+		if(pin_count == 0) {
+			
+			if(f.getLRU_change()) {
+			LRU_change = false;
+			f.setLRU_change(true);
+			}
+			else LRU_change = true;
+		}
 	}
 	
 	public void get(){
@@ -48,5 +61,9 @@ public class Frame {
 	public boolean getFlag_dirty() {
 		return flag_dirty;
 	}
+	public boolean getLRU_change() {
+		return LRU_change;
+	}
+
 	
 }
