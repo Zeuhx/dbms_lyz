@@ -64,10 +64,9 @@ public class BufferManager {
 	 * @param valdirty
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
-		if(!valdirty){
-			valdirty = true;
-		}
-
+		Frame f = searchFrame(pageId);
+		f.free(valdirty);
+		
 	}
 
 	/**
