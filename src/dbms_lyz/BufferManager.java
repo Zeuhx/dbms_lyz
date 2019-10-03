@@ -4,11 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BufferManager {
-
-	private Frame frame1 = new Frame();
-	private Frame frame2 = new Frame();
+	
+	private static List<Frame> listFrame = new ArrayList<>();
+	private static Frame frame1 = new Frame(true);
+	private static Frame frame2 = new Frame(false);
+	
 	private BufferManager(){}
 
 	private static BufferManager INSTANCE = null ;
@@ -17,6 +21,8 @@ public class BufferManager {
 	public static BufferManager getInstance(){           
 		if (INSTANCE == null){   
 			INSTANCE = new BufferManager(); 
+			listFrame.add(frame1);
+			listFrame.add(frame2);
 		}
 		return INSTANCE;
 	}
@@ -27,9 +33,13 @@ public class BufferManager {
 	 * @return le Frame correspondant au PageId
 	 */
 	public Frame searchFrame(PageId pageId) {
+		
+		
 		f = null;
-		if(f.getPageId().equals(pageId)) {
-			f = new Frame(pageId);
+		for(int i = 0; i< listFrame.size();i++) {
+			if((listFrame.get(i)).getPageId().equals(pageId)) {
+				f = new Frame(pageId);
+			}
 		}
 		return(f);
 	}
@@ -39,14 +49,11 @@ public class BufferManager {
 	 * @return la derniere page
 	 */
 	public Frame LRU() {
-		Frame frame = null;
 		if(frame1.getLRU_change()) {
-			return frame2;
-		}
-		else if (!frame1.getLRU_change() && !frame2.getLRU_change()) {
 			return frame1;
+			
 		}
-		else return frame1;
+		else return frame2;
 	}
 	/**
 	 * Cette méthode doit répondre à une demande de page venant 
@@ -63,6 +70,16 @@ public class BufferManager {
 		if(f != null){
 			try {
 				DiskManager.readPage(pageId, f.getBuffer());
+				f.get();
+				if(pageId == listFrame.get(0).getPageId()) {
+					listFrame.get(0).setLRU_change(false);
+					listFrame.get(1).setLRU_change(true);
+				}
+				else{
+					listFrame.get(1).setLRU_change(false);
+					listFrame.get(0).setLRU_change(true);
+				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -94,6 +111,7 @@ public class BufferManager {
 	 */
 	public void flushAll() {
 		DBManager.finish();
+		
 	}
 
 }
