@@ -32,5 +32,13 @@ public class PageId {
 		return(pageIdx);
 	}
 	
+	public boolean equals(PageId p) {
+		boolean bool = false ;
+		if(this.fileIdx == p.getFileIdx() && this.pageIdx == p.getFileIdx()) {
+			bool = true ;
+		}
+		return(bool);	
+	}
+	
 	
 }

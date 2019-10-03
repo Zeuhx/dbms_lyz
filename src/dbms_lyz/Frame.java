@@ -8,16 +8,15 @@ public class Frame {
 	private int pin_count ;
 	private int flag_dirty ;
 	
-	public Frame(ByteBuffer buff, PageId pageId) {
-		this.buff = buff ;
+	public Frame(PageId pageId) {
 		this.pageId = pageId ;
+		buff = ByteBuffer.allocate(4096);
 		pin_count = 0 ;
 		flag_dirty = 0 ;
 	}
 	
-	public PageId getPageId()
-	{
+	public PageId getPageId() {
 		return pageId;
 	}
-	
+
 }
