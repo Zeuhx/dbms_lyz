@@ -22,7 +22,7 @@ public class DBManager {
 		StringTokenizer stCommandaCouper ;
 		String nomRelation = new String("");
 		int nbCol = 0;
-		List<String> typeCol = new ArrayList<String>();
+		List<Object> typeCol = new ArrayList<Object>();
 		int j = 0 ;
 
 		stCommandaCouper = new StringTokenizer(commande, " ");
@@ -69,7 +69,7 @@ public class DBManager {
 
 	}
 
-	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
+	public RelDef createRelation(String nomRelation, int nombreCol, List<Object> typeCol) {
 		RelDef rd = new RelDef(nomRelation, nombreCol, typeCol) ;
 		(DBDef.getInstance()).addRelation(rd);
 		return(rd);
