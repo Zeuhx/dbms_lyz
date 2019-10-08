@@ -35,6 +35,10 @@ public class Frame {
 		return buff;
 	}
 	
+	/**
+	 * si pin_cout est > 0 alors on decrement sinon rien
+	 * @param flag_dirty
+	 */
 	public void free(boolean flag_dirty){
 		if(pin_count != 0)	
 			pin_count --;

@@ -51,7 +51,6 @@ public class BufferManager {
 	public Frame LRU() {
 		if(frame1.getLRU_change()) {
 			return frame1;
-			
 		}
 		else return frame2;
 	}
@@ -98,7 +97,6 @@ public class BufferManager {
 	public void freePage(PageId pageId, boolean valdirty) {
 		Frame f = searchFrame(pageId);
 		f.free(valdirty);
-		
 	}
 
 	/**
@@ -111,7 +109,11 @@ public class BufferManager {
 	 */
 	public void flushAll() {
 		DBManager.finish();
-		
+		for(int i=0; i<listFrame.size(); i++) {
+			if(listFrame.get(i).getFlag_dirty()){
+				DiskManager.writePage(listFrame.get(i).getPageId(), buffer);
+			}
+		}
 	}
 
 }
