@@ -111,7 +111,8 @@ public class DiskManager {
 
 	}
 	
-	public static void writePage(PageId pageId, ByteBuffer buff) throws IOException,FileNotFoundException {		
+	public static void writePage(PageId pageId, ByteBuffer buff) throws IOException, FileNotFoundException {		
+		buff.rewind(); 
 		RandomAccessFile rf = null ;
 		File f = new File("DB/Data_"+pageId.getFileIdx()+".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
@@ -119,9 +120,8 @@ public class DiskManager {
 		FileChannel channel = null ;
 
 		rf= new RandomAccessFile(f,"rw");
-		/**
-		 * Relier buff et fichier via le channel
-		 */
+		
+		// Relier buff et fichier via le channel
 		channel = rf.getChannel() ;
 		channel.write(buff,0);
 

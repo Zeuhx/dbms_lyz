@@ -38,5 +38,21 @@ public class RelDef {
 		return(typeCol);
 	}
 	
+	public boolean equals(String type) {
+		int i = 0 ;
+		Object obj = typeCol.get(i).getClass() ;
+		
+		// stringx 
+		if(type.contains("string")) {
+			return true ;
+		}
+		// int float
+		else if(obj.toString().contains(type)) {
+			return true ;
+		}
+		else 
+			return false ;
+	}
+	
 }
 
