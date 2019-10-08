@@ -18,6 +18,8 @@ public class Record {
 	}
 	
 	/**
+	 * A REVOIR !! (faux jpense apres relecture)
+	 * 
 	 * Ecrit les valeurs du Record dans le buffer, 
 	 * l’une après l’autre, à partir de position
 	 * @param buff un buffer
