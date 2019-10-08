@@ -30,7 +30,7 @@ public class Record {
 		RelDef rd = relDef ;
 		int i = 0 ;
 		Character c = null ;
-		int posOfBuff = buff.position() ;
+		position = buff.position() ;
 		
 		// Verifier si c'est bien un Integer
 		if(rd.getTypeCol().get(i).getClass().toString().equals("Integer")) {
@@ -39,7 +39,7 @@ public class Record {
 			
 			for(int p=0 ; p<"Integer".length() ; p++) {
 				c = "Integer".charAt(p);
-				buff.position(posOfBuff).putChar(c);
+				buff.position(position).putChar(c);
 			}
 			/**
 			 * A faire : Rajouter un espace
@@ -52,7 +52,7 @@ public class Record {
 			
 			for(int p=0 ; p<"Float".length() ; p++) {
 				c = "Float".charAt(p);
-				buff.position(posOfBuff).putChar(c);
+				buff.position(position).putChar(c);
 			}
 			/**
 			 * A faire : Rajouter un espace
@@ -65,7 +65,7 @@ public class Record {
 			
 			for(int p=0 ; p<"String".length() ; p++) {
 				c = "String".charAt(p);
-				buff.position(posOfBuff).putChar(c) ;
+				buff.position(position).putChar(c) ;
 			}
 			/**
 			 * A faire : Rajouter un espace
@@ -74,6 +74,13 @@ public class Record {
 	}
 	
 	public void readFromBuffer(ByteBuffer buff, int position) {
-		
+		position = buff.position();
+		StringBuilder sb = new StringBuilder("");
+		while(position!=0) {
+			sb.append(buff.position(position).getChar());
+			position-- ;
+		}
+		sb.reverse();
+		System.out.println(sb.toString());
 	}
 }
