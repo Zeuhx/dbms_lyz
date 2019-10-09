@@ -109,9 +109,27 @@ public class BufferManager {
 	 */
 	public void flushAll() {
 		DBManager.finish();
+		
 		for(int i=0; i<listFrame.size(); i++) {
+			try {
+				
+			
 			if(listFrame.get(i).getFlag_dirty()){
-				DiskManager.writePage(listFrame.get(i).getPageId(), buffer);
+
+				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
+				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getBuffer());
+				
+				/**après un ajout de getByteBuffer dans la classe Frame**/
+				
+				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getByteBuffer());
+				
+				/**ajout de try catch**/
+			}
+			}
+			catch (IOException e) {
+				//TODO
+				System.out.println("probleme dans flushAll dans la condition si le flag dirty est egal a 1");
+						
 			}
 		}
 	}

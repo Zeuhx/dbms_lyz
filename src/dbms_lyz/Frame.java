@@ -73,6 +73,9 @@ public class Frame {
 	public boolean getLRU_change() {
 		return LRU_change;
 	}
+	public ByteBuffer getByteBuffer() {
+		return buff;
+	}
 
 	
 }
