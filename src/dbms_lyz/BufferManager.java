@@ -110,18 +110,20 @@ public class BufferManager {
 	public void flushAll() {
 		DBManager.finish();
 		
-		for(int i=0; i<listFrame.size(); i++) {
+		
+		
+
+		for(int i=0; i<Constants.frameCount; i++) {
 			try {
 			if(listFrame.get(i).getFlag_dirty()){
 
 				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
 				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getBuffer());
-				
-				/**apr�s un ajout de getByteBuffer dans la classe Frame**/
-				
+
 				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getByteBuffer());
 				
 				/**ajout de try catch**/
+	
 			}
 			}
 			catch (IOException e) {
@@ -130,6 +132,10 @@ public class BufferManager {
 						
 			}
 		}
+		
+		frame1.flushFrame();
+		frame2.flushFrame();
+	
 	}
 
 }
