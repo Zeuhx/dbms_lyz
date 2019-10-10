@@ -35,7 +35,7 @@ public class DBDef {
 	 */
 	public static void init() {
 		relDefTab = new ArrayList<>();
-		compteurRelation = 0 ;
+		compteurRelation = 0 ;		
 	}
 	
 	

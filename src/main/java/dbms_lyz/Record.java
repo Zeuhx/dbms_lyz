@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Record {
+	public static int recordLength = 0; 
 	private RelDef relDef ;				// Relation a laquelle Records appartient
 	private List<String> values;		// Valeur de Records
 	
@@ -17,72 +18,62 @@ public class Record {
 		this(reldef, null);
 	}
 	
-	/**
-	 * A REVOIR !! (faux jpense apres relecture)
-	 * 
-	 * Ecrit les valeurs du Record dans le buffer, 
-	 * l’une après l’autre, à partir de position
-	 * @param buff un buffer
-	 * @param position , la position dans le buffer
-	 * 
-	 * On prend la classe de la case i, on verifie si elle est bien presente
-	 * Et on inject caractere par caratere dans le buffer
-	 */
-	public void writeToBuffer(ByteBuffer buff, int position) {
-		RelDef rd = relDef ;
-		int i = 0 ;
-		Character c = null ;
-		position = buff.position() ;
-		
-		// Verifier si c'est bien un Integer
-		if(rd.getTypeCol().get(i).getClass().toString().equals("Integer")) {
-			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass());
-			
-			
-			for(int p=0 ; p<"Integer".length() ; p++) {
-				c = "Integer".charAt(p);
-				buff.position(position).putChar(c);
+	//Cette methode va permettre de recuperer les valeurs de la liste de listes de relDef
+	//Sous la forme de string
+	//NE pas Oublier d'utiliser des StringBuffer
+	
+	public void remplirValues() {
+		for(int i =0;i<relDef.getRecord().size(); i++) {
+			String s ="";
+			//je vais supposer que chq col a le meme nombre d'elements
+			for(int j=0; j<relDef.getNbCol(); j++) { 
+				String t = (String)(relDef.getRecord().get(i).get(j));
+				if(j>0)
+					s.concat(" ");
+				s.concat(t);
 			}
-			/**
-			 * A faire : Rajouter un espace
-			 */
-		}
-		// Float
-		else if(rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
-			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass());
-			
-			
-			for(int p=0 ; p<"Float".length() ; p++) {
-				c = "Float".charAt(p);
-				buff.position(position).putChar(c);
-			}
-			/**
-			 * A faire : Rajouter un espace
-			 */
-		}
-		// String
-		else if(rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass());
-			
-			
-			for(int p=0 ; p<"String".length() ; p++) {
-				c = "String".charAt(p);
-				buff.position(position).putChar(c) ;
-			}
-			/**
-			 * A faire : Rajouter un espace
-			 */
+			values.add(s);
 		}
 	}
 	
-	public void readFromBuffer(ByteBuffer buff, int position) {
-		position = buff.position();
-		StringBuilder sb = new StringBuilder("");
-		while(position!=0) {
-			sb.append(buff.position(position).getChar());
-			position-- ;
+	public void writeToBuffer(ByteBuffer buff, int position) {
+		Character c = null ;
+		for(String s : values) {
+			for(int i=0; i<s.length();i++) {
+				buff.putChar(s.charAt(i));
+			}
 		}
-		sb.reverse();
-		System.out.println(sb.toString());
 	}
+	
+	/**
+	 * Retourne la taille du record selon le type
+	 * @return
+	 */
+	public int length() {
+		RelDef rd = relDef ;
+		int i = 0 ;
+
+		// Verifier si c'est bien un Integer
+		if(rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
+			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+			recordLength += 4;
+		}
+		// Float
+		else if(rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
+			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+			recordLength += 4;
+		}
+		// String
+		else if(rd.getTypeCol().get(i).getClass().toString().equals("String")) {
+			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
+			recordLength += 2;
+		}
+		else 
+			recordLength += 0 ;
+		
+		
+		return recordLength ;
+	}
+
+	
 }

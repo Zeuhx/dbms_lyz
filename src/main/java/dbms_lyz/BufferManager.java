@@ -107,10 +107,6 @@ public class BufferManager {
 	 */
 	public void flushAll() {
 		DBManager.finish();
-		
-		
-		
-
 		for(int i=0; i<Constants.frameCount; i++) {
 			try {
 			if(listFrame.get(i).getFlag_dirty()){
@@ -130,10 +126,8 @@ public class BufferManager {
 						
 			}
 		}
-		
 		frame1.flushFrame();
 		frame2.flushFrame();
-	
 	}
 
 }
