@@ -70,7 +70,7 @@ public class DBManager {
 	}
 
 	public RelDef createRelation(String nomRelation, int nombreCol, List<Object> typeCol) {
-		RelDef rd = new RelDef(nomRelation, nombreCol, typeCol) ;
+		RelDef rd = new RelDef(nomRelation,  typeCol) ;
 		(DBDef.getInstance()).addRelation(rd);
 		return(rd);
 	}

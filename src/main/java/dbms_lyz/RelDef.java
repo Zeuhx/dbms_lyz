@@ -13,18 +13,38 @@ public class RelDef {
 	private String nomRelation ; 
 	private int nbCol ;
 	private List<Object> typeCol ; 
+	private List<ArrayList<Object>> records;
 	
 	public RelDef(String nomRelation, int nbCol) {
 		this.nomRelation = nomRelation ;
-		this.nbCol = nbCol ;
+		this.nbCol = 0 ;
 		this.typeCol = new ArrayList<Object>() ;
+		initRelDef(); //peut etre une erreur
 	}
 	
-	public RelDef(String nomRelation, int nbCol, List<Object> typeCol2) {
+	public RelDef(String nomRelation, List<Object> typeCol2) {
 		this.nomRelation = nomRelation ;
-		this.nbCol = nbCol ;
+		this.nbCol = typeCol2.size();
 		this.typeCol = typeCol2;
+		initRelDef(); //peut etre une erreur
+
 	}
+	
+	//créer une liste pour chaque colonne a initialiser lorqu'on fait une relation
+	public void initRelDef() {
+		for(Object o : typeCol) {
+				List<Object> l = new ArrayList<>();
+				records.add((ArrayList<Object>) l);
+			}
+	
+		}
+	public List<ArrayList<Object>> getRecord(){
+		return records;
+	}
+		
+	
+	
+	
 	
 	public String getNomRelation() {
 		return(nomRelation);
