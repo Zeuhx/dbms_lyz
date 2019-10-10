@@ -76,6 +76,12 @@ public class Frame {
 	public ByteBuffer getByteBuffer() {
 		return buff;
 	}
+	
+	public void flushFrame() {
+		pageId = null;
+		pin_count = 0;
+		flag_dirty = false;
+	}
 
 	
 }
