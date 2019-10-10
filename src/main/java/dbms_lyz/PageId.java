@@ -19,7 +19,8 @@ public class PageId {
 	 */
 	public int IdFichier(String nomFichier) {
 		int id ;
-		String s = new String(nomFichier.substring(5, nomFichier.indexOf(".")));
+		// 27 car c'est nb de caractere avant l'acces au fichier
+		String s = new String(nomFichier.substring(27, nomFichier.indexOf(".")));
 		id = Integer.parseInt(s);
 		return(id);
 	}

@@ -14,6 +14,7 @@ import java.nio.channels.FileChannel;
  *
  */
 public class DiskManager {
+	static String path = new String("src" + File.separator + "main" + File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");
 
 	/** Constructeur prive */
 	private DiskManager(){}
@@ -40,8 +41,7 @@ public class DiskManager {
 		/**
 		 * f file already exists then it is opened else the file is created and then opened
 		 */
-
-		File f = new File("DB/Data_"+fileIdx+".rf");
+		File f = new File(path+fileIdx+".rf");
 
 		try {
 			if(f.createNewFile()) {
@@ -69,7 +69,7 @@ public class DiskManager {
 		RandomAccessFile rf = null;
 		byte[] bt = new byte[Constants.getpageSize()];
 		try {
-			rf = new RandomAccessFile(new File("DB/Data_"+fileIdx+".rf"),"rw");
+			rf = new RandomAccessFile(new File(path+fileIdx+".rf"),"rw");
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -81,7 +81,7 @@ public class DiskManager {
 			e.printStackTrace();
 		}
 
-		PageId p = new PageId("DB/Data_"+fileIdx+".rf");
+		PageId p = new PageId(path+fileIdx+".rf");
 		return(p);
 	}
 
@@ -96,7 +96,7 @@ public class DiskManager {
 	 */
 	public static void readPage(PageId j, ByteBuffer buff) throws IOException,FileNotFoundException {		
 		RandomAccessFile rf = null ;
-		File f = new File("DB"+ File.separator+ "Data_"+j.getFileIdx()+".rf");
+		File f = new File(path+j.getFileIdx()+".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
 		// Obtention du flux de donnee du ficheir rf
 		FileChannel channel = null ;
@@ -113,7 +113,7 @@ public class DiskManager {
 	
 	public static void writePage(PageId pageId, ByteBuffer buff) throws IOException, FileNotFoundException {		
 		RandomAccessFile rf = null ;
-		File f = new File("DB"+ File.separator+ "Data_"+pageId.getFileIdx()+".rf");
+		File f = new File(path+pageId.getFileIdx()+".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
 		// Obtention du flux de donnee du ficheir rf
 		FileChannel channel = null ;
