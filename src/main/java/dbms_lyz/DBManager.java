@@ -1,4 +1,4 @@
-package dbms_lyz;
+package main.java.dbms_lyz;
 
 import java.util.ArrayList;
 import java.util.List;

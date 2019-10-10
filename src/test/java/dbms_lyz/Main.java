@@ -1,4 +1,4 @@
-package dbms_lyz;
+package test.java.dbms_lyz;
 
 
 import java.nio.ByteBuffer;

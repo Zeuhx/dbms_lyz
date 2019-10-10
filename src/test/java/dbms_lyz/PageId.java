@@ -1,4 +1,4 @@
-package dbms_lyz;
+package test.java.dbms_lyz;
 
 public class PageId {
 	public static int ID = 0 ;

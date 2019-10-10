@@ -1,4 +1,4 @@
-package dbms_lyz;
+package main.java.dbms_lyz;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

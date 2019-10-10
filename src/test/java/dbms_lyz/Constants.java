@@ -1,4 +1,4 @@
-package dbms_lyz;
+package test.java.dbms_lyz;
 
 public final class Constants {
 	public static final int pageSize = 4096;
