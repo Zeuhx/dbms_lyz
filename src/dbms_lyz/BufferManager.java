@@ -112,14 +112,12 @@ public class BufferManager {
 		
 		for(int i=0; i<listFrame.size(); i++) {
 			try {
-				
-			
 			if(listFrame.get(i).getFlag_dirty()){
 
 				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
 				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getBuffer());
 				
-				/**après un ajout de getByteBuffer dans la classe Frame**/
+				/**aprï¿½s un ajout de getByteBuffer dans la classe Frame**/
 				
 				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getByteBuffer());
 				

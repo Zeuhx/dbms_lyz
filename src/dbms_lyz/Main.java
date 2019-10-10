@@ -1,5 +1,6 @@
 package dbms_lyz;
 
+
 import java.nio.ByteBuffer;
 import java.util.Scanner;
 
@@ -51,6 +52,7 @@ public class Main {
 
 		PageId pageId = null;
 		pageId = DiskManager.addPage(2);
+		
 		
 		
 	}
