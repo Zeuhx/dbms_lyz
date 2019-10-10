@@ -1,11 +1,13 @@
 package main.java.dbms_lyz;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		DBManager manager = new DBManager();
 		DBManager.init();
@@ -43,18 +45,38 @@ public class Main {
 //		 */
 		
 		ByteBuffer buff = ByteBuffer.allocate(Constants.pageSize) ;
-		
-		DiskManager.createFile(2);
 		/*
 		 * try { DiskManager.getInstance().readPage(1, buff); } catch (IOException e) {
 		 * // TODO Auto-generated catch block e.printStackTrace(); }
 		 */
 
-		PageId pageId = null;
-		pageId = DiskManager.addPage(2);
+		/**
+		 * Test pour la creation de page #1 #2, puis transfer de contenu #1 à #2 via ByteBuffer
+		 */
+		DiskManager.createFile(1);
+		DiskManager.createFile(2);
+		
+		PageId pageId1 = null;
+		PageId pageId2 = null;
+		
+		pageId1 = new PageId("Data_1.rf");
+		pageId2 = new PageId("Data_2.rf");
+		
+		DiskManager.addPage(1);
+		ByteBuffer bf = ByteBuffer.allocate(Constants.pageSize);
+		
+		DiskManager.readPage(pageId1, bf);
+		DiskManager.writePage(pageId2, bf);
+		
+
 		
 		
 		
+//		pageId1 = DiskManager.addPage(1);
+
+//
+//		
+//		DiskManager.readPage(pageId2, buff);
 	}
 
 

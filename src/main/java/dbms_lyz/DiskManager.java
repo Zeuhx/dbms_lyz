@@ -45,10 +45,10 @@ public class DiskManager {
 
 		try {
 			if(f.createNewFile()) {
-				System.out.println("Fichier creer");
+				System.out.println("Fichier id " + fileIdx+ "creer");
 			}
 			else {
-				System.out.println("Fichier non creer");
+				System.out.println("Fichier id " + fileIdx+ "  non creer");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -81,7 +81,7 @@ public class DiskManager {
 			e.printStackTrace();
 		}
 
-		PageId p = new PageId(path+fileIdx+".rf");
+		PageId p = new PageId("Data_"+(fileIdx+1)+".rf");
 		return(p);
 	}
 

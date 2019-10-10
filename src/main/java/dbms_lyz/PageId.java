@@ -8,6 +8,7 @@ public class PageId {
 	
 	public PageId(String nomFichier) {
 		fileIdx = IdFichier(nomFichier);
+		System.out.println("file id : "+fileIdx);
 		pageIdx = ID ;
 		ID += 1 ;
 	}
@@ -19,8 +20,15 @@ public class PageId {
 	 */
 	public int IdFichier(String nomFichier) {
 		int id ;
+		String s = null;
 		// 27 car c'est nb de caractere avant l'acces au fichier
-		String s = new String(nomFichier.substring(27, nomFichier.indexOf(".")));
+		if(nomFichier.length() < 20 ){
+			s = new String(nomFichier.substring(5, nomFichier.indexOf(".rf")));
+		}
+		else {
+			s = new String(nomFichier.substring(27, nomFichier.indexOf(".rf")));
+		}
+			
 		id = Integer.parseInt(s);
 		return(id);
 	}
