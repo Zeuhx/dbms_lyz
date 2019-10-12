@@ -30,8 +30,8 @@ public class BufferManager {
 	 * @param page
 	 * @return le Frame correspondant au PageId
 	 */
+	
 	public Frame searchFrame(PageId pageId) {
-		
 		
 		f = null;
 		for(int i = 0; i< listFrame.size();i++) {
@@ -41,17 +41,34 @@ public class BufferManager {
 		}
 		return(f);
 	}
+	/**
+	 * POUR LE TEST ( TEMPORAIRE )
+	 * NON DEMANDE
+	 */
+	public void afficheFrame(List<Frame> listFrame) {
+		for(int i=0; i<listFrame.size(); i++) {
+			System.out.println("frame "+i);
+			System.out.println("page id : "+ (listFrame.get(i)).getPageIdx()+", pin count : "+(listFrame.get(i)).getPin_count()+", dirty : "+(listFrame.get(i)).getFlag_dirty());
+		}
+	}
 
 	/**
 	 * 
-	 * @return la derniere page
+	 * @return la derniere page utilisé
 	 */
+//	public Frame LRU() {
+//		if(frame1.getLRU_change()) {
+//			return frame1;
+//		}
+//		else return frame2;
+//	}
 	public Frame LRU() {
-		if(frame1.getLRU_change()) {
-			return frame1;
+		if(listFrame.get(0).getLRU_change()) {
+			return listFrame.get(0);
 		}
-		else return frame2;
+		else return listFrame.get(1);
 	}
+	
 	/**
 	 * Cette mÃ©thode doit rÃ©pondre Ã  une demande de page venant 
 	 * des couches plus hautes, et donc
@@ -108,26 +125,22 @@ public class BufferManager {
 	public void flushAll() {
 		DBManager.finish();
 		for(int i=0; i<Constants.frameCount; i++) {
+			
+			//ajout de try catch nécessaire
 			try {
-			if(listFrame.get(i).getFlag_dirty()){
-
-				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
-				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getBuffer());
-
-				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getByteBuffer());
-				
-				/**ajout de try catch**/
-	
-			}
+				if(listFrame.get(i).getFlag_dirty()){
+					DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
+				}
 			}
 			catch (IOException e) {
 				//TODO
-				System.out.println("probleme dans flushAll dans la condition si le flag dirty est egal a 1");
+				System.out.println("probleme dans flushAll pour la condition si le flag dirty est egal a 1");
 						
 			}
 		}
 		frame1.flushFrame();
 		frame2.flushFrame();
+		//TODO : Rajoutez un appel à cette méthode dans la méthode Finish du DBManager.
 	}
 
 }
