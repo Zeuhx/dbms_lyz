@@ -66,15 +66,11 @@ public class DBManager {
 		 * Appel de la fonction
 		 */
 		createRelation(nomRelation, nbCol, typeCol);
-
 	}
 
 	public RelDef createRelation(String nomRelation, int nombreCol, List<Object> typeCol) {
-		RelDef rd = new RelDef(nomRelation,  typeCol) ;
+		RelDef rd = new RelDef(nomRelation, typeCol) ;
 		(DBDef.getInstance()).addRelation(rd);
 		return(rd);
 	}
-
-
-
 }

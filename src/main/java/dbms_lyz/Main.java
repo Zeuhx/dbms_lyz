@@ -4,6 +4,8 @@ package main.java.dbms_lyz;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -40,7 +42,7 @@ public class Main {
 //			manager.processCommand(commande);
 //			
 //		} while(!choix.equals("exit"));
-//		/**
+//		/*
 //		 * TD2
 //		 */
 		
@@ -56,11 +58,8 @@ public class Main {
 		DiskManager.createFile(1);
 		DiskManager.createFile(2);
 		
-		PageId pageId1 = null;
-		PageId pageId2 = null;
-		
-		pageId1 = new PageId("Data_1.rf");
-		pageId2 = new PageId("Data_2.rf");
+		PageId pageId1 = new PageId("Data_1.rf");
+		PageId pageId2 = new PageId("Data_2.rf");
 		
 		DiskManager.addPage(1);
 		ByteBuffer bf = ByteBuffer.allocate(Constants.pageSize);
@@ -68,15 +67,61 @@ public class Main {
 		DiskManager.readPage(pageId1, bf);
 		DiskManager.writePage(pageId2, bf);
 		
+		/*
+		 * Test LRU Frame
+		 */
+		
+		//ajout page dans frame idée de procédure
+		/** TODO : Création list de Frame via BufferManager
+		*nous avons que frame1 et frame2 dans ce cas;
+		*
+		*TEST : méthode searchFrame, LRU, getPage, freePage, flushAll
+		*
+		*Et enfin vérifier si flushAll a bien fermé les frames
+		*/
+		
+		Frame frame1 = new Frame(pageId1);
+		Frame frame2 = new Frame(pageId2);
+		
+		List<Frame> listFrame = new ArrayList<>();
+		listFrame.add(frame1);
+		listFrame.add(frame2);
+		System.out.println("la liste des frame : ");
+		//Etat des Frames
+		for(int i=0; i<listFrame.size(); i++) {
+			System.out.println("frame "+i);
+			System.out.println("page id : "+ (listFrame.get(i)).getPageIdx()+", pin count : "+(listFrame.get(i)).getPin_count()+", dirty : "+(listFrame.get(i)).getFlag_dirty());
+		}
 
-		
-		
-		
-//		pageId1 = DiskManager.addPage(1);
-
+		/** BufferManager instance unique donc singleton java
+		 * 
+		 * Cannot make a static reference to the non-static 
+		 * method afficheFrame(List<Frame>) from the type 
+		 * BufferManager
+		 */
+//		BufferManager.getInstance();
+//		BufferManager.afficheFrame(listFrame);
+//		
 //
 //		
-//		DiskManager.readPage(pageId2, buff);
+//		PageId pageId3 = new PageId("Data_3.rf");
+//		
+//		BufferManager.searchFrame(pageId3);
+//		BufferManager.searchFrame(pageId1);
+//		
+//		Frame frameLRU = BufferManager.LRU();
+//		BufferManager.getPage(pageId3);
+		
+		
+		//Test pour les relations et record
+		
+		DiskManager.createFile(1);
+		PageId p = DiskManager.addPage(1);
+		
+		BufferManager.getInstance().getPage(p);
+		BufferManager.getInstance().afficheFrame(listFrame);
+		
+		
 	}
 
 

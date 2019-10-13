@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BufferManager {
 	
-	private static List<Frame> listFrame = new ArrayList<>();
+	public static List<Frame> listFrame = new ArrayList<>();
 	private static Frame frame1 = new Frame(true);
 	private static Frame frame2 = new Frame(false);
 	
@@ -30,28 +30,48 @@ public class BufferManager {
 	 * @param page
 	 * @return le Frame correspondant au PageId
 	 */
-	public Frame searchFrame(PageId pageId) {
-		
-		
+	
+	public int searchFrame(PageId pageId) {
+		BufferManager.getInstance();
 		f = null;
-		for(int i = 0; i< listFrame.size();i++) {
-			if((listFrame.get(i)).getPageId().equals(pageId)) {
-				f = new Frame(pageId);
-			}
+		int i = 0;
+		
+		for(Frame f : listFrame) {
+			if(listFrame.get(i).equals(pageId))
+				return i;
 		}
-		return(f);
+		
+		
+		return(2); //Pour retourner l'index de la frame concerné retourne 2 si pas trouvé
+	}
+	/**
+	 * POUR LE TEST ( TEMPORAIRE )
+	 * NON DEMANDE
+	 */
+	public void afficheFrame(List<Frame> listFrame) {
+		for(int i=0; i<listFrame.size(); i++) {
+			System.out.println("frame "+i);
+			System.out.println("page id : "+ (listFrame.get(i)).getPageIdx()+", pin count : "+(listFrame.get(i)).getPin_count()+", dirty : "+(listFrame.get(i)).getFlag_dirty());
+		}
 	}
 
 	/**
 	 * 
-	 * @return la derniere page
+	 * @return la derniere page utilisé
 	 */
+//	public Frame LRU() {
+//		if(frame1.getLRU_change()) {
+//			return frame1;
+//		}
+//		else return frame2;
+//	}
 	public Frame LRU() {
-		if(frame1.getLRU_change()) {
-			return frame1;
+		if(listFrame.get(0).getLRU_change()) {
+			return listFrame.get(0);
 		}
-		else return frame2;
+		else return listFrame.get(1);
 	}
+	
 	/**
 	 * Cette mÃ©thode doit rÃ©pondre Ã  une demande de page venant 
 	 * des couches plus hautes, et donc
@@ -63,10 +83,15 @@ public class BufferManager {
 	 */
 	public ByteBuffer getPage(PageId pageId) {
 		ByteBuffer bf = null ;
-		Frame f = searchFrame(pageId);
+		int indexFrame = searchFrame(pageId);
+		if(indexFrame == 2)
+			f=null;
+		else
+			f = listFrame.get(indexFrame);
+		
 		if(f != null){
 			try {
-				DiskManager.readPage(pageId, f.getBuffer());
+				DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
 				f.get();
 				if(pageId == listFrame.get(0).getPageId()) {
 					listFrame.get(0).setLRU_change(false);
@@ -93,8 +118,13 @@ public class BufferManager {
 	 * @param valdirty
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
-		Frame f = searchFrame(pageId);
-		f.free(valdirty);
+		int indexFrame = searchFrame(pageId);
+		if(indexFrame == 2)
+			System.out.println("Frame Pas trouvé");
+		else {
+			f = listFrame.get(indexFrame);
+			f.free(valdirty);
+		}
 	}
 
 	/**
@@ -108,26 +138,25 @@ public class BufferManager {
 	public void flushAll() {
 		DBManager.finish();
 		for(int i=0; i<Constants.frameCount; i++) {
+			
+			//ajout de try catch nécessaire
 			try {
-			if(listFrame.get(i).getFlag_dirty()){
-
-				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
-				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getBuffer());
-
-				DiskManager.writePage(listFrame.get(i).getPageId(), listFrame.get(i).getByteBuffer());
-				
-				/**ajout de try catch**/
-	
-			}
+				if(listFrame.get(i).getFlag_dirty()){
+					DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
+				}
 			}
 			catch (IOException e) {
 				//TODO
-				System.out.println("probleme dans flushAll dans la condition si le flag dirty est egal a 1");
+				System.out.println("probleme dans flushAll pour la condition si le flag dirty est egal a 1");
 						
 			}
 		}
 		frame1.flushFrame();
 		frame2.flushFrame();
+		//TODO : Rajoutez un appel à cette méthode dans la méthode Finish du DBManager.
+		
 	}
+	
+	//Une méthode pour modfif les pages qui sont dans les frames
 
 }
