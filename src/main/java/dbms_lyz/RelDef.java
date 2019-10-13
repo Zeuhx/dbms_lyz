@@ -34,7 +34,7 @@ public class RelDef {
 		this.recordSize = recordSize ; // Attention : il faut directement initialiser selon la taille du record
 		this.slotCount = slotCount ;
 	}
-	
+
 	//cr�er une liste pour chaque colonne a initialiser lorqu'on fait une relation
 	public void initRelDef() {
 		for(Object o : typeCol) {
