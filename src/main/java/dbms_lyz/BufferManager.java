@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BufferManager {
 	
-	private static List<Frame> listFrame = new ArrayList<>();
+	public static List<Frame> listFrame = new ArrayList<>();
 	private static Frame frame1 = new Frame(true);
 	private static Frame frame2 = new Frame(false);
 	
@@ -31,15 +31,18 @@ public class BufferManager {
 	 * @return le Frame correspondant au PageId
 	 */
 	
-	public Frame searchFrame(PageId pageId) {
-		
+	public int searchFrame(PageId pageId) {
+		BufferManager.getInstance();
 		f = null;
-		for(int i = 0; i< listFrame.size();i++) {
-			if((listFrame.get(i)).getPageId().equals(pageId)) {
-				f = new Frame(pageId);
-			}
+		int i = 0;
+		
+		for(Frame f : listFrame) {
+			if(listFrame.get(i).equals(pageId))
+				return i;
 		}
-		return(f);
+		
+		
+		return(2); //Pour retourner l'index de la frame concerné retourne 2 si pas trouvé
 	}
 	/**
 	 * POUR LE TEST ( TEMPORAIRE )
@@ -80,10 +83,15 @@ public class BufferManager {
 	 */
 	public ByteBuffer getPage(PageId pageId) {
 		ByteBuffer bf = null ;
-		Frame f = searchFrame(pageId);
+		int indexFrame = searchFrame(pageId);
+		if(indexFrame == 2)
+			f=null;
+		else
+			f = listFrame.get(indexFrame);
+		
 		if(f != null){
 			try {
-				DiskManager.readPage(pageId, f.getBuffer());
+				DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
 				f.get();
 				if(pageId == listFrame.get(0).getPageId()) {
 					listFrame.get(0).setLRU_change(false);
@@ -110,8 +118,13 @@ public class BufferManager {
 	 * @param valdirty
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
-		Frame f = searchFrame(pageId);
-		f.free(valdirty);
+		int indexFrame = searchFrame(pageId);
+		if(indexFrame == 2)
+			System.out.println("Frame Pas trouvé");
+		else {
+			f = listFrame.get(indexFrame);
+			f.free(valdirty);
+		}
 	}
 
 	/**
@@ -141,6 +154,9 @@ public class BufferManager {
 		frame1.flushFrame();
 		frame2.flushFrame();
 		//TODO : Rajoutez un appel à cette méthode dans la méthode Finish du DBManager.
+		
 	}
+	
+	//Une méthode pour modfif les pages qui sont dans les frames
 
 }

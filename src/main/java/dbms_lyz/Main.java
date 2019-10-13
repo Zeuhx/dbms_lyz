@@ -113,6 +113,14 @@ public class Main {
 //		BufferManager.getPage(pageId3);
 		
 		
+		//Test pour les relations et record
+		
+		DiskManager.createFile(1);
+		PageId p = DiskManager.addPage(1);
+		
+		BufferManager.getInstance().getPage(p);
+		BufferManager.getInstance().afficheFrame(listFrame);
+		
 		
 	}
 

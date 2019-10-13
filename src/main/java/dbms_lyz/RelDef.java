@@ -18,10 +18,10 @@ public class RelDef {
 	private int recordSize;
 	private int slotCount ;
 	
-	public RelDef(String nomRelation, int nbCol) {
+	public RelDef(String nomRelation, List<Object> typeCol) {
 		this.nomRelation = nomRelation ;
-		this.nbCol = 0 ;
-		this.typeCol = new ArrayList<Object>() ;
+		this.nbCol = typeCol.size() ;
+		this.typeCol = typeCol ;
 		initRelDef(); //peut etre une erreur
 	}
 	
