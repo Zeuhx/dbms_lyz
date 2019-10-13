@@ -8,9 +8,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * 
- * @author LYZ API : Important! Cette classe comporte une unique instance
- *
+ * API : Important! (Cette classe comporte une unique instance)
+ * @author LYZ
  */
 public class DiskManager {
 	// Chemin du fichier

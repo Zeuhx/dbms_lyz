@@ -2,6 +2,7 @@ package main.java.dbms_lyz;
 
 /**
  * 
+ * A finir
  * @author LYZ
  * Class Exception au niveau des flag
  *

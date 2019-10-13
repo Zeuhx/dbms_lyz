@@ -8,8 +8,8 @@ import java.util.List;
  */
 
 /**
- * @author Le Marcel, Yu Willy, Zhang Cedric Garde les infos de schema sur
- *         l'ensemble de la database
+ * 	Garde les infos de schema sur l'ensemble de la database
+ * @author LYZ : Le Marcel, Yu Willy, Zhang Cedric,
  *
  */
 public class DBDef {

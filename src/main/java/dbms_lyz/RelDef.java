@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Le Marcel, Yu Willy, Zhang Cedric Classe pour garder les infos de
- *         schema d'une relation
+ * Classe pour garder les infos de schema d'une relation
+ * @author LYZ : Le Marcel, Yu Willy, Zhang Cedric 
  *
  */
 public class RelDef {

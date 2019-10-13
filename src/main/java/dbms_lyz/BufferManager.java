@@ -5,6 +5,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * Classe Buffer contenant les frames
+ * @author LYZ
+ *
+ */
 public class BufferManager {
 
 	public static List<Frame> listFrame = new ArrayList<>();

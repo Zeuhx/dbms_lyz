@@ -2,6 +2,11 @@ package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Classe Frame contenant des id de page 
+ * @author LYZ
+ *
+ */
 public class Frame {
 	private ByteBuffer buff;
 	private PageId pageId;
