@@ -8,7 +8,8 @@ public class HeapFile {
 	}
 	
 	public void createOnDisk() {
-		int relDeffileIdx = relDef.getFileIdx() ;
+		int relDeffileIdx = 0 ;
+//		relDeffileIdx = relDef.getFileIdx() ; Ajouter apres avoir creer la fonction
 		DiskManager.createFile(relDeffileIdx);
 		PageId pageId = DiskManager.addPage(relDeffileIdx);
 		Frame f1 = new Frame(pageId);
