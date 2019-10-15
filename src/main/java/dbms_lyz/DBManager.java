@@ -39,7 +39,7 @@ public class DBManager {
 		StringTokenizer stCommandaCouper;
 		String nomRelation = new String("");
 		int nbCol = 0;
-		List<Object> typeCol = new ArrayList<Object>();
+		List<String> typeCol = new ArrayList<String>();
 		int j = 0;
 
 		stCommandaCouper = new StringTokenizer(commande, " ");
@@ -90,7 +90,7 @@ public class DBManager {
 	 * @param typeCol     @return, une relation RelDef conformement aux arguments et
 	 *                    ajoute dans DBDef
 	 */
-	public RelDef createRelation(String nomRelation, int nombreCol, List<Object> typeCol) {
+	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef rd = new RelDef(nomRelation, typeCol);
 		(DBDef.getInstance()).addRelation(rd);
 		return (rd);

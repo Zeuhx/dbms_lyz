@@ -22,12 +22,10 @@ public class Record {
 	public Record(RelDef reldef) {
 		this(reldef, null);
 	}
-	
+
 	/**
 	 * Cette methode va permettre de recuperer les valeurs de la liste de listes de
-	 * relDef
-	 * Sous la forme de string
-	 *  NE pas Oublier d'utiliser des StringBuffer
+	 * relDef Sous la forme de string NE pas Oublier d'utiliser des StringBuffer
 	 */
 	public void remplirValues() {
 		for (int i = 0; i < relDef.getRecord().size(); i++) {
@@ -44,18 +42,58 @@ public class Record {
 	}
 
 	/**
-	 * NON Fonctionnel
+	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres
+	 * 
+	 * @param buff
+	 * @param position
+	 */
+	public void writeToBuffer(ByteBuffer buff, int position) {
+		position = buff.position();
+		for (int i = 0; i < values.size(); i++) {
+			if (values.getClass().toString().contains("Integer")) {
+				buff.putInt((int) Integer.parseInt(values.get(i)));
+				position++;
+			}
+			if (values.getClass().toString().contains("Float")) {
+				buff.putFloat((float) Float.parseFloat(values.get(i)));
+				position++;
+			}
+			if (values.getClass().toString().contains("String")) {
+				int j = 0;
+				int tailleString = values.toString().length();
+				;
+				do {
+					buff.putChar(values.get(i).charAt(j));
+					j++;
+				} while (tailleString > j);
+				position++;
+			} else {
+				System.out.println("Erreur : Aucune classe ne correspond");
+			}
+		}
+	}
+
+	/**
 	 * " Le contraire " de la version precedente
+	 * " Bizarre " 
 	 * @param buff
 	 * @param position
 	 * 
 	 */
-	public void writeToBuffer(ByteBuffer buff, int position) {
-		Character c = null;
-		for (String s : values) {
-			for (int i = 0; i < s.length(); i++) {
-				buff.putChar(s.charAt(i));
-			}
+	public void readFromBuffer(ByteBuffer buff, int position) {
+		for (int i = 0; i < buff.capacity(); i++) {
+			buff.getInt(position);
+			position++;
+			buff.putFloat((float) Float.parseFloat(values.get(i)));
+			position++;
+
+			int j = 0;
+			int tailleString = values.toString().length();
+			do {
+				buff.putChar(values.get(i).charAt(j));
+				j++;
+			} while (tailleString > j);
+			position++;
 		}
 	}
 
@@ -79,6 +117,9 @@ public class Record {
 			recordLength += 4;
 		}
 		// String
+		/**
+		 * ATTENTION : RESTE A MULTIPLIER
+		 */
 		else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
 			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
 			recordLength += 2;

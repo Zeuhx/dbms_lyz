@@ -11,21 +11,21 @@ import java.util.List;
 public class RelDef {
 	private String nomRelation;
 	private int nbCol;
-	private List<Object> typeCol;
+	private List<String> typeCol;
 
 	private List<ArrayList<Object>> records;
 	private int fileIdx;
 	private int recordSize;
 	private int slotCount;
 
-	public RelDef(String nomRelation, List<Object> typeCol) {
+	public RelDef(String nomRelation, List<String> typeCol) {
 		this.nomRelation = nomRelation;
 		this.nbCol = typeCol.size();
 		this.typeCol = typeCol;
 		initRelDef(); // peut etre une erreur
 	}
 
-	public RelDef(String nomRelation, List<Object> typeCol2, int fileIdx, int recordSize, int slotCount) {
+	public RelDef(String nomRelation, List<String> typeCol2, int fileIdx, int recordSize, int slotCount) {
 		this.nomRelation = nomRelation;
 		this.nbCol = typeCol2.size();
 		this.typeCol = typeCol2;
@@ -56,7 +56,7 @@ public class RelDef {
 		return (nbCol);
 	}
 
-	public List<Object> getTypeCol() {
+	public List<String> getTypeCol() {
 		return (typeCol);
 	}
 

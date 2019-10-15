@@ -48,6 +48,7 @@ public class DBDef {
 	 *           compteur
 	 */
 	public void addRelation(RelDef rd) {
+		System.out.println("Rentre dans addRelation");
 		if (rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
