@@ -5,15 +5,18 @@ import junit.framework.TestCase;
 public class TestDiskManager extends TestCase {
 
 	public void testGetInstance() {
-		fail("Not yet implemented");
+		
+		assertNotNull(DiskManager.getInstance());
 	}
 
 	public void testCreateFile() {
 		fail("Not yet implemented");
 	}
 
-	public void testAddPage() {
-		fail("Not yet implemented");
+	public void testAddPage(int fileIdx) {
+		PageId p = DiskManager.addPage(fileIdx);
+		assertEquals(fileIdx, p.getFileIdx());
+		
 	}
 
 	public void testReadPage() {

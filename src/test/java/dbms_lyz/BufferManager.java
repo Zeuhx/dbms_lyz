@@ -43,6 +43,16 @@ public class BufferManager {
 		}
 		return(f);
 	}
+	
+	
+	public Frame getFrame(int numero) {
+		if(numero==0)
+			return frame1;
+		else if(numero == 1) {
+			return frame2;
+		}
+		else return null;
+	}
 
 	/**
 	 * 

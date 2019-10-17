@@ -5,14 +5,15 @@ import junit.framework.TestCase;
 public class TestBufferManager extends TestCase {
 	
 	public void testGetInstance() {
-		fail("Not yet implemented");
+		assertNotNull(BufferManager.getInstance());
 	}
 
 	public void testSearchFrame() throws Exception{
 		//Test pour pas trouvé
 		PageId p = new PageId("test");
-		assertEquals(2,BufferManager.getInstance().searchFrame(p));
-		fail("Not yet implemented");
+		BufferManager.getInstance().getPage(p);
+		assertNotNull(BufferManager.getInstance().searchFrame(p));
+	
 	}
 
 	public void testAfficheFrame() {
@@ -23,8 +24,11 @@ public class TestBufferManager extends TestCase {
 		fail("Not yet implemented");
 	}
 
-	public void testGetPage() {
-		fail("Not yet implemented");
+	public void testGetPage(PageId p) {
+		
+		BufferManager.getInstance().getPage(p);
+		if(BufferManager.getInstance().searchFrame(p) != BufferManager.getInstance().getFrame(0))
+			fail("Echec getPage");
 	}
 
 	public void testFreePage() {
@@ -32,7 +36,15 @@ public class TestBufferManager extends TestCase {
 	}
 
 	public void testFlushAll() {
-		fail("Not yet implemented");
+		PageId p1 = new PageId("Page1");
+		BufferManager.getInstance().getPage(p1);
+		PageId p2 = new PageId("Page2");
+		BufferManager.getInstance().getPage(p2);
+		
+		BufferManager.getInstance().flushAll();
+		
+		if((BufferManager.getInstance().searchFrame(p1) != null) && (BufferManager.getInstance().searchFrame(p2) != null))
+			fail("Flush a echoue");
 	}
 
 }
