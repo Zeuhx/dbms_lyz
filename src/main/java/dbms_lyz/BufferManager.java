@@ -65,8 +65,8 @@ public class BufferManager {
 
 
 	/**
-	 * Cette methode doit reppondre a  une demande de page venant des couches plus
-	 * hautes, et donc retourner un des buffers associeer a  une case. Le buffer sera
+	 * Cette methode doit reppondre aï¿½ une demande de page venant des couches plus
+	 * hautes, et donc retourner un des buffers associeer aï¿½ une case. Le buffer sera
 	 * rempli avec le contenu de la page designee par  argument pageId.
 	 * 
 	 * @param pageId
@@ -99,7 +99,7 @@ public class BufferManager {
 	//##############   TEST willy ###########################
 	public ByteBuffer getPage2(PageId pageId) {
 		//newFrame est de type Frame
-		//TODO : on récupère le buff de newFrame puis on l'ajoute sur la listFrame si exist
+		//TODO : on rï¿½cupï¿½re le buff de newFrame puis on l'ajoute sur la listFrame si exist
 		Frame newFrame = new Frame(pageId);
 		ByteBuffer bf = newFrame.getBuffer();
 		int indexFrame = searchFrame(pageId);
@@ -124,7 +124,7 @@ public class BufferManager {
 				
 				// si jamais l'autre frame a pin_count>0 
 				if(!listFrame.get(1).getLRU_change()) {
-					//les deux frame ne peuvent être remplacer
+					//les deux frame ne peuvent ï¿½tre remplacer
 					listFrame.get(0).setLRU_change(false);
 				}
 				else {
@@ -138,7 +138,7 @@ public class BufferManager {
 
 				// si jamais l'autre frame a pin_count>0 
 				if(!listFrame.get(0).getLRU_change()) {
-					//les deux frame ne peuvent être remplacer
+					//les deux frame ne peuvent ï¿½tre remplacer
 					listFrame.get(1).setLRU_change(false);
 				}
 				else {
@@ -154,7 +154,7 @@ public class BufferManager {
 			System.out.println("le new frame n'existe pas dans la liste");
 			 f = new Frame(f.getPageId() );
 			 
-			 //changement new frame par rapport à LRU
+			 //changement new frame par rapport ï¿½ LRU
 			 if(listFrame.get(0).getLRU_change() == true) {
 				 System.out.println("changement du premier frame ");
 				 listFrame.remove(0);
@@ -223,7 +223,7 @@ public class BufferManager {
 				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
 			}
 		
-		System.out.println("initialisation de la mémoire après une écriture sur DiskManager");}
+		System.out.println("initialisation de la mï¿½moire aprï¿½s une ï¿½criture sur DiskManager");}
 		frame1.flushFrame();
 		frame2.flushFrame();
 		// TODO : Rajoutez un appel ï¿½ cette mï¿½thode dans la mï¿½thode Finish du DBManager.

@@ -28,7 +28,7 @@ public class RelDef {
 		this.typeCol = typeCol;
 	}
 
-	public RelDef(String nomRelation, List<String> typeCol, int recordSize, int slotCount) {
+	public RelDef(String nomRelation, List<String> typeCol, int fileIdx, int recordSize, int slotCount) {
 		this.nomRelation = nomRelation;
 		this.nbCol = typeCol.size();
 		this.fileIdx = 0;
@@ -65,6 +65,10 @@ public class RelDef {
 			return true;
 		} else
 			return false;
+	}
+
+	public int getFileIdx() {
+		return fileIdx ;
 	}
 
 }

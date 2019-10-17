@@ -2,6 +2,8 @@ package main.java.dbms_lyz;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,10 @@ public class DBDef implements Serializable{
 	public static void init() {
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
+		/**
+		 * TODO LECTURE
+		 */
+		
 	}
 
 	public static void finish(){
@@ -50,11 +56,26 @@ public class DBDef implements Serializable{
 		 * Fichier txt ou ObjectOutputStram via la serialisation
 		 */
 		
+		ObjectOutputStream oos = null ;
+		FileOutputStream catalogue = null ;
 		try {
-			FileOutputStream catalogue = new FileOutputStream ("catalogue.txt");
+			catalogue = new FileOutputStream ("catalogue.txt");
+			oos= new ObjectOutputStream(catalogue);
+			oos.writeChars("Compteur relation "+compteurRelation+"\nListe de tab " + relDefTab);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				oos.close();
+				catalogue.close() ; 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		System.out.println("ici le finish");

@@ -22,7 +22,7 @@ public class Frame {
 		flag_dirty = false;
 	}
 	
-	//peut etre pas nécessaire
+	//peut etre pas necessaire
 	public Frame(boolean LRU_change) {
 		this.pageId = null;
 		buff = ByteBuffer.allocate(4096);

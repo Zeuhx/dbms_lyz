@@ -102,7 +102,8 @@ public class DBManager {
 		int recordSize = recordSize(rd);
 		int slotCount = slotCount(rd);
 		
-		rd = new RelDef(nomRelation, typeCol, recordSize, slotCount);
+		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
+		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
 		
 		return (rd);
 		
