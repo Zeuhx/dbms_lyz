@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * @author LYZ
+ * 
  *
  */
 public class Record {
@@ -41,6 +42,8 @@ public class Record {
 	}
 
 	/**
+	 * TODO 
+	 * 
 	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres
 	 * 
 	 * @param buff
@@ -96,6 +99,8 @@ public class Record {
 	}
 
 	/**
+	 * TODO : Refaire la fonction comme c'etait des string 
+	 * 
 	 * Retourne la taille du record selon le type (en octets)
 	 * 
 	 * @return
