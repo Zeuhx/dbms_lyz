@@ -63,27 +63,11 @@ public class BufferManager {
 		}
 	}
 
-	/**
-	 * 
-	 * @return la derniere page utilisï¿½
-	 */
-//	public Frame LRU() {
-//		if(frame1.getLRU_change()) {
-//			return frame1;
-//		}
-//		else return frame2;
-//	}
-	public Frame LRU() {
-		if (listFrame.get(0).getLRU_change()) {
-			return listFrame.get(0);
-		} else
-			return listFrame.get(1);
-	}
 
 	/**
-	 * Cette mÃ©thode doit rÃ©pondre Ã  une demande de page venant des couches plus
-	 * hautes, et donc retourner un des buffers associÃ©s Ã  une case. Le buffer sera
-	 * rempli avec le contenu de la page dÃ©signÃ©e par lâ€™argument pageId.
+	 * Cette methode doit reppondre a  une demande de page venant des couches plus
+	 * hautes, et donc retourner un des buffers associeer a  une case. Le buffer sera
+	 * rempli avec le contenu de la page designee par  argument pageId.
 	 * 
 	 * @param pageId
 	 * @return
@@ -91,9 +75,12 @@ public class BufferManager {
 	public ByteBuffer getPage(PageId pageId) {
 		ByteBuffer bf = null;
 		int indexFrame = searchFrame(pageId);
+		
+		//si la new pageId n'est pas trouve dans la liste de frame??;
 		if (indexFrame == 2)
 			f = null;
 		else
+			//comprend pas pourquoi f doit get le indexFrame
 			f = listFrame.get(indexFrame);
 
 		if (f != null) {
@@ -106,6 +93,99 @@ public class BufferManager {
 				listFrame.get(1).setLRU_change(false);
 				listFrame.get(0).setLRU_change(true);
 			}
+		}
+		return (bf);
+	}
+	//##############   TEST willy ###########################
+	public ByteBuffer getPage2(PageId pageId) {
+		//newFrame est de type Frame
+		//TODO : on récupère le buff de newFrame puis on l'ajoute sur la listFrame si exist
+		Frame newFrame = new Frame(pageId);
+		ByteBuffer bf = newFrame.getBuffer();
+		int indexFrame = searchFrame(pageId);
+		
+		//si la new pageId n'est pas trouve dans la liste de frame??
+		if (indexFrame == 2)
+			f = null;
+		else
+			f = listFrame.get(indexFrame);
+
+		//si newFrame est dans la liste
+		if (f != null) {
+			DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
+			//on ajoute si frame exist dans la liste le buffer de newFrame 
+			
+			f.get();
+			
+			//Maj du LRU_change
+			//si newFrame correspond au premier
+			if (pageId == listFrame.get(0).getPageId()) {
+				DiskManager.readPage(listFrame.get(0).getPageId(), bf);
+				
+				// si jamais l'autre frame a pin_count>0 
+				if(!listFrame.get(1).getLRU_change()) {
+					//les deux frame ne peuvent être remplacer
+					listFrame.get(0).setLRU_change(false);
+				}
+				else {
+					listFrame.get(0).setLRU_change(false);
+					listFrame.get(1).setLRU_change(true);
+				}
+			
+				//si newFrame correspond au deuxieme
+			} else {
+				DiskManager.readPage(listFrame.get(1).getPageId(), bf);
+
+				// si jamais l'autre frame a pin_count>0 
+				if(!listFrame.get(0).getLRU_change()) {
+					//les deux frame ne peuvent être remplacer
+					listFrame.get(1).setLRU_change(false);
+				}
+				else {
+					listFrame.get(0).setLRU_change(true);
+					listFrame.get(1).setLRU_change(false);
+				}
+			}
+		}
+		
+		//si jamais le newFrame (pageId en entre) n est pas dans la liste on remplaces 
+		else if (listFrame.get(0).getPageId()!=newFrame.getPageId() || listFrame.get(0).getPageId()!=newFrame.getPageId() ) {
+
+			System.out.println("le new frame n'existe pas dans la liste");
+			 f = new Frame(f.getPageId() );
+			 
+			 //changement new frame par rapport à LRU
+			 if(listFrame.get(0).getLRU_change() == true) {
+				 System.out.println("changement du premier frame ");
+				 listFrame.remove(0);
+				 listFrame.add(newFrame);
+				
+				//maj LRU etat si jamais l'autre frame a pin_count>0 
+				if(!listFrame.get(1).getLRU_change()){
+					listFrame.get(0).setLRU_change(true);
+				}
+				else {
+					//maj de la valeur de LRU etat
+					listFrame.get(0).setLRU_change(false);
+					listFrame.get(1).setLRU_change(true);
+				}
+			 }
+			 else if (listFrame.get(1).getLRU_change() == true){
+				 System.out.println("changement du second frame");
+				 listFrame.remove(1);
+				 listFrame.add(newFrame);
+				
+				// si jamais l'autre frame a pin_count>0 
+				if(!listFrame.get(0).getLRU_change()){
+					listFrame.get(1).setLRU_change(true);
+				}
+				else {
+					//maj de la valeur de LRU etat
+					listFrame.get(0).setLRU_change(true);
+					listFrame.get(1).setLRU_change(false);
+				}
+			 }
+			 else System.out.println("aucune condition n'est realise : ERROR qlq part");
 		}
 		return (bf);
 	}
@@ -142,7 +222,8 @@ public class BufferManager {
 			if (listFrame.get(i).getFlag_dirty()) {
 				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
 			}
-		}
+		
+		System.out.println("initialisation de la mémoire après une écriture sur DiskManager");}
 		frame1.flushFrame();
 		frame2.flushFrame();
 		// TODO : Rajoutez un appel ï¿½ cette mï¿½thode dans la mï¿½thode Finish du DBManager.
