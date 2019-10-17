@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
  * @author LYZ
  *
  */
@@ -101,7 +100,7 @@ public class Record {
 	 * 
 	 * @return
 	 */
-	public int length() {
+	public int recordSize() {
 		RelDef rd = relDef;
 		int i = 0;
 

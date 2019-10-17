@@ -93,6 +93,10 @@ public class DBManager {
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef rd = new RelDef(nomRelation, typeCol);
 		(DBDef.getInstance()).addRelation(rd);
+		/**
+		 * 
+		 * TODO : ici qu'on calcule recordSize et slotCount
+		 */
 		return (rd);
 	}
 }
