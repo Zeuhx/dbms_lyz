@@ -13,10 +13,13 @@ public class RelDef {
 	private int nbCol;
 	private List<String> typeCol;
 
-	private List<ArrayList<Object>> records;
-	private int fileIdx;
-	private int recordSize;
-	private int slotCount;
+	/**
+	 * ATTENTION WTF ?
+	 */
+	private List<ArrayList<Object>> records; // ??? C'est quoi ca ??
+	private int fileIdx;	// Indice du fichier disque qui stocke la relation
+	private int recordSize;	// taille d'un record
+	private int slotCount;	// nb de case (slots) sur une page
 
 	public RelDef(String nomRelation, List<String> typeCol) {
 		this.nomRelation = nomRelation;
