@@ -9,12 +9,12 @@ import java.util.List;
  *
  */
 public class Record {
-	public static int recordLength = 0;
+	public int recordLength = 0;
 	private RelDef relDef; // Relation a laquelle Records appartient
 	private List<String> values; // Valeur de Records
 
 	public Record(RelDef reldef, List<String> values) {
-		this.relDef = reldef;
+		relDef = reldef;
 		values = new ArrayList<>();
 	}
 
@@ -100,31 +100,31 @@ public class Record {
 	 * 
 	 * @return
 	 */
-	public int recordSize() {
-		RelDef rd = relDef;
-		int i = 0;
-
-		// Verifie si c'est bien un Integer
-		if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
-			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
-			recordLength += 4;
-		}
-		// Float
-		else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
-			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
-			recordLength += 4;
-		}
-		// String
-		/**
-		 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
-		 */
-		else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
-			recordLength += 2;
-		} else
-			recordLength += 0;
-
-		return recordLength;
-	}
+//	public int getRecordSize() {
+//		RelDef rd = relDef;
+//		int i = 0;
+//
+//		// Verifie si c'est bien un Integer
+//		if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
+//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+//			recordLength += 4;
+//		}
+//		// Float
+//		else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
+//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+//			recordLength += 4;
+//		}
+//		// String
+//		/**
+//		 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
+//		 */
+//		else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
+//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
+//			recordLength += 2;
+//		} else
+//			recordLength += 0;
+//
+//		return recordLength;
+//	}
 
 }
