@@ -26,27 +26,14 @@ public class RelDef {
 		this.nomRelation = nomRelation;
 		this.nbCol = typeCol.size();
 		this.typeCol = typeCol;
-		initRelDef(); // peut etre une erreur
 	}
 
-	public RelDef(String nomRelation, List<String> typeCol2, int fileIdx, int recordSize, int slotCount) {
+	public RelDef(String nomRelation, List<String> typeCol, int recordSize, int slotCount) {
 		this.nomRelation = nomRelation;
-		this.nbCol = typeCol2.size();
-		this.typeCol = typeCol2;
-		this.fileIdx = fileIdx;
+		this.nbCol = typeCol.size();
+		this.fileIdx = 0;
 		this.recordSize = recordSize; // Attention : il faut directement initialiser selon la taille du record
 		this.slotCount = slotCount;	// Attention : calculer en fonction de pageSize et de recordSize
-		initRelDef(); // peut etre une erreur (ask Marcel)
-	}
-
-	// creer une liste pour chaque colonne a initialiser lorqu'on fait une relation
-	public void initRelDef() {
-		for (int i = 0; i < typeCol.size(); i++) {
-			Object o = typeCol.get(i);
-			List<Object> l = new ArrayList<>();
-			records.add((ArrayList<Object>) l);
-		}
-
 	}
 
 	public List<ArrayList<Object>> getRecord() {

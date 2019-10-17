@@ -1,5 +1,8 @@
 package main.java.dbms_lyz;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,7 @@ import java.util.List;
  * @author LYZ : Le Marcel, Yu Willy, Zhang Cedric,
  *
  */
-public class DBDef {
+public class DBDef implements Serializable{
 	private static List<RelDef> relDefTab;
 	private static int compteurRelation;
 
@@ -39,13 +42,21 @@ public class DBDef {
 		compteurRelation = 0;
 	}
 
-	public static void finish() {
+	public static void finish(){
 		/**
 		 * TODO : ECRITURE
 		 * creer un fichier Catalog.def qui contient
 		 * la sauvegarde des infos de DBDef
 		 * Fichier txt ou ObjectOutputStram via la serialisation
 		 */
+		
+		try {
+			FileOutputStream catalogue = new FileOutputStream ("catalogue.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("ici le finish");
 	}
 

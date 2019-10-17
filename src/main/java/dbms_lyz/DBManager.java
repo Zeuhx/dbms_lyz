@@ -85,18 +85,68 @@ public class DBManager {
 
 	/**
 	 * 
+	 * Methode qui creer une relation de type RelDef avec son nom, le nb de col , et les types de col
+	 *  
 	 * @param nomRelation
 	 * @param nombreCol
-	 * @param typeCol     @return, une relation RelDef conformement aux arguments et
-	 *                    ajoute dans DBDef
+	 * @param typeCol     
+	 * @return, une relation RelDef conformement aux arguments et ajoute dans DBDef
+	 * 
+	 *
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
-		RelDef rd = new RelDef(nomRelation, typeCol);
+		RelDef rd = null ;
 		(DBDef.getInstance()).addRelation(rd);
-		/**
-		 * 
-		 * TODO : ici qu'on calcule recordSize et slotCount
-		 */
+		
+		// Calcul de la taille du record
+		int recordSize = recordSize(rd);
+		int slotCount = slotCount(rd);
+		
+		rd = new RelDef(nomRelation, typeCol, recordSize, slotCount);
+		
 		return (rd);
+		
+	}
+	
+	
+	/**
+	 * 
+	 * @return  : ici qu'on calcule recordSize 
+	 */
+	public int recordSize(RelDef rd) {
+		int i = 0;
+		int recordSize = 0;
+
+		
+		do {
+			// Verifie si c'est bien un Integer
+			if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
+				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+				recordSize += 4;
+			}
+			// Float
+			else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
+				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+				recordSize += 4;
+			}
+			// String
+			/**
+			 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
+			 */
+			else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
+				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
+				recordSize += 2;
+			} else
+				recordSize += 0;
+		} while (i> rd.getNbCol());
+		return recordSize;
+	}
+	/**
+	 * 
+	 * @return  : ici qu'on calcule slotCount
+	 */
+	public int slotCount(RelDef rd) {
+		// 264 octets correspond a la taille d une case
+		return (Constants.getpageSize()*8)/((264*8)+1);
 	}
 }
