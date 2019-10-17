@@ -27,6 +27,7 @@ public class PageId {
 	 * @return le x de Data_x
 	 */
 	public int IdFichier(String nomFichier) {
+	/*
 		int id;
 		String s = null;
 		// Si le fichier possede un nom court (chemin nom absolue)
@@ -41,6 +42,33 @@ public class PageId {
 
 		id = Integer.parseInt(s);
 		return (id);
+	*/
+		
+		int taille = nomFichier.length()-4;
+		int debut = nomFichier.length()-3;
+		String nbARecup;
+		
+		boolean isInteger = true;
+		
+		int nbInt = 0;
+		
+		while(isInteger) {
+			
+			if(Character.isDigit(nomFichier.charAt(taille))) {
+				nbInt++;
+				taille--;
+			}
+			
+			else {
+				
+				isInteger = false;	
+			}
+		}
+		
+		nbARecup = nomFichier.substring(debut-nbInt, debut);
+		
+		return Integer.parseInt(nbARecup);
+		
 	}
 
 	public int getFileIdx() {
