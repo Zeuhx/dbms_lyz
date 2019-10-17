@@ -40,6 +40,12 @@ public class DBDef {
 	}
 
 	public static void finish() {
+		/**
+		 * TODO : ECRITURE
+		 * creer un fichier Catalog.def qui contient
+		 * la sauvegarde des infos de DBDef
+		 * Fichier txt ou ObjectOutputStram via la serialisation
+		 */
 		System.out.println("ici le finish");
 	}
 

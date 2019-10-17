@@ -2,6 +2,8 @@ package test.java.dbms_lyz;
 
 import junit.framework.TestCase;
 
+import  main.java.dbms_lyz.*; 
+
 public class TestBufferManager extends TestCase {
 	
 	public void testGetInstance() {

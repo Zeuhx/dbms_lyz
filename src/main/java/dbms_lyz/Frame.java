@@ -21,7 +21,8 @@ public class Frame {
 		pin_count = 0;
 		flag_dirty = false;
 	}
-
+	
+	//peut etre pas nécessaire
 	public Frame(boolean LRU_change) {
 		this.pageId = null;
 		buff = ByteBuffer.allocate(4096);
@@ -83,6 +84,7 @@ public class Frame {
 	}
 
 	public boolean getLRU_change() {
+		if(pin_count >=1) LRU_change = false;
 		return LRU_change;
 	}
 

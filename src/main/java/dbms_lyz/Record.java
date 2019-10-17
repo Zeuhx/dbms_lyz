@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
  * @author LYZ
  *
  */
@@ -74,8 +73,7 @@ public class Record {
 	}
 
 	/**
-	 * " Le contraire " de la version precedente
-	 * " Bizarre " 
+	 * " Le contraire " de la version precedente, MANQUE les conditions
 	 * @param buff
 	 * @param position
 	 * 
@@ -102,7 +100,7 @@ public class Record {
 	 * 
 	 * @return
 	 */
-	public int length() {
+	public int recordSize() {
 		RelDef rd = relDef;
 		int i = 0;
 
@@ -118,7 +116,7 @@ public class Record {
 		}
 		// String
 		/**
-		 * ATTENTION : RESTE A MULTIPLIER
+		 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
 		 */
 		else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
 			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");

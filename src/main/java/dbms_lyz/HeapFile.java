@@ -1,10 +1,15 @@
 package main.java.dbms_lyz;
 
+import java.nio.ByteBuffer;
+
 public class HeapFile {
+	private HeaderPage headerPage ;
 	private RelDef relDef ;
+	private Object byteMap ;	// A definir le type
 	
 	public HeapFile(RelDef relDef) {
 		this.relDef = relDef ;
+		// Faire le calcul de la bytemap
 	}
 	
 	public void createOnDisk() {
