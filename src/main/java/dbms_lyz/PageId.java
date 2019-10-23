@@ -14,7 +14,7 @@ public class PageId {
 	private int pageIdx;
 
 	public PageId(String nomFichier) {
-		fileIdx = IdFichier(nomFichier);
+		fileIdx = idFichier(nomFichier);
 		System.out.println("file id : " + fileIdx);
 		pageIdx = ID;
 		ID += 1;

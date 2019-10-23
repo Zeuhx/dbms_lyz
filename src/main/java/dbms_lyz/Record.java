@@ -57,7 +57,7 @@ public class Record {
 		
 		int compteur = 0;
 		
-		for(String s : ligne) {
+		for(String s : values) {
 			
 			boolean isFloat = false;
 			boolean isString = false;

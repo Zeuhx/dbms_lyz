@@ -2,6 +2,7 @@ package main.java.dbms_lyz;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Classe pour garder les infos de schema d'une relation
@@ -13,8 +14,8 @@ public class RelDef {
 	private int nbCol;
 	private List<String> typeCol;
 	private List<Record> records;
-	
-	
+
+
 	private int fileIdx;	// Indice du fichier disque qui stocke la relation
 	private int recordSize;	// taille d'un record
 	private int slotCount;	// nb de case (slots) sur une page
@@ -28,7 +29,7 @@ public class RelDef {
 	}
 
 	public RelDef(String nomRelation, List<String> typeCol, int fileIdx, int recordSize, int slotCount) {
-		this.nomRelation = nomRelation;
+		this.nomRel = nomRelation;
 		this.nbCol = typeCol.size();
 		this.fileIdx = 0;
 		this.recordSize = recordSize; // Attention : il faut directement initialiser selon la taille du record
@@ -42,7 +43,7 @@ public class RelDef {
 			System.out.print(s+" ");
 		}
 		System.out.println();
-		
+
 		System.out.println("Records :");
 		for(Record r : records) {
 			r.affiche();
@@ -57,35 +58,32 @@ public class RelDef {
 		return (nbCol);
 	}
 
-	public List<String> getTypeCol() {
-		return (typeCol);
-	}
 
-public void addRecord(String ligneRecord) {
+	public void addRecord(String ligneRecord) {
 		//ajoute un string a la relation en tant que record
-		
+
 		StringTokenizer recordASeparer = new StringTokenizer(ligneRecord);
 		int compteurCol = 0; //Compteur pour savoir a quelle colonne on est
 		int compteurRecord = recordASeparer.countTokens();
 		boolean fail = false; //Si les elements ne correspondent pas aux types des cols
-		
+
 		if(nbCol == compteurRecord) {
 			while(recordASeparer.hasMoreElements()) {
-				
+
 				//On verifie que chaque element correspond aux types
 				//De la relation
-				
+
 				boolean hasDigit = false;
 				boolean hasPoint = false;
 				boolean isString = false;
-				
-				
+
+
 				String s = recordASeparer.nextToken();
-				
+
 				//Pour verifier le type de l'element
-				
+
 				for(int i = 0; i<s.length(); i++) {
-					
+
 					if(Character.isDigit(s.charAt(i)))
 						hasDigit = true;
 					else if(hasPoint && s.charAt(i)=='.') {
@@ -96,9 +94,9 @@ public void addRecord(String ligneRecord) {
 					}
 					else
 						isString = true;
-					
+
 				}
-				
+
 				if(isString) {
 					String col = typeCol.get(compteurCol);
 					String tailleString = col.substring(6);
@@ -106,37 +104,34 @@ public void addRecord(String ligneRecord) {
 					//Exception possible
 					if(!typeCol.get(compteurCol).contains("String") || s.length()>taille)
 						fail = true;
-						
+
 				}
-						
-				
+
+
 				else if(hasDigit && !hasPoint) {
-					//si on met 3.3 c'est compté comme int et aussi String?
+					//si on met 3.3 c'est comptï¿½ comme int et aussi String?
 					if(!typeCol.get(compteurCol).equals("int"))
 						fail = true;
 				}
-				
+
 				else if(hasDigit && hasPoint) {
-					
+
 					if(!typeCol.get(compteurCol).equals("float"))
 						fail = true;
 				}
-				
+
 				else
 					fail = true;
-				
-				
-				
 				compteurCol++;
-				
+
 			}
-			
+
 			if(!fail) {
-				
+
 				//Les types correspondes
 				//On ajoute la ligne en tant que record a la liste
 				//De records
-				
+
 				StringTokenizer st = new StringTokenizer(ligneRecord);
 				List<String> elements = new ArrayList<>();
 				while(st.hasMoreElements()) {
@@ -145,18 +140,16 @@ public void addRecord(String ligneRecord) {
 				Record r = new Record(this, elements);
 				records.add(r);
 			}
-			
+
 			else
 				System.out.println("La relation ne correspond aux types des col");
 		}
-		
+
 		else
-			System.out.println("La relation ne correspond au nb de types des col");
-			
-		
+			System.out.println("La relation ne correspond au nb de types des col");		
 	}
-	
-	
+
+
 	public boolean equals(String type) {
 		int i = 0;
 		Object obj = typeCol.get(i).getClass();
@@ -175,11 +168,11 @@ public void addRecord(String ligneRecord) {
 	public int getFileIdx() {
 		return fileIdx ;
 	}
-	
+
 	public List<String> getTypeCol(){
 		return typeCol;
 	}
-	
+
 	public List<Record> getRecord() {
 		return records;
 	}
