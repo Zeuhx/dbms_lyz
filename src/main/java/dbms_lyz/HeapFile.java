@@ -2,6 +2,7 @@ package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Liste de page de donnee dont la premiere page se nomme 
@@ -18,38 +19,58 @@ public class HeapFile extends ArrayList<PageId>{
 	
 	public HeapFile(RelDef relDef) {
 		this.relDef = relDef ;
-		// Faire le calcul de la bytemap
+		headerPage.setPageIdx(0);
 	}
 	
-	public void createOnDisk() {
-		int relDeffileIdx = 0 ;
-		relDeffileIdx = relDef.getFileIdx() ; // Ajouter apres avoir creer la fonction
-		DiskManager.createFile(relDeffileIdx);
-		PageId pageId = DiskManager.addPage(relDeffileIdx);
-		Frame f1 = new Frame(pageId);
+	/**
+	 * Creation du fichier disque correspondant au HeapFile
+	 */
+	public void createNewOnDisk() {
+		int relDef_fileIdx = relDef.getFileIdx(); // L'indice du fichier est donnee par relDef
+		DiskManager.createFile(relDef_fileIdx);
+		/**
+		 * TODO Rajouter une headerPage Vide ??
+		 */
+		PageId headerPage = DiskManager.addPage(relDef_fileIdx); 
+		// ^ TODO On ajoute le headerPage ??
+		
+		Frame f1 = new Frame(headerPage);
+		f1.setBuff(ByteBuffer.allocate(Constants.pageSize));
 		BufferManager bf = BufferManager.getInstance() ;
-		//TODO liberer qupres du buffer manager (qvec le bon dirty）
+		// TODO liberer aupres du buffer manager (avec le bon dirty）
 	}
 	
 	public void addDataPage(PageId pageId) {
 		DiskManager.addPage(pageId.getFileIdx());
-
-		//actualiser les infor;ations de la header page
+		//actualiser les informations de la headerPage
 		// TODO voir le " attention " du td 
 		bfm.freePage(pageId, true);
 	}
 	
 	/*
-	 * return PageId d une donnees qui a encore des cases libres
+	 * return PageId d une page de donnees qui a encore des cases libres
 	 */
-	public PageId getFreeDataPageId(PageId pageId) {
+	public PageId getFreeDataPageId() {
+		/**
+		 * Parcours tous les pageId, et cherche dans chaque fichier, le nombre de case vide
+		 */
+		return null;
+	}
+	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		
 		return null;
 	}
+<<<<<<< HEAD
 	
 	public RelDef getRelDef() {
 		return relDef;
 	}
 	
+=======
+	public List<Record> getRecordInDataPage(PageId pageId, List<Record> record) {
+		
+		return null;
+	}
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	
 }

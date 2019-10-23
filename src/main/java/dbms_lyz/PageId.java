@@ -87,4 +87,7 @@ public class PageId {
 		return (bool);
 	}
 
+	public void setPageIdx(int pageIdx) {
+		this.pageIdx = pageIdx;
+	}
 }
