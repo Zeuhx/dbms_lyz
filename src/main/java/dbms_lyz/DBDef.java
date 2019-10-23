@@ -1,5 +1,6 @@
 package main.java.dbms_lyz;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class DBDef implements Serializable{
 
 	public static void finish(){
 		/**
-		 * TODO : ECRITURE
+		 * TODO : ECRITURE & Verifier si les infos sont bien sauvegarder dans la DBDef
 		 * creer un fichier Catalog.def qui contient
 		 * la sauvegarde des infos de DBDef
 		 * Fichier txt ou ObjectOutputStram via la serialisation
@@ -59,7 +60,9 @@ public class DBDef implements Serializable{
 		ObjectOutputStream oos = null ;
 		FileOutputStream catalogue = null ;
 		try {
-			catalogue = new FileOutputStream ("catalogue.txt");
+			String path = new String("src" + File.separator + "main" + 
+					File.separator + "resources" + File.separator + "DB" + File.separator );
+			catalogue = new FileOutputStream (path + "catalogue.def");
 			oos= new ObjectOutputStream(catalogue);
 			oos.writeChars("Compteur relation "+compteurRelation+"\nListe de tab " + relDefTab);
 		} catch (FileNotFoundException e) {

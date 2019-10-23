@@ -132,11 +132,16 @@ public class DBManager {
 			}
 			// String
 			/**
-			 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
+			 * ATTENTION : Verifier si la boucle est correct
 			 */
 			else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
-				recordSize += 2;
+				int longueurAtteint = 0 ;
+				do {
+					System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
+					longueurAtteint ++ ;
+					recordSize += 2;
+				} while(rd.getTypeCol().get(i).length() > longueurAtteint);
+				
 			} else
 				recordSize += 0;
 		} while (i> rd.getNbCol());
@@ -147,7 +152,7 @@ public class DBManager {
 	 * @return  : ici qu'on calcule slotCount
 	 */
 	public int slotCount(RelDef rd) {
-		// 264 octets correspond a la taille d une case
+		// 264 octets correspond a la taille d une case fixe
 		return (Constants.getpageSize()*8)/((264*8)+1);
 	}
 }

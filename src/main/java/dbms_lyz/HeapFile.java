@@ -1,8 +1,16 @@
 package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
-public class HeapFile {
+/**
+ * Liste de page de donnee dont la premiere page se nomme 
+ * HeaderPage avec pour indice 0 possedant un entier N (nb de page en tout)
+ * et ensuite X entier pour les nb de cases dispo dans chaque page de donnee
+ * @author cedzh
+ *
+ */
+public class HeapFile extends ArrayList<PageId>{
 	private PageId headerPage ;	// A 0
 	private RelDef relDef ;
 	private Object byteMap ;	// A definir le type
