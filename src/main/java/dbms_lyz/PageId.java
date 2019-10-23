@@ -26,7 +26,7 @@ public class PageId {
 	 * @param nomFichier
 	 * @return le x de Data_x
 	 */
-	public int IdFichier(String nomFichier) {
+	public int idFichier(String nomFichier) {
 	/*
 		int id;
 		String s = null;

@@ -26,6 +26,9 @@ public class Record {
 	 * Cette methode va permettre de recuperer les valeurs de la liste de listes de
 	 * relDef Sous la forme de string NE pas Oublier d'utiliser des StringBuffer
 	 */
+	
+	/*
+	
 	public void remplirValues() {
 		for (int i = 0; i < relDef.getRecord().size(); i++) {
 			String s = "";
@@ -39,7 +42,9 @@ public class Record {
 			values.add(s);
 		}
 	}
-
+	*/
+	
+	
 	/**
 	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres
 	 * 
@@ -48,28 +53,58 @@ public class Record {
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
-		for (int i = 0; i < values.size(); i++) {
-			if (values.getClass().toString().contains("Integer")) {
-				buff.putInt((int) Integer.parseInt(values.get(i)));
-				position++;
+		
+		int compteur = 0;
+		
+		for(String s : ligne) {
+			
+			boolean isFloat = false;
+			boolean isString = false;
+			boolean isInt = false;
+			
+			if(relDef.getTypeCol().get(compteur).equals("int")){
+				isInt = true;
 			}
-			if (values.getClass().toString().contains("Float")) {
-				buff.putFloat((float) Float.parseFloat(values.get(i)));
-				position++;
+			else if(relDef.getTypeCol().get(compteur).equals("float")){
+				isFloat = true;
 			}
-			if (values.getClass().toString().contains("String")) {
-				int j = 0;
-				int tailleString = values.toString().length();
-				;
-				do {
-					buff.putChar(values.get(i).charAt(j));
-					j++;
-				} while (tailleString > j);
-				position++;
-			} else {
-				System.out.println("Erreur : Aucune classe ne correspond");
+			else
+				isString = true;
+			
+			if(isString) {
+				
+				int j;
+				int tailleString = s.length();
+				String taille = relDef.getTypeCol().get(compteur).substring(6);
+				int tailleType = Integer.parseInt(taille);
+				for(j=0; j<tailleType; j++) {
+					
+					if(j>=tailleString) {
+						buff.putChar(' ');
+					}
+					else {
+						buff.putChar(s.charAt(j));
+					}
+				}
+				//buff.position(Character.BYTES);
 			}
+			
+			else if(isInt) {
+				
+				buff.putInt(Integer.parseInt(s));
+				//buff.position(Integer.BYTES);
+			}
+			
+			else {
+				
+				buff.putFloat(Float.parseFloat(s));
+	
+			}
+		
+		compteur ++;
+			
 		}
+		
 	}
 
 	/**
@@ -79,20 +114,35 @@ public class Record {
 	 * 
 	 */
 	public void readFromBuffer(ByteBuffer buff, int position) {
-		for (int i = 0; i < buff.capacity(); i++) {
-			buff.getInt(position);
-			position++;
-			buff.putFloat((float) Float.parseFloat(values.get(i)));
-			position++;
-
-			int j = 0;
-			int tailleString = values.toString().length();
-			do {
-				buff.putChar(values.get(i).charAt(j));
-				j++;
-			} while (tailleString > j);
-			position++;
+		buff.position(position);
+		int compteur = 0;
+		
+		for(String s : relDef.getTypeCol()) {
+			if(s.equals("int")) {
+				System.out.println(buff.getInt(buff.position()));
+				buff.position(buff.position()+ Integer.BYTES);
+			}
+			
+			else if(s.equals("float")) {
+				System.out.println(buff.getFloat(buff.position()));
+				buff.position(buff.position()+ Float.BYTES);
+			}
+			else {
+				String taille = relDef.getTypeCol().get(compteur).substring(6);
+				int t = Integer.parseInt(taille);
+				
+				for(int i = 0; i<t; i++) {
+					System.out.print(buff.getChar());
+				}
+				
+				System.out.println();
+			}
+			
+			compteur ++;
 		}
+		
+		
+		
 	}
 
 	/**
