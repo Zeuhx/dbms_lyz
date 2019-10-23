@@ -1,9 +1,11 @@
 package main.java.dbms_lyz;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,11 +43,24 @@ public class DBDef implements Serializable{
 	 * Constructeur
 	 */
 	public static void init() {
+		String path = new String("src" + File.separator + "main" + 
+				File.separator + "resources" + File.separator + "DB" + File.separator );
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
 		/**
 		 * TODO LECTURE
 		 */
+		try {
+			FileInputStream fis = new FileInputStream(path + "catalogue.def");
+			ObjectInputStream catalogue = new ObjectInputStream(fis);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.err.println("Le fichier catalogue n'existe pas");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 
