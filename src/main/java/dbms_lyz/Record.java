@@ -22,6 +22,14 @@ public class Record {
 	public Record(RelDef reldef) {
 		this(reldef, null);
 	}
+	
+	public void affiche() {
+		for(String s : ligne) {
+			System.out.print(s);
+			System.out.print(" ");
+		}
+		System.out.println();
+	}
 
 	/**
 	 * Cette methode va permettre de recuperer les valeurs de la liste de listes de
