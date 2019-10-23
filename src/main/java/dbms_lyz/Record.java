@@ -8,6 +8,7 @@ import java.util.List;
  * @author LYZ
  *
  */
+
 public class Record {
 	public int recordLength = 0;
 	private RelDef relDef; // Relation a laquelle Records appartient

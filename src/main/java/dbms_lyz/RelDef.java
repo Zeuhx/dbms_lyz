@@ -19,10 +19,6 @@ public class RelDef {
 	private int recordSize;	// taille d'un record
 	private int slotCount;	// nb de case (slots) sur une page
 
-	/**
-	 * ATTENTION WTF ?
-	 */
-	private List<ArrayList<Object>> records; // ??? C'est quoi ca ??
 
 	public RelDef(String nomRelation, List<String> typeCol) {
 		this.nomRel = nomRel;
