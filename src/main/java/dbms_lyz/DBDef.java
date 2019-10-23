@@ -50,20 +50,39 @@ public class DBDef implements Serializable{
 		/**
 		 * TODO LECTURE
 		 */
+		FileInputStream catalogue = null ;
+		ObjectInputStream ois = null ;
 		try {
-			FileInputStream fis = new FileInputStream(path + "catalogue.def");
-			ObjectInputStream catalogue = new ObjectInputStream(fis);
-		} catch (FileNotFoundException e) {
+			catalogue = new FileInputStream(path + "catalogue.def");
+			ois = new ObjectInputStream(catalogue);
+			compteurRelation = ois.readInt() ;
+			relDefTab = (List<RelDef>) ois.readObject(); 
+ 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Le fichier catalogue n'existe pas");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				catalogue.close() ; 
+				ois.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 		
 		
 	}
 
+	/**
+	 * Sauvegarde les infos de DBDef dans catalogue.def
+	 */
 	public static void finish(){
 		/**
 		 * TODO : ECRITURE & Verifier si les infos sont bien sauvegarder dans la DBDef
@@ -79,7 +98,8 @@ public class DBDef implements Serializable{
 					File.separator + "resources" + File.separator + "DB" + File.separator );
 			catalogue = new FileOutputStream (path + "catalogue.def");
 			oos= new ObjectOutputStream(catalogue);
-			oos.writeChars("Compteur relation "+compteurRelation+"\nListe de tab " + relDefTab);
+			oos.writeInt(compteurRelation);
+			oos.writeObject(relDefTab);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -88,8 +108,8 @@ public class DBDef implements Serializable{
 			e.printStackTrace();
 		} finally {
 			try {
-				oos.close();
 				catalogue.close() ; 
+				oos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

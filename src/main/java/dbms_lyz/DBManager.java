@@ -96,7 +96,7 @@ public class DBManager {
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef rd = null ;
-		(DBDef.getInstance()).addRelation(rd);
+		DBDef.getInstance().addRelation(rd);
 		
 		// Calcul de la taille du record
 		int recordSize = recordSize(rd);
