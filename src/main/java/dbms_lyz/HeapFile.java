@@ -47,5 +47,9 @@ public class HeapFile extends ArrayList<PageId>{
 		return null;
 	}
 	
+	public RelDef getRelDef() {
+		return relDef;
+	}
+	
 	
 }

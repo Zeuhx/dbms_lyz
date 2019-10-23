@@ -58,9 +58,18 @@ public class RelDef {
 	}
 
 
-	public void addRecord(String ligneRecord) {
+	public void insertRecord(Record r) {
 		//ajoute un string a la relation en tant que record
-
+		List<String>values = r.getValues();
+		String ligneRecord2 ="";
+		for(String s : values) {
+			ligneRecord2.concat(s);
+			ligneRecord2.concat(" ");
+		}
+		
+		String ligneRecord = ligneRecord2.substring(0, ligneRecord2.length()-1);
+		
+		
 		StringTokenizer recordASeparer = new StringTokenizer(ligneRecord);
 		int compteurCol = 0; //Compteur pour savoir a quelle colonne on est
 		int compteurRecord = recordASeparer.countTokens();
@@ -136,7 +145,7 @@ public class RelDef {
 				while(st.hasMoreElements()) {
 					elements.add(st.nextToken());
 				}
-				Record r = new Record(this, elements);
+				
 				records.add(r);
 			}
 

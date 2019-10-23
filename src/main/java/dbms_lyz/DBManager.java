@@ -10,11 +10,18 @@ import java.util.StringTokenizer;
  *
  */
 public class DBManager {
-
-	/**
-	 * A definir (pas encore arrive)
-	 */
+	
+	private static DBManager INSTANCE = null;
+	
 	public DBManager() {
+	}
+	
+	public DBManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new DBManager();
+		}
+		
+		return INSTANCE;
 	}
 
 	/**
@@ -96,7 +103,6 @@ public class DBManager {
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef rd = null ;
-		(DBDef.getInstance()).addRelation(rd);
 		
 		// Calcul de la taille du record
 		int recordSize = recordSize(rd);
@@ -105,6 +111,8 @@ public class DBManager {
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
 		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
 		
+		(DBDef.getInstance()).addRelation(rd);
+
 		return (rd);
 		
 	}

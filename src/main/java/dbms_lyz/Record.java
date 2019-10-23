@@ -30,6 +30,10 @@ public class Record {
 		}
 		System.out.println();
 	}
+	
+	public List<String> getValues(){
+		return values;
+	}
 
 	/**
 	 * Cette methode va permettre de recuperer les valeurs de la liste de listes de

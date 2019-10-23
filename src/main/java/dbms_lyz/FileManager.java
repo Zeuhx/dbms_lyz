@@ -1,0 +1,98 @@
+package main.java.dbms_lyz;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FileManager {
+	
+	private List <HeapFile> heapFiles;
+	
+	private static FileManager INSTANCE = null;
+	
+	public FileManager() {
+		heapFiles = new ArrayList<>();
+	}
+	
+	public FileManager getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new FileManager();
+		}
+		
+		return INSTANCE;
+	}
+	
+	public void init() {
+	
+	/**
+	 * Cette methode doit :
+	 * _parcourir la liste des relDef de DBDef
+	 * _creer pour chq RelDef un objet HeapFile en lui
+	 * attribuant la RelDef en question
+	 * _rajouter le HeapFile a heapfiles
+	 */
+	
+		
+		
+	}
+	
+	public void createRelationFile(RelDef relDef) {
+		
+		/**
+		 * Cette methode doit :
+		 * _créer un nouvel objet de type HeapFile 
+		 * et lui attribuer relDef
+		 * _le rajouter à la liste heapFiles
+		 * _puis appeler sur cet objet 
+		 * la méthode createNewOnDisk
+		 * 
+		 */
+		
+		HeapFile hf = new HeapFile(relDef);
+		heapFiles.add(hf);
+		heapFiles.get(heapFiles.size()+1).createOnDisk();
+		
+	}
+	
+	public Rid insertRecordInRelation(Record record, String relName) {
+		
+		/**
+		 * Cette methode s'occupe :
+		 * _de l'insertion de record dans la relation
+		 * dont le nom est relName
+		 * En parcourant heapfiles pour trouver la relation
+		 * et appeler sa methode InsertRecord
+		 * 
+		 */
+		
+		int i = 0;
+		
+		for(HeapFile h : heapFiles) {
+			if(h.getRelDef().getNomRelation().equals(relName)) {
+				
+			}
+		}
+		
+	}
+	
+	public List<Record> SelectAllFromRelation (String relName){
+		
+		/**
+		 * Cette methode doit :
+		 * _retourner une liste contenant tous les
+		 * records de la relation
+		 *
+		 */
+	}
+	
+	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
+		
+		/**
+		 * Cette methode doit :
+		 * _retourner une liste contenant tous les records
+		 * a relation nomméerelName pour lesquels la valeur 
+		 * ur la colonne idxCol (convertie en chaîne de caractères)
+		 * est égale à valeur.
+		 */
+	}
+	
+}
