@@ -47,7 +47,7 @@ public class Record {
 	 * @param position
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
-		position = buff.position();
+		buff.position(position);
 		for (int i = 0; i < values.size(); i++) {
 			if (values.getClass().toString().contains("Integer")) {
 				buff.putInt((int) Integer.parseInt(values.get(i)));

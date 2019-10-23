@@ -3,7 +3,7 @@ package main.java.dbms_lyz;
 import java.nio.ByteBuffer;
 
 public class HeapFile {
-	private HeaderPage headerPage ;
+	private PageId headerPage ;	// A 0
 	private RelDef relDef ;
 	private Object byteMap ;	// A definir le type
 	private BufferManager bfm;
@@ -31,6 +31,13 @@ public class HeapFile {
 		bfm.freePage(pageId, true);
 	}
 	
+	/*
+	 * return PageId d une donnees qui a encore des cases libres
+	 */
+	public PageId getFreeDataPageId(PageId pageId) {
+		
+		return null;
+	}
 	
 	
 }
