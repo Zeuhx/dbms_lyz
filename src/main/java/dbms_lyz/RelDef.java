@@ -15,6 +15,7 @@ public class RelDef {
 	private List<Record> records;
 	
 	
+	
 	private int fileIdx;	// Indice du fichier disque qui stocke la relation
 	private int recordSize;	// taille d'un record
 	private int slotCount;	// nb de case (slots) sur une page
