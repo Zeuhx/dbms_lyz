@@ -13,8 +13,8 @@ import java.nio.channels.FileChannel;
  */
 public class DiskManager {
 	// Chemin du fichier
-	private static String path = new String("src" + File.separator + "main" + File.separator + "resources"
-			+ File.separator + "DB" + File.separator + "Data_");
+	private static String path = new String("src" + File.separator + "main" + 
+			File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");
 
 	/** Constructeur prive */
 	private DiskManager() {
