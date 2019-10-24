@@ -20,7 +20,6 @@ public class DBManager {
 		if(INSTANCE == null) {
 			INSTANCE = new DBManager();
 		}
-		
 		return INSTANCE;
 	}
 
@@ -91,15 +90,13 @@ public class DBManager {
 	}
 
 	/**
-	 * 
 	 * Methode qui creer une relation de type RelDef avec son nom, le nb de col , et les types de col
 	 *  
 	 * @param nomRelation
 	 * @param nombreCol
 	 * @param typeCol     
 	 * @return, une relation RelDef conformement aux arguments et ajoute dans DBDef
-	 * 
-	 *
+
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		// appel du 1er constructeur 
@@ -108,14 +105,14 @@ public class DBManager {
 		/**
 		 * On initialise le recordSize et slotCount car le 1er constructeur 
 		 */
-		rd.setRecordSize(recordSize(rd));
-		rd.setSlotCount(slotCount(rd));
+		rd.setRecordSize(calculRecordSize(rd));
+		rd.setSlotCount(calculSlotCount(rd));
 		
 		DBDef.getInstance().addRelation(rd);
 		
 		// Calcul de la taille du record
-		int recordSize = recordSize(rd);
-		int slotCount = slotCount(rd);
+		int recordSize = calculRecordSize(rd);
+		int slotCount = calculSlotCount(rd);
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
 		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
@@ -126,46 +123,91 @@ public class DBManager {
 		
 	}
 	
-	
 	/**
 	 * 
 	 * @return  : ici qu'on calcule recordSize 
 	 */
+<<<<<<< HEAD
 	public int recordSize(RelDef rd) {
 		
 		int recordSize = 0;
 		
 		for(String col : rd.getTypeCol()) {
 			
+=======
+	public int calculRecordSize(RelDef rd) {
+		int recordSize = 0;
+		for(String col : rd.getTypeCol()) {
+
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 			if(col.equals("int")) {
 				recordSize += 4;
 			}
+<<<<<<< HEAD
 			
+=======
+
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 			else if(col.equals("float")) {
 				recordSize += 4;
 			}
+<<<<<<< HEAD
 			
 			else {
 				String size = col.substring(6);
 				recordSize += Integer.parseInt(size)*2;
 			}	
 		}
+=======
+
+			else {
+				String size = col.substring(6);
+				recordSize += Integer.parseInt(size)*2;
+			}	
+		}
+		//recordSize = taille record * le nb de record qui on la taille fixe
+		recordSize *= rd.getRecordLenght(); 
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 		return recordSize;
+<<<<<<< HEAD
 
 	}
+=======
+		}
+	
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	/**
 	 * 
 	 * @return  : ici qu'on calcule slotCount
 	 */
-	public int slotCount(RelDef rd) {
+	public int calculSlotCount(RelDef rd) {
 		
 		/**
-		 *  264 octets correspond a la taille d une case fixe
-		 *  
-		 *  le calcul  : 
-		 *  
+		 *  264 octets correspond a la taille d une case fixe  
 		 */
-		return (Constants.getpageSize()*8)/((264*8)+1) - rd.getRecordSize();
-//		return (Constants.getpageSize()*8)/((264*8)+1);
+		return (Constants.getpageSize()*8)/((rd.getRecordSize()*8)+1);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
