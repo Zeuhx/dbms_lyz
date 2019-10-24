@@ -135,7 +135,6 @@ public class Record {
 				System.out.println(buff.getInt(buff.position()));
 				buff.position(buff.position()+ Integer.BYTES);
 			}
-			
 			else if(s.equals("float")) {
 				System.out.println(buff.getFloat(buff.position()));
 				buff.position(buff.position()+ Float.BYTES);
