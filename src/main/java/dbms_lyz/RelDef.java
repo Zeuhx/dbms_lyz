@@ -13,7 +13,7 @@ public class RelDef {
 	private String nomRel;
 	private int nbCol;
 	private List<String> typeCol;
-	private List<Record> record;
+	private List<Record> records;
 
 	private int fileIdx;	// Indice du fichier disque qui stocke la relation
 	private int recordSize;	// taille d'un record
@@ -45,7 +45,7 @@ public class RelDef {
 		System.out.println();
 		System.out.println("Records :");
 		
-		for(Record r : record) {
+		for(Record r : records) {
 			r.affiche();
 		}
 	}
@@ -130,7 +130,7 @@ public class RelDef {
 				while(st.hasMoreElements()) {
 					elements.add(st.nextToken());
 				}
-				record.add(r);
+				records.add(r);
 			}
 			else {
 				System.out.println("La relation ne correspond aux types des col");
@@ -165,7 +165,9 @@ public class RelDef {
 
 	public List<String> getTypeCol(){ return typeCol; }
 
-	public List<Record> getRecord() { return record; }
+	public List<Record> getRecord() { return records; }
+	
+	public int getRecordLenght () { return records.size(); }
 	
 	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
 

@@ -20,7 +20,6 @@ public class DBManager {
 		if(INSTANCE == null) {
 			INSTANCE = new DBManager();
 		}
-		
 		return INSTANCE;
 	}
 
@@ -91,15 +90,13 @@ public class DBManager {
 	}
 
 	/**
-	 * 
 	 * Methode qui creer une relation de type RelDef avec son nom, le nb de col , et les types de col
 	 *  
 	 * @param nomRelation
 	 * @param nombreCol
 	 * @param typeCol     
 	 * @return, une relation RelDef conformement aux arguments et ajoute dans DBDef
-	 * 
-	 *
+
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		// appel du 1er constructeur 
@@ -108,14 +105,14 @@ public class DBManager {
 		/**
 		 * On initialise le recordSize et slotCount car le 1er constructeur 
 		 */
-		rd.setRecordSize(recordSize(rd));
-		rd.setSlotCount(slotCount(rd));
+		rd.setRecordSize(calculRecordSize(rd));
+		rd.setSlotCount(calculSlotCount(rd));
 		
 		DBDef.getInstance().addRelation(rd);
 		
 		// Calcul de la taille du record
-		int recordSize = recordSize(rd);
-		int slotCount = slotCount(rd);
+		int recordSize = calculRecordSize(rd);
+		int slotCount = calculSlotCount(rd);
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
 		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
@@ -126,56 +123,64 @@ public class DBManager {
 		
 	}
 	
-	
 	/**
 	 * 
 	 * @return  : ici qu'on calcule recordSize 
 	 */
-	public int recordSize(RelDef rd) {
-		int i = 0;
-		int recordSize = rd.getRecordSize();
-		
-		do {
-			// Verifie si c'est bien un Integer
-			if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
-				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+	public int calculRecordSize(RelDef rd) {
+		int recordSize = 0;
+		for(String col : rd.getTypeCol()) {
+
+			if(col.equals("int")) {
 				recordSize += 4;
 			}
-			// Float
-			else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
-				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+
+			else if(col.equals("float")) {
 				recordSize += 4;
 			}
-			// String
-			/**
-			 * ATTENTION : Verifier si la boucle est correct
-			 */
-			else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-				int longueurAtteint = 0 ;
-				do {
-					System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
-					longueurAtteint ++ ;
-					recordSize += 2;
-				} while(rd.getTypeCol().get(i).length() > longueurAtteint);
-				
-			} else
-				recordSize += 0;
-		} while (i> rd.getNbCol());
+
+			else {
+				String size = col.substring(6);
+				recordSize += Integer.parseInt(size)*2;
+			}	
+		}
+		//recordSize = taille record * le nb de record qui on la taille fixe
+		recordSize *= rd.getRecordLenght(); 
 		return recordSize;
-	}
+		}
+	
 	/**
 	 * 
 	 * @return  : ici qu'on calcule slotCount
 	 */
-	public int slotCount(RelDef rd) {
+	public int calculSlotCount(RelDef rd) {
 		
 		/**
-		 *  264 octets correspond a la taille d une case fixe
-		 *  
-		 *  le calcul  : 
-		 *  
+		 *  264 octets correspond a la taille d une case fixe  
 		 */
-		return (Constants.getpageSize()*8)/((264*8)+1) - rd.getRecordSize();
-//		return (Constants.getpageSize()*8)/((264*8)+1);
+		return (Constants.getpageSize()*8)/((rd.getRecordSize()*8)+1);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
