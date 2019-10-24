@@ -132,36 +132,26 @@ public class DBManager {
 	 * @return  : ici qu'on calcule recordSize 
 	 */
 	public int recordSize(RelDef rd) {
-		int i = 0;
-		int recordSize = rd.getRecordSize();
 		
-		do {
-			// Verifie si c'est bien un Integer
-			if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
-				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+		int recordSize = 0;
+		
+		for(String col : rd.getTypeCol()) {
+			
+			if(col.equals("int")) {
 				recordSize += 4;
 			}
-			// Float
-			else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
-				System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
+			
+			else if(col.equals("float")) {
 				recordSize += 4;
 			}
-			// String
-			/**
-			 * ATTENTION : Verifier si la boucle est correct
-			 */
-			else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-				int longueurAtteint = 0 ;
-				do {
-					System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
-					longueurAtteint ++ ;
-					recordSize += 2;
-				} while(rd.getTypeCol().get(i).length() > longueurAtteint);
-				
-			} else
-				recordSize += 0;
-		} while (i> rd.getNbCol());
+			
+			else {
+				String size = col.substring(6);
+				recordSize += Integer.parseInt(size)*2;
+			}	
+		}
 		return recordSize;
+
 	}
 	/**
 	 * 

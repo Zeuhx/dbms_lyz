@@ -16,7 +16,7 @@ public class RelDef {
 	private List<Record> record;
 
 	private int fileIdx;	// Indice du fichier disque qui stocke la relation
-	private int recordSize;	// taille d'un record
+	private int recordSize = 0;	// taille d'un record
 	private int slotCount;	// nb de case (slots) sur une page
 
 
@@ -24,6 +24,8 @@ public class RelDef {
 		this.nomRel = nomRelation;
 		this.typeCol = typeCol;
 		nbCol = typeCol.size();
+		
+		
 	}
 
 	public RelDef(String nomRelation, List<String> typeCol, int fileIdx, int recordSize, int slotCount) {

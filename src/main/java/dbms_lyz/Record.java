@@ -60,6 +60,8 @@ public class Record {
 	
 	/**
 	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres
+	 * Ajoute dans le bytebuffer en fonction des types de col
+	 * La boucle permet d'ajouter en fonction des types
 	 * 
 	 * @param buff
 	 * @param position
@@ -121,7 +123,10 @@ public class Record {
 	}
 
 	/**
-	 * " Le contraire " de la version precedente, MANQUE les conditions
+	 * On prend un bytebuffer a une certaine position
+	 * Le record est lie a un relDef donc on connait deja les types des cols
+	 * La boucle permet de lire le bytebuffer en fonction des types
+	 * et les affiche avec println
 	 * @param buff
 	 * @param position
 	 * 
