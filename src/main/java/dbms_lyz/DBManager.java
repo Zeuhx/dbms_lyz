@@ -102,8 +102,15 @@ public class DBManager {
 	 *
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
-		RelDef rd = null ;
+		// appel du 1er constructeur 
+		RelDef rd = new RelDef (nomRelation, typeCol); 
 
+		/**
+		 * On initialise le recordSize et slotCount car le 1er constructeur 
+		 */
+		rd.setRecordSize(recordSize(rd));
+		rd.setSlotCount(slotCount(rd));
+		
 		DBDef.getInstance().addRelation(rd);
 		
 		// Calcul de la taille du record
@@ -114,7 +121,7 @@ public class DBManager {
 		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
 		
 		(DBDef.getInstance()).addRelation(rd);
-
+		
 		return (rd);
 		
 	}
@@ -126,8 +133,7 @@ public class DBManager {
 	 */
 	public int recordSize(RelDef rd) {
 		int i = 0;
-		int recordSize = 0;
-
+		int recordSize = rd.getRecordSize();
 		
 		do {
 			// Verifie si c'est bien un Integer
@@ -162,7 +168,14 @@ public class DBManager {
 	 * @return  : ici qu'on calcule slotCount
 	 */
 	public int slotCount(RelDef rd) {
-		// 264 octets correspond a la taille d une case fixe
-		return (Constants.getpageSize()*8)/((264*8)+1);
+		
+		/**
+		 *  264 octets correspond a la taille d une case fixe
+		 *  
+		 *  le calcul  : 
+		 *  
+		 */
+		return (Constants.getpageSize()*8)/((264*8)+1) - rd.getRecordSize();
+//		return (Constants.getpageSize()*8)/((264*8)+1);
 	}
 }
