@@ -21,7 +21,7 @@ public class BufferManager {
 	}
 
 	private static BufferManager INSTANCE = null;
-	private Frame f;
+	private Frame frame;
 
 	public static BufferManager getInstance() {
 		if (INSTANCE == null) {
@@ -41,7 +41,7 @@ public class BufferManager {
 
 	public int searchFrame(PageId pageId) {
 		BufferManager.getInstance();
-		f = null;
+		frame = null;
 		int i = 0;
 
 		for (Frame f : listFrame) {
@@ -78,14 +78,14 @@ public class BufferManager {
 		
 		//si la new pageId n'est pas trouve dans la liste de frame??;
 		if (indexFrame == 2)
-			f = null;
+			frame = null;
 		else
 			//comprend pas pourquoi f doit get le indexFrame
-			f = listFrame.get(indexFrame);
+			frame = listFrame.get(indexFrame);
 
-		if (f != null) {
+		if (frame != null) {
 			DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
-			f.get();
+			frame.get();
 			if (pageId == listFrame.get(0).getPageId()) {
 				listFrame.get(0).setLRU_change(false);
 				listFrame.get(1).setLRU_change(true);
@@ -106,16 +106,16 @@ public class BufferManager {
 		
 		//si la new pageId n'est pas trouve dans la liste de frame??
 		if (indexFrame == 2)
-			f = null;
+			frame = null;
 		else
-			f = listFrame.get(indexFrame);
+			frame = listFrame.get(indexFrame);
 
 		//si newFrame est dans la liste
-		if (f != null) {
+		if (frame != null) {
 			DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
 			
-			f.get();
+			frame.get();
 			
 			//Maj du LRU_change
 			//si newFrame correspond au premier
@@ -152,7 +152,7 @@ public class BufferManager {
 		else if (listFrame.get(0).getPageId()!=newFrame.getPageId() || listFrame.get(0).getPageId()!=newFrame.getPageId() ) {
 
 			System.out.println("le new frame n'existe pas dans la liste");
-			 f = new Frame(f.getPageId() );
+			 frame = new Frame(frame.getPageId() );
 			 
 			 //changement new frame par rapport � LRU
 			 if(listFrame.get(0).getLRU_change() == true) {
@@ -201,10 +201,10 @@ public class BufferManager {
 	public void freePage(PageId pageId, boolean valdirty) {
 		int indexFrame = searchFrame(pageId);
 		if (indexFrame == 2)
-			System.out.println("Frame Pas trouv�");
+			System.out.println("Frame pas trouve");
 		else {
-			f = listFrame.get(indexFrame);
-			f.free(valdirty);
+			frame = listFrame.get(indexFrame);
+			frame.free(valdirty);
 		}
 	}
 

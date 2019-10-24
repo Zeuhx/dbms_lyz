@@ -11,15 +11,11 @@ import java.util.List;
  * @author cedzh
  *
  */
-public class HeapFile extends ArrayList<PageId>{
-	private PageId headerPage ;	// A 0
+public class HeapFile {
 	private RelDef relDef ;
-	private Object byteMap ;	// A definir le type
-	private BufferManager bfm;
-	
+
 	public HeapFile(RelDef relDef) {
 		this.relDef = relDef ;
-		headerPage.setPageIdx(0);
 	}
 	
 	/**
@@ -44,7 +40,7 @@ public class HeapFile extends ArrayList<PageId>{
 		DiskManager.addPage(pageId.getFileIdx());
 		//actualiser les informations de la headerPage
 		// TODO voir le " attention " du td 
-		bfm.freePage(pageId, true);
+//		freePage(pageId, true);
 	}
 	
 	/*
