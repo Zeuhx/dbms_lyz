@@ -49,7 +49,7 @@ public class BufferManager {
 				return i;
 		}
 
-		return (2); // Pour retourner l'index de la frame concern� retourne 2 si pas trouv�
+		return (2); // Pour retourner l'index de la frame concern� retourne 2 si pas trouve
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class BufferManager {
 			frame = listFrame.get(indexFrame);
 
 		if (frame != null) {
-			DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
+			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
 			frame.get();
 			if (pageId == listFrame.get(0).getPageId()) {
 				listFrame.get(0).setLRU_change(false);
@@ -112,7 +112,7 @@ public class BufferManager {
 
 		//si newFrame est dans la liste
 		if (frame != null) {
-			DiskManager.readPage(pageId, BufferManager.frame1.getBuffer());
+			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
 			
 			frame.get();
@@ -225,7 +225,7 @@ public class BufferManager {
 		
 		System.out.println("initialisation de la m�moire apr�s une �criture sur DiskManager");}
 		listFrame.get(0).flushFrame();
-		frame2.flushFrame();
+		listFrame.get(1).flushFrame();
 		// TODO : Rajoutez un appel � cette m�thode dans la m�thode Finish du DBManager.
 
 	}
