@@ -174,7 +174,6 @@ public class BufferManager {
 				 System.out.println("changement du second frame");
 				 listFrame.remove(1);
 				 listFrame.add(newFrame);
-				
 				// si jamais l'autre frame a pin_count>0 
 				if(!listFrame.get(0).getLRU_change()){
 					listFrame.get(1).setLRU_change(true);
