@@ -21,10 +21,9 @@ public class RelDef {
 
 
 	public RelDef(String nomRelation, List<String> typeCol) {
-		this.nomRel = nomRel;
+		this.nomRel = nomRelation;
 		this.typeCol = typeCol;
-		nbCol = typeCol.size(); 
-		this.records = records;
+		nbCol = typeCol.size();
 	}
 
 	public RelDef(String nomRelation, List<String> typeCol, int fileIdx, int recordSize, int slotCount) {
@@ -38,25 +37,18 @@ public class RelDef {
 	public void affiche() {
 		System.out.println("Nom de la relation : "+ nomRel);
 		System.out.println("Cols : ");
+		
 		for(String s : typeCol) {
 			System.out.print(s+" ");
 		}
+		
 		System.out.println();
-
 		System.out.println("Records :");
+		
 		for(Record r : records) {
 			r.affiche();
 		}
 	}
-
-	public String getNomRelation() {
-		return nomRel;
-	}
-
-	public int getNbCol() {
-		return (nbCol);
-	}
-
 
 	public void insertRecord(Record r) {
 		//ajoute un string a la relation en tant que record
@@ -85,7 +77,6 @@ public class RelDef {
 				boolean hasPoint = false;
 				boolean isString = false;
 
-
 				String s = recordASeparer.nextToken();
 
 				//Pour verifier le type de l'element
@@ -100,9 +91,9 @@ public class RelDef {
 					else if(s.charAt(i)=='.') {
 						hasPoint = true;
 					}
-					else
+					else {
 						isString = true;
-
+					}
 				}
 
 				if(isString) {
@@ -112,49 +103,42 @@ public class RelDef {
 					//Exception possible
 					if(!typeCol.get(compteurCol).contains("String") || s.length()>taille)
 						fail = true;
-
 				}
-
-
 				else if(hasDigit && !hasPoint) {
 					//si on met 3.3 c'est compt� comme int et aussi String?
 					if(!typeCol.get(compteurCol).equals("int"))
 						fail = true;
 				}
-
 				else if(hasDigit && hasPoint) {
 
 					if(!typeCol.get(compteurCol).equals("float"))
 						fail = true;
 				}
-
-				else
+				else {
 					fail = true;
+				}
 				compteurCol++;
-
 			}
-
 			if(!fail) {
-
-				//Les types correspondes
-				//On ajoute la ligne en tant que record a la liste
-				//De records
-
+				
+				/**
+				 * Les types correspondes on ajoute la ligne en tant que record
+				 *  a la liste De records
+				 */
 				StringTokenizer st = new StringTokenizer(ligneRecord);
 				List<String> elements = new ArrayList<>();
 				while(st.hasMoreElements()) {
 					elements.add(st.nextToken());
 				}
-				
 				records.add(r);
 			}
-
-			else
+			else {
 				System.out.println("La relation ne correspond aux types des col");
+			}
 		}
-
-		else
+		else {
 			System.out.println("La relation ne correspond au nb de types des col");		
+		}
 	}
 
 
@@ -172,17 +156,24 @@ public class RelDef {
 		} else
 			return false;
 	}
+	
+	public String getNomRelation() { return nomRel; }
+	
+	public int getNbCol() { return (nbCol); }
 
-	public int getFileIdx() {
-		return fileIdx ;
-	}
+	public int getFileIdx() { return fileIdx ; }
 
-	public List<String> getTypeCol(){
-		return typeCol;
-	}
+	public List<String> getTypeCol(){ return typeCol; }
 
-	public List<Record> getRecord() {
-		return records;
-	}
+	public List<Record> getRecord() { return records; }
+	
+	public int getRecordLenght () { return records.size(); }
+	
+	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
 
+	public void setSlotCount(int slotCount) { this.slotCount = slotCount; }
+	
+	public int getRecordSize() { return recordSize;	}
+
+	public int getSlotCount() { return slotCount; }
 }

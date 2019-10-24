@@ -14,8 +14,6 @@ import java.util.List;
 public class BufferManager {
 
 	public static List<Frame> listFrame = new ArrayList<>();
-	private static Frame frame1 = new Frame(true);
-	private static Frame frame2 = new Frame(false);
 
 	private BufferManager() {
 	}
@@ -26,6 +24,8 @@ public class BufferManager {
 	public static BufferManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BufferManager();
+			Frame frame1 = new Frame(true);
+			Frame frame2 = new Frame(false);
 			listFrame.add(frame1);
 			listFrame.add(frame2);
 		}
@@ -224,7 +224,7 @@ public class BufferManager {
 			}
 		
 		System.out.println("initialisation de la m�moire apr�s une �criture sur DiskManager");}
-		frame1.flushFrame();
+		listFrame.get(0).flushFrame();
 		frame2.flushFrame();
 		// TODO : Rajoutez un appel � cette m�thode dans la m�thode Finish du DBManager.
 

@@ -26,13 +26,16 @@ public class HeapFile {
 		/**
 		 * TODO Rajouter une headerPage Vide ??
 		 */
+		/**
+		 * Récupérer la HeaderPage via le BufferManager avec PageId = 0
+		 */
 		PageId headerPage = DiskManager.addPage(relDef_fileIdx); 
 		// ^ TODO On ajoute le headerPage ??
 		
 		Frame f1 = new Frame(headerPage);
 		f1.setBuff(ByteBuffer.allocate(Constants.pageSize));
 		BufferManager bf = BufferManager.getInstance() ;
-		// TODO liberer aupres du buffer manager (avec le bon dirtyï¼‰
+		// TODO liberer aupres du buffer manager (avec le bon dirty NANI(questionnement)
 	}
 	
 	public void addDataPage(PageId pageId) {
