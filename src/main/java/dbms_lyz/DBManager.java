@@ -103,10 +103,8 @@ public class DBManager {
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef rd = null ;
-<<<<<<< HEAD
-=======
+
 		DBDef.getInstance().addRelation(rd);
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 		
 		// Calcul de la taille du record
 		int recordSize = recordSize(rd);

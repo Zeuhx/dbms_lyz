@@ -49,7 +49,7 @@ public class FileManager {
 		
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		heapFiles.get(heapFiles.size()+1).createOnDisk();
+		heapFiles.get(heapFiles.size()+1).createNewOnDisk();
 		
 	}
 	
@@ -71,10 +71,12 @@ public class FileManager {
 				
 			}
 		}
+		return null;
 		
 	}
 	
 	public List<Record> SelectAllFromRelation (String relName){
+		return null;
 		
 		/**
 		 * Cette methode doit :
@@ -85,6 +87,7 @@ public class FileManager {
 	}
 	
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
+		return null;
 		
 		/**
 		 * Cette methode doit :

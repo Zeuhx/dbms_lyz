@@ -60,17 +60,15 @@ public class HeapFile extends ArrayList<PageId>{
 		
 		return null;
 	}
-<<<<<<< HEAD
+
 	
 	public RelDef getRelDef() {
 		return relDef;
 	}
 	
-=======
 	public List<Record> getRecordInDataPage(PageId pageId, List<Record> record) {
 		
 		return null;
 	}
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	
 }
