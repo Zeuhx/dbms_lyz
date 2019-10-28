@@ -39,11 +39,11 @@ public class FileManager {
 		
 		/**
 		 * Cette methode doit :
-		 * _créer un nouvel objet de type HeapFile 
+		 * _crï¿½er un nouvel objet de type HeapFile 
 		 * et lui attribuer relDef
-		 * _le rajouter à la liste heapFiles
+		 * _le rajouter ï¿½ la liste heapFiles
 		 * _puis appeler sur cet objet 
-		 * la méthode createNewOnDisk
+		 * la mï¿½thode createNewOnDisk
 		 * 
 		 */
 		
@@ -64,7 +64,7 @@ public class FileManager {
 		 * 
 		 */
 		
-		int i = 0;
+//		int i = 0;
 		
 		for(HeapFile h : heapFiles) {
 			if(h.getRelDef().getNomRelation().equals(relName)) {
@@ -92,9 +92,9 @@ public class FileManager {
 		/**
 		 * Cette methode doit :
 		 * _retourner une liste contenant tous les records
-		 * a relation nomméerelName pour lesquels la valeur 
-		 * ur la colonne idxCol (convertie en chaîne de caractères)
-		 * est égale à valeur.
+		 * a relation nommï¿½erelName pour lesquels la valeur 
+		 * ur la colonne idxCol (convertie en chaï¿½ne de caractï¿½res)
+		 * est ï¿½gale ï¿½ valeur.
 		 */
 	}
 	

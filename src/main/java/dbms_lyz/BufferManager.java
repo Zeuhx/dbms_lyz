@@ -72,34 +72,35 @@ public class BufferManager {
 	 * @param pageId
 	 * @return
 	 */
-	public ByteBuffer getPage(PageId pageId) {
-		ByteBuffer bf = null;
-		int indexFrame = searchFrame(pageId);
-		
-		//si la new pageId n'est pas trouve dans la liste de frame??;
-		if (indexFrame == 2)
-			frame = null;
-		else
-			//comprend pas pourquoi f doit get le indexFrame
-			frame = listFrame.get(indexFrame);
+	
+//	public ByteBuffer getPage(PageId pageId) {
+//		ByteBuffer bf = null;
+//		int indexFrame = searchFrame(pageId);
+//		
+//		//si la new pageId n'est pas trouve dans la liste de frame??;
+//		if (indexFrame == 2)
+//			frame = null;
+//		else
+//			//comprend pas pourquoi f doit get le indexFrame
+//			frame = listFrame.get(indexFrame);
+//
+//		if (frame != null) {
+//			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
+//			frame.get();
+//			if (pageId == listFrame.get(0).getPageId()) {
+//				listFrame.get(0).setLRU_change(false);
+//				listFrame.get(1).setLRU_change(true);
+//			} else {
+//				listFrame.get(1).setLRU_change(false);
+//				listFrame.get(0).setLRU_change(true);
+//			}
+//		}
+//		return (bf);
+//	}
 
-		if (frame != null) {
-			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
-			frame.get();
-			if (pageId == listFrame.get(0).getPageId()) {
-				listFrame.get(0).setLRU_change(false);
-				listFrame.get(1).setLRU_change(true);
-			} else {
-				listFrame.get(1).setLRU_change(false);
-				listFrame.get(0).setLRU_change(true);
-			}
-		}
-		return (bf);
-	}
-	//##############   TEST willy ###########################
-	public ByteBuffer getPage2(PageId pageId) {
+	public ByteBuffer getPage(PageId pageId) {
 		//newFrame est de type Frame
-		//TODO : on r�cup�re le buff de newFrame puis on l'ajoute sur la listFrame si exist
+		//TODO : on recupere le buff de newFrame puis on l'ajoute sur la listFrame si exist
 		Frame newFrame = new Frame(pageId);
 		ByteBuffer bf = newFrame.getBuffer();
 		int indexFrame = searchFrame(pageId);
@@ -114,9 +115,7 @@ public class BufferManager {
 		if (frame != null) {
 			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
-			
 			frame.get();
-			
 			//Maj du LRU_change
 			//si newFrame correspond au premier
 			if (pageId == listFrame.get(0).getPageId()) {
@@ -150,7 +149,6 @@ public class BufferManager {
 		
 		//si jamais le newFrame (pageId en entre) n est pas dans la liste on remplaces 
 		else if (listFrame.get(0).getPageId()!=newFrame.getPageId() || listFrame.get(0).getPageId()!=newFrame.getPageId() ) {
-
 			System.out.println("le new frame n'existe pas dans la liste");
 			 frame = new Frame(frame.getPageId() );
 			 

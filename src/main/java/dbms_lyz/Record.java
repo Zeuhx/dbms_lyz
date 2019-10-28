@@ -103,7 +103,6 @@ public class Record {
 			}
 			
 			else if(isInt) {
-				
 				buff.putInt(Integer.parseInt(s));
 				//buff.position(Integer.BYTES);
 			}
@@ -152,9 +151,7 @@ public class Record {
 			
 			compteur ++;
 		}
-		
-		
-		
+				
 	}
 
 	/**

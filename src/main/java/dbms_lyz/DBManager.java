@@ -105,14 +105,14 @@ public class DBManager {
 		/**
 		 * On initialise le recordSize et slotCount car le 1er constructeur 
 		 */
-		rd.setRecordSize(calculRecordSize(rd));
-		rd.setSlotCount(calculSlotCount(rd));
+		rd.setRecordSize(recordSize(rd));
+		rd.setSlotCount(slotCount(rd));
 		
 		DBDef.getInstance().addRelation(rd);
 		
 		// Calcul de la taille du record
-		int recordSize = calculRecordSize(rd);
-		int slotCount = calculSlotCount(rd);
+		int recordSize = recordSize(rd);
+		int slotCount = slotCount(rd);
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
 		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
@@ -124,63 +124,39 @@ public class DBManager {
 	}
 	
 	/**
-	 * 
+	 * On calcule la taille d'un record dans une page
 	 * @return  : ici qu'on calcule recordSize 
 	 */
-	public int calculRecordSize(RelDef rd) {
+	
+	public int recordSize(RelDef rd) {
 		int recordSize = 0;
 		for(String col : rd.getTypeCol()) {
-
 			if(col.equals("int")) {
 				recordSize += 4;
 			}
-
 			else if(col.equals("float")) {
 				recordSize += 4;
 			}
-
 			else {
 				String size = col.substring(6);
 				recordSize += Integer.parseInt(size)*2;
 			}	
 		}
-		//recordSize = taille record * le nb de record qui on la taille fixe
-		recordSize *= rd.getRecordLenght(); 
+		/*
+		 * TODO a supprimer car non necessaire
+		 * //recordSize = taille record * le nb de record qui on la taille fixe
+		 * recordSize *= rd.getRecordLenght();
+		 * Parce que on a besoin que de la taille de 1 seul record
+		 */
 		return recordSize;
 		}
 	
 	/**
-	 * 
+	 * Calcul du nombre de slot qu'on peut avoir sur une page 
+	 * Donc division de la taille de la page par la taille d'un record + 1 pour la bytemap qui prend 1
 	 * @return  : ici qu'on calcule slotCount
 	 */
-	public int calculSlotCount(RelDef rd) {
-		
-		/**
-		 *  264 octets correspond a la taille d une case fixe  
-		 */
-		return (Constants.getpageSize()*8)/((rd.getRecordSize()*8)+1);
+	public int slotCount(RelDef rd) {
+		return Constants.getpageSize()/(rd.getRecordSize()+1);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
