@@ -177,7 +177,7 @@ public class RelDef {
 
 	public List<Record> getRecord() { return records; }
 	
-	public int getRecordLenght () { return records.size(); }
+	public int getRecordListSize() { return records.size(); }
 	
 	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
 

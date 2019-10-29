@@ -15,8 +15,7 @@ public class BufferManager {
 
 	public static List<Frame> listFrame = new ArrayList<>();
 
-	private BufferManager() {
-	}
+	private BufferManager() {}
 
 	private static BufferManager INSTANCE = null;
 	private Frame frame;
@@ -214,7 +213,7 @@ public class BufferManager {
 	 */
 	public void flushAll() throws FlagException {
 		DBManager.finish();
-		for (int i = 0; i < Constants.frameCount; i++) {
+		for (int i = 0; i < Constants.FRAME_COUNT; i++) {
 
 			if (listFrame.get(i).getFlag_dirty()) {
 				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
