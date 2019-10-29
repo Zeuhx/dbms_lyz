@@ -41,7 +41,7 @@ public class FileManager {
 		
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		heapFiles.get(heapFiles.size()+1).createNewOnDisk();
+		hf.createNewOnDisk();
 		
 	}
 	
@@ -55,8 +55,6 @@ public class FileManager {
 		 * et appeler sa methode InsertRecord
 		 * 
 		 */
-		
-//		int i = 0;
 		
 		for(HeapFile h : heapFiles) {
 			if(h.getRelDef().getNomRelation().equals(relName)) {
