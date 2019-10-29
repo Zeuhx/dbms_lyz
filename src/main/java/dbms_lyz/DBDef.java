@@ -134,6 +134,10 @@ public class DBDef implements Serializable{
 	}
 	
 	public static List<RelDef> getList(){ return relDefTab; }
+	
+	public void setList(List <RelDef> l) {
+		relDefTab = l;
+	}
 		
 	public static int getListSize() { return relDefTab.size(); }
 	

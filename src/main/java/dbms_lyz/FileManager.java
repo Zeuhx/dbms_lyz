@@ -60,7 +60,7 @@ public class FileManager {
 		
 		for(HeapFile h : heapFiles) {
 			if(h.getRelDef().getNomRelation().equals(relName)) {
-				
+				h.getRelDef().getRecord().add(record);
 			}
 		}
 		return null;

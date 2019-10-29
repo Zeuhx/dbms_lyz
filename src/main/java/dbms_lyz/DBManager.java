@@ -1,5 +1,9 @@
 package main.java.dbms_lyz;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -159,5 +163,23 @@ public class DBManager {
 	 */
 	public int slotCount(RelDef rd) {
 		return Constants.PAGE_SIZE/(rd.getRecordSize()+1);
+	}
+	
+	public void clean() {
+		for(int i = 0; i<DBDef.getListSize(); i++) {
+			try {
+				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
+			}
+			catch(NoSuchFileException e) {
+				System.out.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
+				break;
+				//On quitte la boucle car il n y a plus de fichiers
+			}
+			catch(IOException e) {
+				System.out.println("Erreur IO");
+			}
+		}
+		List <RelDef> l = new ArrayList<>();
+		DBDef.getInstance().setList(l);
 	}
 }
