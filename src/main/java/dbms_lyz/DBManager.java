@@ -127,55 +127,7 @@ public class DBManager {
 	 * 
 	 * @return  : ici qu'on calcule recordSize 
 	 */
-<<<<<<< HEAD
-	public int recordSize(RelDef rd) {
-		
-		int recordSize = 0;
-		
-		for(String col : rd.getTypeCol()) {
-			
-=======
-	public int calculRecordSize(RelDef rd) {
-		int recordSize = 0;
-		for(String col : rd.getTypeCol()) {
 
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
-			if(col.equals("int")) {
-				recordSize += 4;
-			}
-<<<<<<< HEAD
-			
-=======
-
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
-			else if(col.equals("float")) {
-				recordSize += 4;
-			}
-<<<<<<< HEAD
-			
-			else {
-				String size = col.substring(6);
-				recordSize += Integer.parseInt(size)*2;
-			}	
-		}
-=======
-
-			else {
-				String size = col.substring(6);
-				recordSize += Integer.parseInt(size)*2;
-			}	
-		}
-		//recordSize = taille record * le nb de record qui on la taille fixe
-		recordSize *= rd.getRecordLenght(); 
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
-		return recordSize;
-<<<<<<< HEAD
-
-	}
-=======
-		}
-	
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	/**
 	 * 
 	 * @return  : ici qu'on calcule slotCount
@@ -188,26 +140,26 @@ public class DBManager {
 		return (Constants.getpageSize()*8)/((rd.getRecordSize()*8)+1);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public int calculRecordSize(RelDef rd) {
+		int recordSize = 0;
+		for(String col : rd.getTypeCol()) {
+
+			if(col.equals("int")) {
+				recordSize += 4;
+			}
+
+			else if(col.equals("float")) {
+				recordSize += 4;
+			}
+
+			else {
+				String size = col.substring(6);
+				recordSize += Integer.parseInt(size)*2;
+			}	
+		}
+		//recordSize = taille record * le nb de record qui on la taille fixe
+		recordSize *= rd.getRecordLenght(); 
+		return recordSize;
+		}
 	
 }

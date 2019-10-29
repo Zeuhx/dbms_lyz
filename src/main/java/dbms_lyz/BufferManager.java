@@ -79,9 +79,11 @@ public class BufferManager {
 		//si la new pageId n'est pas trouve dans la liste de frame??;
 		if (indexFrame == 2)
 			frame = null;
-		else
+		else {
 			//comprend pas pourquoi f doit get le indexFrame
 			frame = listFrame.get(indexFrame);
+			bf = frame.getBuffer();
+		}
 
 		if (frame != null) {
 			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());

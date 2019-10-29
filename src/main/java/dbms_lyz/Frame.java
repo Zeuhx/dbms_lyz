@@ -53,8 +53,9 @@ public class Frame {
 	 * @param flag_dirty
 	 */
 	public void free(boolean flag_dirty) {
-		if (pin_count != 0)
+		if (pin_count != 0) {
 			pin_count--;
+		}
 
 		if (flag_dirty == false)
 			this.flag_dirty = true;
