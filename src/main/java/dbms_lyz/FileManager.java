@@ -24,7 +24,7 @@ public class FileManager {
 		//creer pour chq RelDef un objet HeapFile en lui
 		for(RelDef relDef : DBDef.getList()) {
 			if (i<DBDef.getListSize()) {
-				HeapFile hf = new HeapFile (DBDef.getListIndice(i));
+				HeapFile hf = new HeapFile (relDef);
 				heapFiles.add(hf);
 			}
 			else break;
