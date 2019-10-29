@@ -130,23 +130,66 @@ public class HeapFile {
 		 * A partir du slotCount on lit les records que l'on va stocker
 		 * dans une liste
 		 */
+		
+		/**
 		for(int positionByteMap=relDef.getNbCol() ; positionByteMap<bufferPage.capacity() ; positionByteMap++) {
 			List<String> listString = new ArrayList<String>() ;
 			if(bufferPage.get(positionByteMap)==1) {
 				if(relDef.getTypeCol().get(positionByteMap).equals("int")) {
 					
 				}
-				listRecord.add(new Record(relDef, relDef.getTypeCol()));
+				listRecord.add(new Record(relDef, listString));
+				
 			}
 				
 		}
-		return null;
+		**/
+		
+		for(int positionByteMap=relDef.getNbCol() ; positionByteMap<bufferPage.capacity() ; positionByteMap++) {
+			if(bufferPage.get(positionByteMap)==1) {
+				for(int i=0; i<relDef.getTypeCol().size(); i++) {
+					List<String> listString = new ArrayList<String>() ;
+
+					if(relDef.getTypeCol().get(i).equals("int")) {	
+						String s = Integer.toString(bufferPage.getInt());
+						listString.add(s);
+					}
+					
+					else if(relDef.getTypeCol().get(i).equals("int")) {	
+						String s = Integer.toString(bufferPage.getInt());
+						listString.add(s);
+					}
+					
+					else {
+						int taille = Integer.parseInt(relDef.getTypeCol().get(i).substring("string".length()));
+						String valARecup ="";
+						for(int j=0 ; j<taille ; j++) {
+							String charBuff = Character.toString(bufferPage.getChar());
+							valARecup.concat(charBuff);
+						}
+					}
+					
+					listRecord.add(new Record(relDef, listString));
+				}
+			}
+		}
+
+		return listRecord;
 	}
 	
 	// Getters
 	
+	
 	public RelDef getRelDef() {
 		return relDef;
+	}
+	
+	public Rid insertRecord(Record record) {
+		return null;
+	}
+	
+	public List<Record> getAllRecords(){
+		return null;
 	}
 	
 }
