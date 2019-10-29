@@ -27,7 +27,7 @@ public class DBManager {
 	 * Fait appel au init de DBDef seulement
 	 */
 	public static void init() {
-		DBDef.init();
+		DBDef.getInstance().init();
 		FileManager.getInstance().init();
 	}
 
@@ -35,7 +35,7 @@ public class DBManager {
 	 * Fait appel au finish de DBDef seulement
 	 */
 	public static void finish() {
-		DBDef.finish();
+		DBDef.getInstance().finish();
 	}
 
 	/**
