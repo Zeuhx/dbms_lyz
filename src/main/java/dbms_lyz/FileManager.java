@@ -73,31 +73,31 @@ public class FileManager {
 	 * retourner une liste contenant tous les records de la relation
 	 *
 	 */
-	public List<Record> SelectAllFromRelation (String relName){
-		List<Record> listeDeRecords = new ArrayList<Record>();
-		
-		HeapFile hf = null;
-		
-		
-		// parcour la liste de records de relDef dans le heapfile 
-		//mais c faux le relDef n'a pas de liste de records normalement
-		for(int i=0; i<heapFiles.size(); i++) {
-//			for(HeapFile hf : heapFiles) {}
-			hf = heapFiles.get(i);
-
-			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
-				//parcour chaque record de la liste d Records
-				for (int j=0; j<heapFiles.get(i).getRecordInDataPage.size(); j++) {
-					//TODO : chaque record voir if relName de record == relName
-				}
-//				listeDeRecords.addAll((heapFiles.get(i).getRelDef().getRecord()));
-				listeDeRecords.add((Record) heapFiles.get(i).getRelDef().getRecord());//faux ici 
-				// c pas un records mais une liste de records
-			}
-		}
-		return listeDeRecords;
-	
-	}
+//	public List<Record> SelectAllFromRelation (String relName){
+//		List<Record> listeDeRecords = new ArrayList<Record>();
+//		
+//		HeapFile hf = null;
+//		
+//		
+//		// parcour la liste de records de relDef dans le heapfile 
+//		//mais c faux le relDef n'a pas de liste de records normalement
+//		for(int i=0; i<heapFiles.size(); i++) {
+////			for(HeapFile hf : heapFiles) {}
+//			hf = heapFiles.get(i);
+//
+//			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
+//				//parcour chaque record de la liste d Records
+//				for (int j=0; j<heapFiles.get(i).getRecordInDataPage.size(); j++) {
+//			//		//TODO : chaque record voir if relName de record == relName
+//				}
+////				listeDeRecords.addAll((heapFiles.get(i).getRelDef().getRecord()));
+//				listeDeRecords.add((Record) heapFiles.get(i).getRelDef().getRecord());//faux ici 
+//				// c pas un records mais une liste de records
+//			}
+//		}
+//		return listeDeRecords;
+//	
+//	}
 	
 	/**
 	 * TODO
@@ -113,7 +113,7 @@ public class FileManager {
 		for(int i=0 ; i<heapFiles.size() ; i++) {
 			aHeapFileOfList = heapFiles.get(i);
 			if(aHeapFileOfList.getRelDef().getNomRelation().equals(relName)) {
-				aHeapFileOfList.getRelDef().getRecord();
+			//	aHeapFileOfList.getRelDef().getRecord();
 			}
 			
 		}
