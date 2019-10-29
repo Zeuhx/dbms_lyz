@@ -51,9 +51,17 @@ public class FileManager {
 		 * 
 		 */
 		
-		for(HeapFile h : heapFiles) {
-			if(h.getRelDef().getNomRelation().equals(relName)) {
-				
+//		int i = 0;
+		
+		/**
+		 * parcour le heapFiles pour inserer le bon record
+		 * avec le relName du record
+		 */
+		
+		for(HeapFile hf : heapFiles) {
+			if(hf.getRelDef().getNomRelation().equals(relName)) {
+				hf.insertRecord(record);
+				//return hf.rid;
 			}
 		}
 		return null;
