@@ -119,7 +119,7 @@ public class HeapFile {
 	}
 	
 	/**
-	 * 
+	 * Recupere les records de la page et renvoie une liste de records 
 	 * @param pageId
 	 * @return
 	 */
