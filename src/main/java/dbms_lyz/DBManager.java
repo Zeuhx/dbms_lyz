@@ -28,6 +28,7 @@ public class DBManager {
 	 */
 	public static void init() {
 		DBDef.init();
+		FileManager.getInstance().init();
 	}
 
 	/**

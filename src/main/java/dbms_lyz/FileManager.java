@@ -13,7 +13,7 @@ public class FileManager {
 		heapFiles = new ArrayList<>();
 	}
 	
-	public FileManager getInstance() {
+	public static FileManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new FileManager();
 		}
@@ -36,10 +36,17 @@ public class FileManager {
 		//creer pour chq RelDef un objet HeapFile en lui
 		for(RelDef relDef : DBDef.getList()) {
 			if (i<DBDef.getListSize()) {
-				DBDef.getListIndice(i);
+				HeapFile hf = new HeapFile (DBDef.getListIndice(i));
+				heapFiles.add(hf);
 			}
 			else break;
 		}
+		/**
+		 *  TODO : rajoutez un appel a cette methode dans 
+		 * mathode init du DBManager ( apres l appel 
+		 * a la methode init de la DBDef (pourquoi)
+		 *  
+		 */
 
 		
 	}
