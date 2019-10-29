@@ -23,15 +23,24 @@ public class FileManager {
 	
 	public void init() {
 	
-	/**
-	 * Cette methode doit :
-	 * _parcourir la liste des relDef de DBDef
-	 * _creer pour chq RelDef un objet HeapFile en lui
-	 * attribuant la RelDef en question
-	 * _rajouter le HeapFile a heapfiles
-	 */
-	
-		
+		/**
+		 * Cette methode doit :
+		 * _parcourir la liste des relDef de DBDef
+		 * _creer pour chq RelDef un objet HeapFile en lui
+		 * attribuant la RelDef en question
+		 * _rajouter le HeapFile a heapfiles
+		 */
+		int i=0;
+		DBDef.getInstance();
+		//on va parcourir la liste des relDef de DBDef
+		//creer pour chq RelDef un objet HeapFile en lui
+		for(RelDef relDef : DBDef.getList()) {
+			if (i<DBDef.getListSize()) {
+				DBDef.getListIndice(i);
+			}
+			else break;
+		}
+
 		
 	}
 	

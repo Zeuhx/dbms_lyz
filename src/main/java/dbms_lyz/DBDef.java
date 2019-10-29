@@ -75,9 +75,6 @@ public class DBDef implements Serializable{
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
 	}
 
 	/**
@@ -131,4 +128,11 @@ public class DBDef implements Serializable{
 		} else
 			System.out.println("Erreur, le contenu est vide");
 	}
+	
+	public static List<RelDef> getList(){ return relDefTab; }
+	
+	public static RelDef getListIndice(int indice){ return relDefTab.get(indice); }
+	
+	public static int getListSize() { return relDefTab.size(); }
+	
 }
