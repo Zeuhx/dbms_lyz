@@ -60,7 +60,6 @@ public class BufferManager {
 		}
 	}
 
-
 	/**
 	 * Cette methode doit reppondre a� une demande de page venant des couches plus
 	 * hautes, et donc retourner un des buffers associeer a� une case. Le buffer sera
@@ -69,32 +68,6 @@ public class BufferManager {
 	 * @param pageId
 	 * @return
 	 */
-	
-//	public ByteBuffer getPage(PageId pageId) {
-//		ByteBuffer bf = null;
-//		int indexFrame = searchFrame(pageId);
-//		
-//		//si la new pageId n'est pas trouve dans la liste de frame??;
-//		if (indexFrame == 2)
-//			frame = null;
-//		else
-//			//comprend pas pourquoi f doit get le indexFrame
-//			frame = listFrame.get(indexFrame);
-//
-//		if (frame != null) {
-//			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
-//			frame.get();
-//			if (pageId == listFrame.get(0).getPageId()) {
-//				listFrame.get(0).setLRU_change(false);
-//				listFrame.get(1).setLRU_change(true);
-//			} else {
-//				listFrame.get(1).setLRU_change(false);
-//				listFrame.get(0).setLRU_change(true);
-//			}
-//		}
-//		return (bf);
-//	}
-
 	public ByteBuffer getPage(PageId pageId) {
 		//newFrame est de type Frame
 		//TODO : on recupere le buff de newFrame puis on l'ajoute sur la listFrame si exist
@@ -223,6 +196,34 @@ public class BufferManager {
 
 	}
 
-	// Une m�thode pour modfif les pages qui sont dans les frames
+	// Une methode pour modif les pages qui sont dans les frames
 
+	
+	/**
+	 * Autre getPage()
+	 */
+//	public ByteBuffer getPage(PageId pageId) {
+//	ByteBuffer bf = null;
+//	int indexFrame = searchFrame(pageId);
+//	
+//	//si la new pageId n'est pas trouve dans la liste de frame??;
+//	if (indexFrame == 2)
+//		frame = null;
+//	else
+//		//comprend pas pourquoi f doit get le indexFrame
+//		frame = listFrame.get(indexFrame);
+//
+//	if (frame != null) {
+//		DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
+//		frame.get();
+//		if (pageId == listFrame.get(0).getPageId()) {
+//			listFrame.get(0).setLRU_change(false);
+//			listFrame.get(1).setLRU_change(true);
+//		} else {
+//			listFrame.get(1).setLRU_change(false);
+//			listFrame.get(0).setLRU_change(true);
+//		}
+//	}
+//	return (bf);
+//}
 }
