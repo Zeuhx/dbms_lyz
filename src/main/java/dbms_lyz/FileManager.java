@@ -27,22 +27,17 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * creer un nouvel objet de type HeapFile 
+	 * et lui attribuer relDef le rajouter la liste heapFiles
+	 * puis appeler sur cet objet la methode createNewOnDisk
+	 * 
+	 */	
 	public void createRelationFile(RelDef relDef) {
-		
-		/**
-		 * Cette methode doit :
-		 * creer un nouvel objet de type HeapFile 
-		 * et lui attribuer relDef
-		 * le rajouter la liste heapFiles
-		 * puis appeler sur cet objet 
-		 * la methode createNewOnDisk
-		 * 
-		 */
-		
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		hf.createNewOnDisk();
-		
+		hf.createNewOnDisk();	
 	}
 	
 	public Rid insertRecordInRelation(Record record, String relName) {
@@ -74,6 +69,11 @@ public class FileManager {
 		
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * retourner une liste contenant tous les records de la relation
+	 *
+	 */
 	public List<Record> SelectAllFromRelation (String relName){
 		for(HeapFile hf : heapFiles) {
 			
@@ -81,25 +81,20 @@ public class FileManager {
 		
 		Record listeDeRecords = new Record();
 		return null;
-		
-		/**
-		 * Cette methode doit :
-		 * _retourner une liste contenant tous les
-		 * records de la relation
-		 *
-		 */
+	
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * retourner une liste contenant tous les records
+	 * de la relation RelName pour lesquels la valeur 
+	 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
+	 * est egale a "valeur" .
+	 */
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
 		return null;
 		
-		/**
-		 * Cette methode doit :
-		 * retourner une liste contenant tous les records
-		 * de la relation RelName pour lesquels la valeur 
-		 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
-		 * est egale a "valeur" .
-		 */
+
 	}
 	
 }

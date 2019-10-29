@@ -164,11 +164,14 @@ public class HeapFile {
 		return listRecord;
 	}
 	
+	// TODO a faire du TD5 
 	public Rid insertRecord(Record record) {
 		return null;
 	}
 
 	// Getters
+	
+	// TODO a faire du TD5
 	public List<Record> getAllRecords() {
 		return null;
 	}
