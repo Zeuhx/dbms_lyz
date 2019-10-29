@@ -27,22 +27,17 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * creer un nouvel objet de type HeapFile 
+	 * et lui attribuer relDef le rajouter la liste heapFiles
+	 * puis appeler sur cet objet la methode createNewOnDisk
+	 * 
+	 */	
 	public void createRelationFile(RelDef relDef) {
-		
-		/**
-		 * Cette methode doit :
-		 * creer un nouvel objet de type HeapFile 
-		 * et lui attribuer relDef
-		 * le rajouter la liste heapFiles
-		 * puis appeler sur cet objet 
-		 * la methode createNewOnDisk
-		 * 
-		 */
-		
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		hf.createNewOnDisk();
-		
+		hf.createNewOnDisk();	
 	}
 	
 	public Rid insertRecordInRelation(Record record, String relName) {
