@@ -105,26 +105,24 @@ public class DBManager {
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		// appel du 1er constructeur 
-		RelDef rd = new RelDef (nomRelation, typeCol); 
+		RelDef reldef = new RelDef (nomRelation, typeCol); 
 
 		/**
 		 * On initialise le recordSize et slotCount car le 1er constructeur 
 		 */
-		rd.setRecordSize(recordSize(rd));
-		rd.setSlotCount(slotCount(rd));
-		
-		DBDef.getInstance().addRelation(rd);
+		reldef.setRecordSize(recordSize(reldef));
+		reldef.setSlotCount(slotCount(reldef));
+		DBDef.getInstance().addRelation(reldef);
 		
 		// Calcul de la taille du record
-		int recordSize = recordSize(rd);
-		int slotCount = slotCount(rd);
+		int recordSize = recordSize(reldef);
+		int slotCount = slotCount(reldef);
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
-		rd = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
-		
-		(DBDef.getInstance()).addRelation(rd);
-		
-		return (rd);
+		reldef = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
+		DBDef.getInstance().addRelation(reldef);
+		FileManager.getInstance().createRelationFile(reldef);
+		return (reldef);
 		
 	}
 	

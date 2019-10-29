@@ -27,22 +27,17 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * creer un nouvel objet de type HeapFile 
+	 * et lui attribuer relDef le rajouter la liste heapFiles
+	 * puis appeler sur cet objet la methode createNewOnDisk
+	 * 
+	 */	
 	public void createRelationFile(RelDef relDef) {
-		
-		/**
-		 * Cette methode doit :
-		 * creer un nouvel objet de type HeapFile 
-		 * et lui attribuer relDef
-		 * le rajouter la liste heapFiles
-		 * puis appeler sur cet objet 
-		 * la methode createNewOnDisk
-		 * 
-		 */
-		
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		heapFiles.get(heapFiles.size()+1).createNewOnDisk();
-		
+		hf.createNewOnDisk();	
 	}
 	
 	public Rid insertRecordInRelation(Record record, String relName) {
@@ -58,36 +53,78 @@ public class FileManager {
 		
 //		int i = 0;
 		
+<<<<<<< HEAD
 		for(HeapFile h : heapFiles) {
 			if(h.getRelDef().getNomRelation().equals(relName)) {
 				h.getRelDef().getRecord().add(record);
+=======
+		/**
+		 * parcour le heapFiles pour inserer le bon record
+		 * avec le relName du record
+		 */
+		
+		for(HeapFile hf : heapFiles) {
+			if(hf.getRelDef().getNomRelation().equals(relName)) {
+				hf.insertRecord(record);
+				//return hf.rid;
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 			}
 		}
+		// TODO : return un rid ?
 		return null;
 		
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * retourner une liste contenant tous les records de la relation
+	 *
+	 */
 	public List<Record> SelectAllFromRelation (String relName){
-		return null;
+		List<Record> listeDeRecords = new ArrayList<Record>();
 		
-		/**
-		 * Cette methode doit :
-		 * _retourner une liste contenant tous les
-		 * records de la relation
-		 *
-		 */
+		HeapFile hf = null;
+		
+		
+		// parcour la liste de records de relDef dans le heapfile 
+		//mais c faux le relDef n'a pas de liste de records normalement
+		for(int i=0; i<heapFiles.size(); i++) {
+//			for(HeapFile hf : heapFiles) {}
+			hf = heapFiles.get(i);
+
+			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
+				//parcour chaque record de la liste d Records
+				for (int j=0; j<heapFiles.get(i).getRelDef().getRecord().size(); j++) {
+					//TODO : chaque record voir if relName de record == relName
+				}
+//				listeDeRecords.addAll((heapFiles.get(i).getRelDef().getRecord()));
+				listeDeRecords.add((Record) heapFiles.get(i).getRelDef().getRecord());//faux ici 
+				// c pas un records mais une liste de records
+			}
+		}
+		return listeDeRecords;
+	
 	}
 	
+	/**
+	 * TODO
+	 * Cette methode doit :
+	 * retourner une liste contenant tous les records
+	 * de la relation RelName pour lesquels la valeur 
+	 * la valeur sur la colonne idxCol (convertie en cha�ne de caracteres)
+	 * est egale a "valeur" .
+	 */
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
-		return null;
-		
-		/**
-		 * Cette methode doit :
-		 * retourner une liste contenant tous les records
-		 * de la relation RelName pour lesquels la valeur 
-		 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
-		 * est egale a "valeur" .
-		 */
+		List<Record> listeDeRecords = new ArrayList<Record>();
+		HeapFile aHeapFileOfList = null  ;
+		for(int i=0 ; i<heapFiles.size() ; i++) {
+			aHeapFileOfList = heapFiles.get(i);
+			if(aHeapFileOfList.getRelDef().getNomRelation().equals(relName)) {
+				aHeapFileOfList.getRelDef().getRecord();
+			}
+			
+		}
+		return null ;
 	}
-	
+
 }
