@@ -21,6 +21,10 @@ import java.util.List;
  *
  */
 public class DBDef implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static List<RelDef> relDefTab;
 	private static int compteurRelation;
 
@@ -42,7 +46,7 @@ public class DBDef implements Serializable{
 	/**
 	 * Constructeur
 	 */
-	public static void init() {
+	public void init() {
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator );
 		relDefTab = new ArrayList<>();
@@ -80,7 +84,7 @@ public class DBDef implements Serializable{
 	/**
 	 * Sauvegarde les infos de DBDef dans catalogue.def
 	 */
-	public static void finish(){
+	public void finish(){
 		/**
 		 * TODO : ECRITURE & Verifier si les infos sont bien sauvegarder dans la DBDef
 		 * creer un fichier Catalog.def qui contient
@@ -92,7 +96,7 @@ public class DBDef implements Serializable{
 		FileOutputStream catalogue = null ;
 		try {
 			String path = new String("src" + File.separator + "main" + 
-					File.separator + "resources" + File.separator + "DB" + File.separator );
+			File.separator + "resources" + File.separator + "DB" + File.separator );
 			catalogue = new FileOutputStream (path + "catalogue.def");
 			oos= new ObjectOutputStream(catalogue);
 			oos.writeInt(compteurRelation);
