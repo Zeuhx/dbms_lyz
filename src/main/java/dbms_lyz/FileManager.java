@@ -64,6 +64,7 @@ public class FileManager {
 				//return hf.rid;
 			}
 		}
+		// TODO : return un rid ?
 		return null;
 		
 	}
@@ -74,7 +75,28 @@ public class FileManager {
 	 *
 	 */
 	public List<Record> SelectAllFromRelation (String relName){
-		return null;
+		List<Record> listeDeRecords = new ArrayList<Record>();
+		
+		HeapFile hf = null;
+		
+		
+		// parcour la liste de records de relDef dans le heapfile 
+		//mais c faux le relDef n'a pas de liste de records normalement
+		for(int i=0; i<heapFiles.size(); i++) {
+//			for(HeapFile hf : heapFiles) {}
+			hf = heapFiles.get(i);
+
+			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
+				//parcour chaque record de la liste d Records
+				for (int j=0; j<heapFiles.get(i).getRelDef().getRecord().size(); j++) {
+					//TODO : chaque record voir if relName de record == relName
+				}
+//				listeDeRecords.addAll((heapFiles.get(i).getRelDef().getRecord()));
+				listeDeRecords.add((Record) heapFiles.get(i).getRelDef().getRecord());//faux ici 
+				// c pas un records mais une liste de records
+			}
+		}
+		return listeDeRecords;
 	
 	}
 	
