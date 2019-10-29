@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-	
 	private List <HeapFile> heapFiles;
-	
 	private static FileManager INSTANCE = null;
-	
 	public FileManager() {
 		heapFiles = new ArrayList<>();
 	}
-	
 	public FileManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new FileManager();
 		}
-		
 		return INSTANCE;
 	}
 	
@@ -25,25 +20,23 @@ public class FileManager {
 	
 	/**
 	 * Cette methode doit :
-	 * _parcourir la liste des relDef de DBDef
-	 * _creer pour chq RelDef un objet HeapFile en lui
+	 * parcourir la liste des relDef de DBDef
+	 * creer pour chq RelDef un objet HeapFile en lui
 	 * attribuant la RelDef en question
-	 * _rajouter le HeapFile a heapfiles
+	 * rajouter le HeapFile a heapfiles
 	 */
 	
-		
-		
 	}
 	
 	public void createRelationFile(RelDef relDef) {
 		
 		/**
 		 * Cette methode doit :
-		 * _cr�er un nouvel objet de type HeapFile 
+		 * creer un nouvel objet de type HeapFile 
 		 * et lui attribuer relDef
-		 * _le rajouter � la liste heapFiles
-		 * _puis appeler sur cet objet 
-		 * la m�thode createNewOnDisk
+		 * le rajouter la liste heapFiles
+		 * puis appeler sur cet objet 
+		 * la methode createNewOnDisk
 		 * 
 		 */
 		
@@ -91,10 +84,10 @@ public class FileManager {
 		
 		/**
 		 * Cette methode doit :
-		 * _retourner une liste contenant tous les records
-		 * a relation nomm�erelName pour lesquels la valeur 
-		 * ur la colonne idxCol (convertie en cha�ne de caract�res)
-		 * est �gale � valeur.
+		 * retourner une liste contenant tous les records
+		 * de la relation RelName pour lesquels la valeur 
+		 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
+		 * est egale a "valeur" .
 		 */
 	}
 	
