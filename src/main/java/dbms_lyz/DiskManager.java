@@ -151,6 +151,10 @@ public class DiskManager {
 		}
 
 	}
+	
+	public String getPath() {
+		return path;
+	}
 
 	/*
 	 * public void writePage2(PageId pageId, ByteBuffer buff) { byte data[] = new

@@ -10,10 +10,10 @@ import java.util.StringTokenizer;
  *
  */
 public class RelDef {
-	private String nomRel;
+	private String relName;
 	private int nbCol;
 	private List<String> typeCol;
-	private List<Record> records;
+	//private List<Record> records;
 
 	private int fileIdx;	// Indice du fichier disque qui stocke la relation
 	private int recordSize = 0;	// taille d'un record
@@ -21,7 +21,7 @@ public class RelDef {
 
 
 	public RelDef(String nomRelation, List<String> typeCol) {
-		this.nomRel = nomRelation;
+		this.relName = nomRelation;
 		this.typeCol = typeCol;
 		nbCol = typeCol.size();
 		
@@ -38,7 +38,7 @@ public class RelDef {
 	 * @param slotCount
 	 */
 	public RelDef(String nomRelation, List<String> typeCol, int fileIdx, int recordSize, int slotCount) {
-		this.nomRel = nomRelation;
+		this.relName = nomRelation;
 		this.nbCol = typeCol.size();
 		this.fileIdx = fileIdx;		// le fichier
 		this.recordSize = recordSize; // Attention : il faut directement initialiser selon la taille du record
@@ -46,19 +46,13 @@ public class RelDef {
 	}
 
 	public void affiche() {
-		System.out.println("Nom de la relation : "+ nomRel);
+		System.out.println("Nom de la relation : "+ relName);
 		System.out.println("Cols : ");
 		
 		for(String s : typeCol) {
 			System.out.print(s+" ");
 		}
-		
-		System.out.println();
-		System.out.println("Records :");
-		
-		for(Record r : records) {
-			r.affiche();
-		}
+		System.out.println();		
 	}
 
 	public void insertRecord(Record r) {
@@ -143,7 +137,7 @@ public class RelDef {
 				while(st.hasMoreElements()) {
 					elements.add(st.nextToken());
 				}
-				records.add(r);
+				//records.add(r);
 			}
 			else {
 				System.out.println("La relation ne correspond aux types des col");
@@ -169,17 +163,13 @@ public class RelDef {
 			return false;
 	}
 	
-	public String getNomRelation() { return nomRel; }
+	public String getNomRelation() { return relName; }
 	
 	public int getNbCol() { return (nbCol); }
 
 	public int getFileIdx() { return fileIdx ; }
 
-	public List<String> getTypeCol(){ return typeCol; }
-
-	public List<Record> getRecord() { return records; }
-	
-	public int getRecordListSize() { return records.size(); }
+	public List<String> getTypeCol(){ return typeCol ; }
 	
 	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
 

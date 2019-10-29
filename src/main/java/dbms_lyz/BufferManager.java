@@ -43,7 +43,7 @@ public class BufferManager {
 		int i = 0;
 
 		for (Frame f : listFrame) {
-			if (listFrame.get(i).equals(pageId))
+			if (f.getPageId().equals(pageId))
 				return i;
 		}
 		return (2); // Pour retourner l'index de la frame concern� retourne 2 si pas trouve
