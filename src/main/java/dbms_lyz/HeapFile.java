@@ -116,8 +116,7 @@ public class HeapFile {
 		 * On retourne a la headerPage et on arrive jusqu'a la pageIdx et on enleve 1
 		 */
 		pageId = new PageId(0, pageId.getFileIdx());
-		for (int j = 0; j < bufferPage.get(pageId.getPageIdx()); j += Integer.BYTES)
-			;
+		for (int j = 0; j < bufferPage.get(pageId.getPageIdx()); j += Integer.BYTES);
 		bufferPage.putInt(positionByteMap, bufferPage.getInt(positionByteMap) - 1);
 		return new Rid(pageId, positionByteMap);
 	}
@@ -162,6 +161,22 @@ public class HeapFile {
 		}
 
 		return listRecord;
+	}
+	
+	// TODO a finir
+	public List<Record> getAllRecordFromHeapFile(){
+		int pageIdx = 0, fileIdx = 0 ;
+		PageId page =  new PageId(pageIdx, fileIdx);
+		List<Record> listRecordOfHeapFile ;
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
+		// Tant qu'on atteint pas le nombre de page (premiere case du headerPage)
+		for(int i=0 ; i<bufferPage.getInt(0) ; i++) {
+			page =  new PageId(pageIdx, fileIdx);
+			bufferPage = BufferManager.getInstance().getPage(page);
+			listRecordOfHeapFile = new ArrayList(getRecordInDataPage(page));
+			
+		}
+		return null ;
 	}
 	
 	// TODO a faire du TD5 

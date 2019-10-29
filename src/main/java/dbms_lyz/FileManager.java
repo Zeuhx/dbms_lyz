@@ -79,16 +79,24 @@ public class FileManager {
 	}
 	
 	/**
+	 * TODO
 	 * Cette methode doit :
 	 * retourner une liste contenant tous les records
 	 * de la relation RelName pour lesquels la valeur 
-	 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
+	 * la valeur sur la colonne idxCol (convertie en cha�ne de caracteres)
 	 * est egale a "valeur" .
 	 */
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
-		return null;
-		
-
+		List<Record> listeDeRecords = new ArrayList<Record>();
+		HeapFile aHeapFileOfList = null  ;
+		for(int i=0 ; i<heapFiles.size() ; i++) {
+			aHeapFileOfList = heapFiles.get(i);
+			if(aHeapFileOfList.getRelDef().getNomRelation().equals(relName)) {
+				aHeapFileOfList.getRelDef().getRecord();
+			}
+			
+		}
+		return null ;
 	}
-	
+
 }
