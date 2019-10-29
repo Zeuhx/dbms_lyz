@@ -68,27 +68,27 @@ public class FileManager {
 		
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * retourner une liste contenant tous les records de la relation
+	 *
+	 */
 	public List<Record> SelectAllFromRelation (String relName){
 		return null;
-		
-		/**
-		 * Cette methode doit :
-		 * _retourner une liste contenant tous les
-		 * records de la relation
-		 *
-		 */
+	
 	}
 	
+	/**
+	 * Cette methode doit :
+	 * retourner une liste contenant tous les records
+	 * de la relation RelName pour lesquels la valeur 
+	 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
+	 * est egale a "valeur" .
+	 */
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
 		return null;
 		
-		/**
-		 * Cette methode doit :
-		 * retourner une liste contenant tous les records
-		 * de la relation RelName pour lesquels la valeur 
-		 * la valeur surr la colonne idxCol (convertie en cha�ne de caracteres)
-		 * est egale a "valeur" .
-		 */
+
 	}
 	
 }
