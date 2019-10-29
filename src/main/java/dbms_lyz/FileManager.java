@@ -88,7 +88,7 @@ public class FileManager {
 
 			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
 				//parcour chaque record de la liste d Records
-				for (int j=0; j<heapFiles.get(i).getRelDef().getRecord().size(); j++) {
+				for (int j=0; j<heapFiles.get(i).getRecordInDataPage.size(); j++) {
 					//TODO : chaque record voir if relName de record == relName
 				}
 //				listeDeRecords.addAll((heapFiles.get(i).getRelDef().getRecord()));
