@@ -69,11 +69,17 @@ public class FileManager {
 				//return hf.rid;
 			}
 		}
+		// TODO : return un rid ?
 		return null;
 		
 	}
 	
 	public List<Record> SelectAllFromRelation (String relName){
+		for(HeapFile hf : heapFiles) {
+			
+		}
+		
+		Record listeDeRecords = new Record();
 		return null;
 		
 		/**
