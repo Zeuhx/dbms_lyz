@@ -47,7 +47,6 @@ public class BufferManager {
 			if (listFrame.get(i).equals(pageId))
 				return i;
 		}
-
 		return (2); // Pour retourner l'index de la frame concern� retourne 2 si pas trouve
 	}
 
@@ -205,7 +204,6 @@ public class BufferManager {
 	}
 
 	/**
-	 * A FAIRE !!
 	 * 
 	 * Cette méthode s’occupe de : ◦ l’écriture de toutes les pages dont le flag
 	 * dirty = 1 sur disque ◦ la remise à 0 de tous les flags/informations et
@@ -219,10 +217,10 @@ public class BufferManager {
 				DiskManager.writePage(listFrame.get(i).getPageId(), getPage(listFrame.get(i).getPageId()));
 			}
 		
-		System.out.println("initialisation de la m�moire apr�s une �criture sur DiskManager");}
+		System.out.println("initialisation de la memoire apres une ecriture sur DiskManager");}
 		listFrame.get(0).flushFrame();
 		listFrame.get(1).flushFrame();
-		// TODO : Rajoutez un appel � cette m�thode dans la m�thode Finish du DBManager.
+		// TODO : Rajoutez un appel  cette methode dans la methode Finish du DBManager.
 
 	}
 
