@@ -52,12 +52,6 @@ public class FileManager {
 		 */
 		
 //		int i = 0;
-		
-<<<<<<< HEAD
-		for(HeapFile h : heapFiles) {
-			if(h.getRelDef().getNomRelation().equals(relName)) {
-				h.getRelDef().getRecord().add(record);
-=======
 		/**
 		 * parcour le heapFiles pour inserer le bon record
 		 * avec le relName du record
@@ -67,7 +61,6 @@ public class FileManager {
 			if(hf.getRelDef().getNomRelation().equals(relName)) {
 				hf.insertRecord(record);
 				//return hf.rid;
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 			}
 		}
 		// TODO : return un rid ?
