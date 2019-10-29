@@ -18,16 +18,12 @@ public class FileManager {
 	}
 	
 	public void init() {
-		int i=0;
 		DBDef.getInstance();
 		//on va parcourir la liste des relDef de DBDef
 		//creer pour chq RelDef un objet HeapFile en lui
 		for(RelDef relDef : DBDef.getList()) {
-			if (i<DBDef.getListSize()) {
-				HeapFile hf = new HeapFile (relDef);
-				heapFiles.add(hf);
-			}
-			else break;
+			HeapFile hf = new HeapFile (relDef);
+			heapFiles.add(hf);
 		}
 	}
 	

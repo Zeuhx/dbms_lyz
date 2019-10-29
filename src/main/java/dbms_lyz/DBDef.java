@@ -21,6 +21,10 @@ import java.util.List;
  *
  */
 public class DBDef implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static List<RelDef> relDefTab;
 	private static int compteurRelation;
 
