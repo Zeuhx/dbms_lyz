@@ -51,7 +51,7 @@ public class Main {
 				 * TD2
 				 */
 
-		ByteBuffer buff = ByteBuffer.allocate(Constants.pageSize) ;
+		ByteBuffer buff = ByteBuffer.allocate(Constants.PAGE_SIZE) ;
 		/*
 		 * try { DiskManager.getInstance().readPage(1, buff); } catch (IOException e) {
 		 * // TODO Auto-generated catch block e.printStackTrace(); }
@@ -67,7 +67,7 @@ public class Main {
 		PageId pageId2 = new PageId("Data_2.rf");
 
 		DiskManager.addPage(1);
-		ByteBuffer bf = ByteBuffer.allocate(Constants.pageSize);
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 
 		DiskManager.readPage(pageId1, bf);
 		DiskManager.writePage(pageId2, bf);

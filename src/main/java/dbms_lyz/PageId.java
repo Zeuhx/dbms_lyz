@@ -19,6 +19,11 @@ public class PageId {
 		pageIdx = ID;
 		ID += 1;
 	}
+	
+	public PageId(int pageIdx, int fileIdx) {
+		this.pageIdx = pageIdx ;
+		this.fileIdx = fileIdx ;
+	}
 
 	/**
 	 * Retrouve l'ID (juste le nombre) du fichier

@@ -17,7 +17,7 @@ public class Frame {
 
 	public Frame(PageId pageId) {
 		this.pageId = pageId;
-		buff = ByteBuffer.allocate(Constants.pageSize);
+		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		pin_count = 0;
 		flag_dirty = false;
 	}
@@ -25,7 +25,7 @@ public class Frame {
 	//peut etre pas necessaire
 	public Frame(boolean LRU_change) {
 		pageId = null ; 		// ATTENTION : PEUT PROVOQUER UNE EXCEPTION : A REGLER
-		buff = ByteBuffer.allocate(Constants.pageSize);
+		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		pin_count = 0;
 		flag_dirty = false;
 		this.LRU_change = LRU_change;
