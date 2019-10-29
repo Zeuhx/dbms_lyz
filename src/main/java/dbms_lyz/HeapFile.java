@@ -86,7 +86,7 @@ public class HeapFile {
 	}
 	
 	/**
-	 * 
+	 * Ecrit les record dans une page
 	 * @param record
 	 * @param pageId
 	 * @return
