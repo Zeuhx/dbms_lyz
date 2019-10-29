@@ -85,6 +85,12 @@ public class HeapFile {
 		return page;
 	}
 	
+	/**
+	 * 
+	 * @param record
+	 * @param pageId
+	 * @return
+	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
 		int positionByteMap = 0 ;
@@ -112,6 +118,11 @@ public class HeapFile {
 		return new Rid(pageId, positionByteMap);
 	}
 	
+	/**
+	 * 
+	 * @param pageId
+	 * @return
+	 */
 	public List<Record> getRecordInDataPage(PageId pageId) {
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
 		List<Record> listRecord = new ArrayList<Record>();
