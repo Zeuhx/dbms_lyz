@@ -54,7 +54,7 @@ public class DBManager {
 		 * On coupe le StringTokenizer en plusieurs partie : On compare le premier
 		 * element avec create Le deuxieme element sera stocker pour etre passer en
 		 * argument dans la fonction Le troisieme element sera convertit en int Et a
-		 * partir du 4eme element on transfort sous une liste
+		 * partir du 4eme element on transforme en sous une liste
 		 */
 
 		if (!stCommandaCouper.nextElement().equals("create")) {
@@ -157,6 +157,6 @@ public class DBManager {
 	 * @return  : ici qu'on calcule slotCount
 	 */
 	public int slotCount(RelDef rd) {
-		return Constants.getpageSize()/(rd.getRecordSize()+1);
+		return Constants.PAGE_SIZE/(rd.getRecordSize()+1);
 	}
 }

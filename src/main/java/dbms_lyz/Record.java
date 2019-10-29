@@ -66,90 +66,69 @@ public class Record {
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
-		
-		int compteur = 0;
-		
-		for(String s : values) {
-			
+		int i = 0;
+		List<String> list = relDef.getTypeCol();
+		for(i=0 ; i<list.size() ; i++) {
 			boolean isFloat = false;
 			boolean isString = false;
 			boolean isInt = false;
 			
-			if(relDef.getTypeCol().get(compteur).equals("int")){
+			if(list.get(i).equals("int")) 
 				isInt = true;
-			}
-			else if(relDef.getTypeCol().get(compteur).equals("float")){
+			else if(list.get(i).equals("float")) 
 				isFloat = true;
-			}
 			else
 				isString = true;
 			
 			if(isString) {
-				
-				int j;
-				int tailleString = s.length();
-				String taille = relDef.getTypeCol().get(compteur).substring(6);
-				int tailleType = Integer.parseInt(taille);
-				for(j=0; j<tailleType; j++) {
-					
-					if(j>=tailleString) {
+				int tailleString = list.get(i).length();
+				int taille = Integer.parseInt(list.get(i).substring(6));
+				/**
+				 * Si le string saisie est inferieur a la taille demandé du stringx
+				 * On rajoute des espaces a la fin pour avoir la taille x
+				 */
+				for(int j=0; j<taille; j++) {
+					if(j>=tailleString)
 						buff.putChar(' ');
-					}
-					else {
-						buff.putChar(s.charAt(j));
-					}
+					else
+						buff.putChar(list.get(i).charAt(j));
 				}
-				//buff.position(Character.BYTES);
 			}
-			
-			else if(isInt) {
-				buff.putInt(Integer.parseInt(s));
-				//buff.position(Integer.BYTES);
-			}
-			
-			else {
-				
-				buff.putFloat(Float.parseFloat(s));
-	
-			}
-		
-		compteur ++;
-			
+			else if(isInt)
+				buff.putInt(Integer.parseInt(list.get(i)));
+			else if(isFloat)
+				buff.putFloat(Float.parseFloat(list.get(i)));
 		}
 		
 	}
 
 	/**
-	 * " Le contraire " de la version precedente, MANQUE les conditions
+	 * " Le contraire " de la version precedente
 	 * @param buff
 	 * @param position
 	 * 
 	 */
 	public void readFromBuffer(ByteBuffer buff, int position) {
 		buff.position(position);
-		int compteur = 0;
-		
-		for(String s : relDef.getTypeCol()) {
-			if(s.equals("int")) {
-				System.out.println(buff.getInt(buff.position()));
+		List<String> list = relDef.getTypeCol();
+		for(int i=0 ; i<list.size() ; i++) {
+			if(list.get(i).equals("int")) {
+				values.add(i, Integer.toString(buff.getInt(buff.position())));
 				buff.position(buff.position()+ Integer.BYTES);
 			}
-			else if(s.equals("float")) {
-				System.out.println(buff.getFloat(buff.position()));
+			else if(list.get(i).equals("float")) {
+				values.add(i, Float.toString(buff.getFloat(buff.position())));
 				buff.position(buff.position()+ Float.BYTES);
 			}
 			else {
-				String taille = relDef.getTypeCol().get(compteur).substring(6);
+				String taille = list.get(i).substring("string".length());
 				int t = Integer.parseInt(taille);
-				
-				for(int i = 0; i<t; i++) {
-					System.out.print(buff.getChar());
+				for(int j = 0; j<t; j++) {
+					StringBuilder sb = new StringBuilder();
+					sb.append(buff.getChar());
+					values.add(sb.toString());
 				}
-				
-				System.out.println();
 			}
-			
-			compteur ++;
 		}
 				
 	}

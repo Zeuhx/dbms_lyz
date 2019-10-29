@@ -1,6 +1,7 @@
 package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,13 +28,13 @@ public class HeapFile {
 		int fileIdx = relDef.getFileIdx(); 	// L'indice du fichier est donnee par relDef
 		DiskManager.createFile(fileIdx);
 		DiskManager.addPage(fileIdx);
-		PageId pageId = new PageId(0, fileIdx); 
-		ByteBuffer bufferDePageVide = BufferManager.getInstance().getPage(pageId);
-		for(int i=0 ; i < Constants.getpageSize() ; i+=Integer.BYTES) {
+		PageId headerPage = new PageId(0, fileIdx); 
+		ByteBuffer bufferDePageVide = BufferManager.getInstance().getPage(headerPage);
+		for(int i=0 ; i < Constants.PAGE_SIZE ; i+=Integer.BYTES) {
 			bufferDePageVide.putInt(0);
 		}
 		//DiskManager.writePage(pageId, bufferDePageVide);
-		BufferManager.getInstance().freePage(pageId, true);
+		BufferManager.getInstance().freePage(headerPage, true);
 	}
 	
 	/**
@@ -84,18 +85,22 @@ public class HeapFile {
 		return page;
 	}
 	
-	// TODO Pas fini pour l'actualisation
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
-		int i = 4 ;
-		boolean vide = false ;
-		while(!vide && i<bufferPage.getInt(0)){
-			if(bufferPage.getInt(i)==0) {
-				vide = true ;
+		int positionByteMap = 0 ;
+		boolean caseLibre = false ;
+		while(!caseLibre && positionByteMap<bufferPage.getInt(0)){
+			if(bufferPage.get(positionByteMap)==0) {
+				caseLibre = true ;
 			}
-			i+=Integer.BYTES;
+			// Attention : ByteMap
+			positionByteMap+=Byte.BYTES;
 		};
-		// Inserer le record
+		bufferPage.put(positionByteMap, (byte) 1);	// C'est occupe mtn
+		
+		// On insere apres avoir focus la place dans la page
+		int positionSlot = relDef.getSlotCount() + relDef.getRecordSize()*positionByteMap ;
+		record.writeToBuffer(bufferPage, positionSlot);
 		BufferManager.getInstance().freePage(pageId, true);
 		/**
 		 * On retourne a la headerPage et on arrive jusqu'a la
@@ -103,20 +108,31 @@ public class HeapFile {
 		 */
 		pageId = new PageId(0, pageId.getFileIdx());
 		for(int j=0 ; j<bufferPage.get(pageId.getPageIdx()) ; j+=Integer.BYTES);
-		bufferPage.putInt(i, -1);
-		return new Rid(pageId, i);
+		bufferPage.putInt(positionByteMap, bufferPage.getInt(positionByteMap)-1);
+		return new Rid(pageId, positionByteMap);
 	}
 	
 	public List<Record> getRecordInDataPage(PageId pageId) {
-		ByteBuffer page = BufferManager.getInstance().getPage(pageId);
-		Record r = null ;
-		for(int i=0 ; i<page.capacity() ; i++) {
-			r.readFromBuffer(page, i);
-			System.out.println(r.toString());
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
+		List<Record> listRecord = new ArrayList<Record>();
+		/**
+		 * A partir du slotCount on lit les records que l'on va stocker
+		 * dans une liste
+		 */
+		for(int positionByteMap=relDef.getNbCol() ; positionByteMap<bufferPage.capacity() ; positionByteMap++) {
+			List<String> listString = new ArrayList<String>() ;
+			if(bufferPage.get(positionByteMap)==1) {
+				if(relDef.getTypeCol().get(positionByteMap).equals("int")) {
+					
+				}
+				listRecord.add(new Record(relDef, relDef.getTypeCol()));
+			}
+				
 		}
 		return null;
-		
 	}
+	
+	// Getters
 	
 	public RelDef getRelDef() {
 		return relDef;
