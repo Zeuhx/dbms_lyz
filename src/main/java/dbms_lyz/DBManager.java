@@ -219,7 +219,7 @@ public class DBManager {
 			valeurs.add(commande.nextToken());
 		}
 		//récup la liste des heapfiles
-		List <HeapFile> heapFiles = (List<HeapFile>) FileManager.getInstance().getheapFiles();
+//		List <HeapFile> heapFiles = (List<HeapFile>) FileManager.getInstance().getheapFiles();
 		/**
 		 * Acces au heapFile
 		 */
