@@ -157,6 +157,7 @@ public class DBManager {
 	/**
 	 * Calcul du nombre de slot qu'on peut avoir sur une page 
 	 * Donc division de la taille de la page par la taille d'un record + 1 pour la bytemap qui prend 1
+	 * @param rd la relation concernee
 	 * @return  : ici qu'on calcule slotCount
 	 */
 	public int slotCount(RelDef rd) {

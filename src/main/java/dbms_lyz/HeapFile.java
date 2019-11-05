@@ -51,8 +51,7 @@ public class HeapFile {
 		bufferPage.putInt(0, bufferPage.getInt(0) + 1); // A l'indice 0, on ajoute 1
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		int i;
-		for (i = 1; i < bufferPage.getInt(0); i++)
-			;
+		for (i = 1; i < bufferPage.getInt(0); i++) ;
 		bufferPage.putInt(i, relDef.getSlotCount());
 		// DiskManager.writePage(pageId, bufferPage);
 		BufferManager.getInstance().freePage(pageId, true);
@@ -134,18 +133,28 @@ public class HeapFile {
 		 * A partir du slotCount on lit les records que l'on va stocker dans une liste
 		 */
 
-		for (int positionByteMap = relDef.getNbCol(); positionByteMap < bufferPage.capacity(); positionByteMap++) {
+		for (int positionByteMap = 0; positionByteMap < relDef.getSlotCount(); positionByteMap++) {
+			/**
+			 * Boucle pour lire la bytemap
+			 * Si c est egal a 1, la position du ByteBuffer est actualise
+			 * au record concerne et on recupere les valeurs
+			 * Quand cette operation est terminee, on remet la position du 
+			 * ByteBuffer au bytemap
+			 * 
+			 */
+			int positionRecord = relDef.getSlotCount() + positionByteMap;
+			bufferPage.position(positionByteMap);
 			if (bufferPage.get(positionByteMap) == 1) {
+				bufferPage.position(positionRecord);
+				List<String> listElementRecord = new ArrayList<String>();
 				for (int i = 0; i < relDef.getTypeCol().size(); i++) {
-					List<String> listString = new ArrayList<String>();
-
 					if (relDef.getTypeCol().get(i).equals("int")) {
 						String s = Integer.toString(bufferPage.getInt());
-						listString.add(s);
+						listElementRecord.add(s);
 					}
 					else if (relDef.getTypeCol().get(i).equals("int")) {
 						String s = Integer.toString(bufferPage.getInt());
-						listString.add(s);
+						listElementRecord.add(s);
 					}
 					else {
 						int taille = Integer.parseInt(relDef.getTypeCol().get(i).substring("string".length()));
@@ -155,8 +164,8 @@ public class HeapFile {
 							valARecup.concat(charBuff);
 						}
 					}
-					listRecord.add(new Record(relDef, listString));
 				}
+				listRecord.add(new Record(relDef, listElementRecord));
 			}
 		}
 		return listRecord;
@@ -171,22 +180,31 @@ public class HeapFile {
 	// Getters
 	
 	// TODO a faire du TD5
-	public List<Record> getAllRecords(){
+		/**
+		 * Cherche tous les records d'un heapfile
+		 * 
+		 * @return la liste de records dans le heapfile
+		 */
+		public List<Record> getAllRecords(){
+	
+		
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
 		int fileIdx = this.relDef.getFileIdx(); //nom du fichier à recuperer les records
 		PageId page =  new PageId(pageIdx, fileIdx);
-		List<Record> listRecordOfHeapFile ; //variable pour stocker la liste des records d'un heapfile
+		List<Record> listRecordOfHeapFile = new ArrayList<>(); //variable pour stocker la liste des records d'un heapfile
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
+		int nbPage = bufferPage.getInt(0) ;
 		// Tant qu'on atteint pas le nombre de page (premiere case du headerPage)
-		for(int i=1 ; i<bufferPage.getInt(0) ; i++) {
-			page =  new PageId(pageIdx, fileIdx);
-			bufferPage = BufferManager.getInstance().getPage(page);
-			//for(int j=0 ; j<)
-			
-			listRecordOfHeapFile = new ArrayList(getRecordInDataPage(page));
-			
+		
+		for(int i=1 ; i<nbPage ; i++) {
+			page =  new PageId(i, fileIdx);
+			//bufferPage = BufferManager.getInstance().getPage(page)
+			List <Record> listRecordOfPage = this.getRecordInDataPage(page);
+			for(Record r : listRecordOfPage) {
+				listRecordOfHeapFile.add(r);
+			}
 		}
-		return null ;
+		return listRecordOfHeapFile ;
 	}
 	
 	public RelDef getRelDef() {
