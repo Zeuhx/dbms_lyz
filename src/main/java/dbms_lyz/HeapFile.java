@@ -183,12 +183,12 @@ public class HeapFile {
 	// Getters
 	
 	// TODO a faire du TD5
-		/**
-		 * Cherche tous les records d'un heapfile
-		 * 
-		 * @return la liste de records dans le heapfile
-		 */
-		public List<Record> getAllRecords(){
+	/**
+	 * Cherche tous les records d'un heapfile
+	 * 
+	 * @return la liste de records dans le heapfile
+	 */
+	public List<Record> getAllRecords(){
 	
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
 		int fileIdx = this.relDef.getFileIdx(); //nom du fichier à recuperer les records
