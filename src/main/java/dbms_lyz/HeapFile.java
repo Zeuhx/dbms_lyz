@@ -162,32 +162,31 @@ public class HeapFile {
 		return listRecord;
 	}
 	
-	// TODO a finir
-	public List<Record> getAllRecordFromHeapFile(){
-		int pageIdx = 0, fileIdx = 0 ;
-		PageId page =  new PageId(pageIdx, fileIdx);
-		List<Record> listRecordOfHeapFile ;
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
-		// Tant qu'on atteint pas le nombre de page (premiere case du headerPage)
-		for(int i=0 ; i<bufferPage.getInt(0) ; i++) {
-			page =  new PageId(pageIdx, fileIdx);
-			bufferPage = BufferManager.getInstance().getPage(page);
-			listRecordOfHeapFile = new ArrayList(getRecordInDataPage(page));
-			
-		}
-		return null ;
-	}
-	
 	// TODO a faire du TD5 
 	public Rid insertRecord(Record record) {
+		
 		return null;
 	}
 
 	// Getters
 	
 	// TODO a faire du TD5
-	public List<Record> getAllRecords() {
-		return null;
+	public List<Record> getAllRecords(){
+		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
+		int fileIdx = this.relDef.getFileIdx(); //nom du fichier à recuperer les records
+		PageId page =  new PageId(pageIdx, fileIdx);
+		List<Record> listRecordOfHeapFile ; //variable pour stocker la liste des records d'un heapfile
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
+		// Tant qu'on atteint pas le nombre de page (premiere case du headerPage)
+		for(int i=1 ; i<bufferPage.getInt(0) ; i++) {
+			page =  new PageId(pageIdx, fileIdx);
+			bufferPage = BufferManager.getInstance().getPage(page);
+			//for(int j=0 ; j<)
+			
+			listRecordOfHeapFile = new ArrayList(getRecordInDataPage(page));
+			
+		}
+		return null ;
 	}
 	
 	public RelDef getRelDef() {
