@@ -109,12 +109,23 @@ public class FileManager {
 	 */
 	public List<Record> selectFromRelation(String relName, int idxCol, String valeur){
 		List<Record> listeDeRecords = new ArrayList<Record>(selectAllFromRelation(relName));
+		List<Record> listeDeRecordsAvecValeur = new ArrayList<Record>();
 		
+		/**
+		 * verifie si la liste n'est pas null
+		 * sinon on parcours tous les records
+		 * puis on compare les valeurs de chaque record de la idxCol
+		 * si c est bon on enregistre dans listeDeRecordsAvecValeur 
+		 */
 		if(listeDeRecords != null ) {
-			for(Record r : listeDeRecords) {//TODO : 
+			for(Record record : listeDeRecords) {
+				//compare la valeu
+				if(record.getValues().get(idxCol).equals(valeur)) {
+					listeDeRecordsAvecValeur.add(record);
+				}
 			}
 		}
-		return listeDeRecords;
+		return listeDeRecordsAvecValeur;
 	}
 
 }
