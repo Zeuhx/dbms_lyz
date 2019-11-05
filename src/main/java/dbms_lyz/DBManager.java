@@ -48,12 +48,17 @@ public class DBManager {
 	 */
 	public void processCommand(String commande) {
 		StringTokenizer stCommandaCouper;
-		String nomRelation = new String("");
-		int nbCol = 0;
-		List<String> typeCol = new ArrayList<String>();
-		int j = 0;
 
 		stCommandaCouper = new StringTokenizer(commande, " ");
+		String typeCommande = stCommandaCouper.nextToken() ;
+		switch(typeCommande) {
+		case "create" : create(stCommandaCouper) ;
+		break ;
+		case "clean" : clean() ;
+		break ;
+		case "insert" : insert(stCommandaCouper) ;
+		break ;
+		}
 
 		/**
 		 * On coupe le StringTokenizer en plusieurs partie : On compare le premier
@@ -62,36 +67,7 @@ public class DBManager {
 		 * partir du 4eme element on transforme en sous une liste
 		 */
 
-		if (!stCommandaCouper.nextElement().equals("create")) {
-			System.exit(0);
-		}
-
-		for (int i = 1; stCommandaCouper.hasMoreElements(); i++) {
-			if (i == 1) {
-				nomRelation = stCommandaCouper.nextToken();
-			}
-			if (i == 2) {
-				nbCol = Integer.parseInt(stCommandaCouper.nextToken());
-			}
-			if (i > 2) {
-				while (j < nbCol) {
-					typeCol.add(stCommandaCouper.nextToken());
-					j++;
-				}
-			}
-		}
-
-		/**
-		 * Verification
-		 */
-		for (int i = 0; i < typeCol.size(); i++) {
-			System.out.println(typeCol.get(i) + ", ");
-		}
-
-		/**
-		 * Appel de la fonction
-		 */
-		createRelation(nomRelation, nbCol, typeCol);
+		
 	}
 
 	/**
@@ -191,4 +167,56 @@ public class DBManager {
 		 * S'occuper de BufferManager
 		 */
 	}
+	
+	public void create(StringTokenizer commande) {
+		String nomRelation = new String("");
+		int nbCol = 0;
+		List<String> typeCol = new ArrayList<String>();
+		int j = 0;
+		
+		for (int i = 1; commande.hasMoreElements(); i++) {
+			if(i == 1) {
+				nomRelation = commande.nextToken();
+			}
+			if(i == 2) {
+				nbCol = Integer.parseInt(commande.nextToken());
+			}
+			if(i > 2) {
+				while(j < nbCol) {
+					typeCol.add(commande.nextToken());
+					j++;
+				}
+			}
+		}
+
+		/**
+		 * Verification
+		 */
+		for (int i = 0; i < typeCol.size(); i++) {
+			System.out.println(typeCol.get(i) + ", ");
+		}
+
+		/**
+		 * Appel de la fonction
+		 */
+		createRelation(nomRelation, nbCol, typeCol);
+	}
+	
+	public void insert(StringTokenizer commande) {
+		int nbCol = 0;
+		commande.nextToken();
+		//ici le deuxieme element du token = relName
+		String relName = commande.nextToken();
+		
+		List<String> typeCol = new ArrayList<String>();
+		int j = 0 ;
+		Record record ;
+		while(commande.hasMoreElements()) {
+			
+		}
+		
+		RelDef reldef = new RelDef(relName, typeCol);
+		
+	}
+	
 }

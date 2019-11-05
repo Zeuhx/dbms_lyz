@@ -175,6 +175,8 @@ public class RelDef {
 
 	public void setSlotCount(int slotCount) { this.slotCount = slotCount; }
 	
+	public void setRelName(String relName) { this.relName = relName; }
+	
 	public int getRecordSize() { return recordSize;	}
 
 	public int getSlotCount() { return slotCount; }
