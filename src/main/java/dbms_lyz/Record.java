@@ -26,7 +26,7 @@ public class Record {
 	public void affiche() {
 		for(String s : values) {
 			System.out.print(s);
-			System.out.print(" ");
+			System.out.print(" ; ");
 		}
 		System.out.println();
 	}

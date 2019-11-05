@@ -141,33 +141,6 @@ public class DBManager {
 	}
 	
 	
-	/**
-	 * Remet a 0 le programme
-	 * TODO s'occuper de BufferManager
-	 */
-	public void clean() {
-		for(int i = 0; i<DBDef.getListSize(); i++) {
-			try {
-				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
-			}
-			catch(NoSuchFileException e) {
-				System.out.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
-				break;
-				//On quitte la boucle car il n y a plus de fichiers
-			}
-			catch(IOException e) {
-				System.out.println("Erreur IO");
-			}
-		}
-		DBDef.getInstance().reset();
-		FileManager.getInstance().reset();
-		
-		/**
-		 * 
-		 * S'occuper de BufferManager
-		 */
-	}
-	
 	public void create(StringTokenizer commande) {
 		String nomRelation = new String("");
 		int nbCol = 0;
@@ -202,6 +175,34 @@ public class DBManager {
 		createRelation(nomRelation, nbCol, typeCol);
 	}
 	
+	
+	/**
+	 * Remet a 0 le programme
+	 * TODO s'occuper de BufferManager
+	 */
+	public void clean() {
+		for(int i = 0; i<DBDef.getListSize(); i++) {
+			try {
+				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
+			}
+			catch(NoSuchFileException e) {
+				System.out.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
+				break;
+				//On quitte la boucle car il n y a plus de fichiers
+			}
+			catch(IOException e) {
+				System.out.println("Erreur IO");
+			}
+		}
+		DBDef.getInstance().reset();
+		FileManager.getInstance().reset();
+		
+		/**
+		 * 
+		 * S'occuper de BufferManager
+		 */
+	}
+	
 	public void insert(StringTokenizer commande) {
 		int nbCol = 0;
 		commande.nextToken();
@@ -217,6 +218,17 @@ public class DBManager {
 		
 		RelDef reldef = new RelDef(relName, typeCol);
 		
+	}
+	
+	public void selectAll(StringTokenizer commande ) {
+		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(commande.toString());
+		System.out.print("Affichage des records de "+commande.toString());
+		
+		for(Record r : listRecords) {
+			r.affiche();
+		}
+		
+		System.out.println("Nombre de records : "+ listRecords.size());
 	}
 	
 }
