@@ -164,6 +164,11 @@ public class DBManager {
 		return Constants.PAGE_SIZE/(rd.getRecordSize()+1);
 	}
 	
+	
+	/**
+	 * Remet a 0 le programme
+	 * TODO s'occuper de BufferManager
+	 */
 	public void clean() {
 		for(int i = 0; i<DBDef.getListSize(); i++) {
 			try {
@@ -178,7 +183,12 @@ public class DBManager {
 				System.out.println("Erreur IO");
 			}
 		}
-		List <RelDef> l = new ArrayList<>();
-		DBDef.getInstance().setList(l);
+		DBDef.getInstance().reset();
+		FileManager.getInstance().reset();
+		
+		/**
+		 * 
+		 * S'occuper de BufferManager
+		 */
 	}
 }

@@ -127,5 +127,25 @@ public class FileManager {
 		}
 		return listeDeRecordsAvecValeur;
 	}
-
+	
+	/**
+	 * 
+	 * @return heapFiles liste des heapfiles
+	 */
+	
+	public List<HeapFile> getHeapFiles(){
+		return heapFiles;
+	}
+	
+	public List<HeapFile> setHeapFiles(List<HeapFile> newHeapFiles){
+		heapFiles = newHeapFiles;
+		return heapFiles;
+	}
+	
+	/**
+	 * Remet FileManager a 0 avec heapFiles
+	 */
+	public void reset() {
+		heapFiles = new ArrayList<>();
+	}
 }

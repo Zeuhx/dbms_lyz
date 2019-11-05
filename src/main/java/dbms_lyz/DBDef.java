@@ -141,4 +141,13 @@ public class DBDef implements Serializable{
 		
 	public static int getListSize() { return relDefTab.size(); }
 	
+	/**
+	 * Remet DBDef a 0 avec relDefTab
+	 * Remet a 0 le compteur
+	 */
+	public void reset() {
+		relDefTab = new ArrayList<>();
+		compteurRelation = 0;
+	}
+	
 }
