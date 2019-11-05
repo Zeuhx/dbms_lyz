@@ -13,7 +13,6 @@ public class RelDef {
 	private String relName;
 	private int nbCol;
 	private List<String> typeCol;
-	//private List<Record> records;
 
 	private int fileIdx;	// Indice du fichier disque qui stocke la relation
 	private int recordSize;	// taille d'un record
@@ -24,8 +23,6 @@ public class RelDef {
 		this.relName = nomRelation;
 		this.typeCol = typeCol;
 		nbCol = typeCol.size();
-		
-		
 	}
 
 	/**

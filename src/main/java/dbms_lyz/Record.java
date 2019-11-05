@@ -18,10 +18,6 @@ public class Record {
 		relDef = reldef;
 		values = new ArrayList<>();
 	}
-
-	public Record(RelDef reldef) {
-		this(reldef, null);
-	}
 	
 	public void affiche() {
 		for(String s : values) {

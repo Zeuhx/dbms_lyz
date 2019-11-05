@@ -53,6 +53,7 @@ public class FileManager {
 	 * @return le Rid du record
 	 */
 	public Rid insertRecordInRelation(Record record, String relName) {
+		//TODO : ACTUALISER LE HeaderPage !!!!
 		Rid rid = null ;
 		/**
 		 * Parcour du heapFiles pour inserer le bon record avec 
@@ -127,5 +128,8 @@ public class FileManager {
 		}
 		return listeDeRecordsAvecValeur;
 	}
-
+	
+	public List <HeapFile> getheapFiles(){
+		return heapFiles;
+	}
 }

@@ -193,19 +193,33 @@ public class DBManager {
 	}
 	
 	public void insert(StringTokenizer commande) {
-		int nbCol = 0;
 		commande.nextToken();
 		//ici le deuxieme element du token = relName
 		String relName = commande.nextToken();
 		
 		List<String> typeCol = new ArrayList<String>();
-		int j = 0 ;
-		Record record ;
-		while(commande.hasMoreElements()) {
-			
+		List<String> valeurs = new ArrayList<String>();
+		/**
+		 * TODO
+		 */
+		RelDef relDef = null ;
+		// relDef = methodeQuiChercheLeRelDef() ;
+		while(commande.hasMoreTokens()) {
+			valeurs.add(commande.nextToken());
 		}
+		//récup la liste des heapfiles
+		List <HeapFile> heapFiles = (List<HeapFile>) FileManager.getInstance().getheapFiles();
+		/**
+		 * Acces au heapFile
+		 */
 		
-		RelDef reldef = new RelDef(relName, typeCol);
+		HeapFile heapFile = new HeapFile(relDef);
+		
+		Record record ;
+		
+		//boucle pour chaque heapfile de HeapFiles si le relname c bon
+		//a la fin on insert le record 
+//		FileManager.insertRecordInRelation(record, relName);
 		
 	}
 	
