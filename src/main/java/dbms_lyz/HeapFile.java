@@ -162,15 +162,18 @@ public class HeapFile {
 		return listRecord;
 	}
 	
-	// TODO a faire du TD5 
+	/**
+	 * TODO : est ce que c'est ça ? est ce que il faut voir si il faut traiter la taille de record 
+	 * entré en argument avec des conditions
+	 */
+
 	public Rid insertRecord(Record record) {
-		
-		return null;
+		return writeRecordToDataPage(record, getFreeDataPageId());
 	}
 
 	// Getters
 	
-	// TODO a faire du TD5
+	// TODO_ TD5
 	public List<Record> getAllRecords(){
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
 		int fileIdx = this.relDef.getFileIdx(); //nom du fichier à recuperer les records
