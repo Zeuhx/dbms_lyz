@@ -108,6 +108,7 @@ public class HeapFile {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
 		// TODO Marcel finir le channel et bytebuffer
 		FileChannel channel = rf.getChannel();
