@@ -259,4 +259,7 @@ public class DBManager {
 		System.out.println("Nombre de records : "+ listRecords.size());
 	}
 	
+	public void select(StringTokenizer commande) {
+		
+	}
 }
