@@ -1,6 +1,10 @@
 package main.java.dbms_lyz;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +98,21 @@ public class HeapFile {
 	 * @return
 	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
+		RandomAccessFile rf = null;
+		
+		int fileIdx = pageId.getFileIdx();
+		String path = new String("src" + File.separator + "main" + 
+				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");;
+		try {
+			rf = new RandomAccessFile(new File(path  + fileIdx + ".rf"), "rw");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		// TODO Marcel finir le channel et bytebuffer
+		FileChannel channel = rf.getChannel();
+		
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
 		int positionByteMap = 0;
 		boolean caseLibre = false;
