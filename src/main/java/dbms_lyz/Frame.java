@@ -32,7 +32,8 @@ public class Frame {
 	}
 
 	public void setLRU_change(boolean b) {
-		LRU_change = b;
+		if(pin_count >=1) LRU_change = false;
+		else LRU_change = b;
 	}
 
 	public PageId getPageId() {

@@ -56,8 +56,12 @@ public class DBManager {
 		break ;
 		case "clean" : clean() ;
 		break ;
-		case "insert" : insert(stCommandaCouper) ;
+		case "insert" : 
+			//ici le deuxieme element du token = relName
+			String relName = stCommandaCouper.nextToken();
+			insert(stCommandaCouper, relName) ;
 		break ;
+		case "insertall" : insertAll(stCommandaCouper) ;
 		}
 
 		/**
@@ -202,35 +206,45 @@ public class DBManager {
 		 * S'occuper de BufferManager
 		 */
 	}
-	
-	public void insert(StringTokenizer commande) {
-		commande.nextToken();
-		//ici le deuxieme element du token = relName
-		String relName = commande.nextToken();
+	/**
+	 * Rajoutez, dans votre application, la gestion de la commande insert.
+	 * Cette commande demande l’insertion d’un record dans une
+	 *  relation, en indiquant les valeurs (pour chaque 
+	 *  colonne) du record et le nom de la relation.
+	 * @param commande
+	 */
+	public void insert(StringTokenizer commande, String relName) {
 		
-		List<String> typeCol = new ArrayList<String>();
-		List<String> valeurs = new ArrayList<String>();
-		/**
-		 * TODO
-		 */
-		RelDef relDef = null ;
+		List<String> valeurs = new ArrayList<String>(); //valeurs de chaque colonne
+
 		// relDef = methodeQuiChercheLeRelDef() ;
+		
+		//stock les valeur dans la liste
 		while(commande.hasMoreTokens()) {
 			valeurs.add(commande.nextToken());
 		}
-		//récup la liste des heapfiles
-//		List <HeapFile> heapFiles = (List<HeapFile>) FileManager.getInstance().getheapFiles();
-		/**
-		 * Acces au heapFile
-		 */
 		
-		HeapFile heapFile = new HeapFile(relDef);
+		//accede au Heapfiles pour avoir la liste
+		List <HeapFile> heapFiles = (List<HeapFile>) FileManager.getInstance().getHeapFiles();
 		
-		Record record ;
 		
-		//boucle pour chaque heapfile de HeapFiles si le relname c bon
-		//a la fin on insert le record 
-//		FileManager.insertRecordInRelation(record, relName);
+
+		//parcourrir Heapfiles pour comparer les relName
+		for(int i=0; i<heapFiles.size(); i++) {
+			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
+				
+				//ecriture du record dans la relation
+				new Record( heapFiles.get(i).getRelDef(), valeurs);
+				break;
+			}
+		}		
+	}
+	
+	public void insertAll(StringTokenizer stCommandaCouper) {
+		String nomFichierCSV = stCommandaCouper.nextToken();
+		
+		
+		//recherche du fichier
 		
 	}
 	

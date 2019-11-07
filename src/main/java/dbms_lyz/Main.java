@@ -126,9 +126,13 @@ public class Main {
 		BufferManager.getInstance().getPage(p);
 		BufferManager.getInstance().afficheFrame(listFrame);
 
+		
 
 	}
 
+	private void testTokenizer() {
+		
+	}
 
 
 
