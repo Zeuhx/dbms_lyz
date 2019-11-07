@@ -1,6 +1,11 @@
 package main.java.dbms_lyz;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
@@ -56,10 +61,7 @@ public class DBManager {
 		break ;
 		case "clean" : clean() ;
 		break ;
-		case "insert" : 
-			//ici le deuxieme element du token = relName
-			String relName = stCommandaCouper.nextToken();
-			insert(stCommandaCouper, relName) ;
+		case "insert" : insert(stCommandaCouper) ;
 		break ;
 		case "insertall" : insertAll(stCommandaCouper) ;
 		}
@@ -207,17 +209,15 @@ public class DBManager {
 		 */
 	}
 	/**
-	 * Rajoutez, dans votre application, la gestion de la commande insert.
 	 * Cette commande demande l’insertion d’un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
 	 *  colonne) du record et le nom de la relation.
 	 * @param commande
 	 */
-	public void insert(StringTokenizer commande, String relName) {
+	public void insert(StringTokenizer commande) {
 		
-		List<String> valeurs = new ArrayList<String>(); //valeurs de chaque colonne
-
-		// relDef = methodeQuiChercheLeRelDef() ;
+		String relName = commande.nextToken();
+		List<String> valeurs = new ArrayList<String>(); //list valeurs de chaque colonne
 		
 		//stock les valeur dans la liste
 		while(commande.hasMoreTokens()) {
@@ -225,36 +225,132 @@ public class DBManager {
 		}
 		
 		//accede au Heapfiles pour avoir la liste
-		List <HeapFile> heapFiles = (List<HeapFile>) FileManager.getInstance().getHeapFiles();
-		
-		
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
 
-		//parcourrir Heapfiles pour comparer les relName
+		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
-			if(heapFiles.get(i).getRelDef().getNomRelation().equals(relName)) {
+			RelDef reldef = heapFiles.get(i).getRelDef() ; 
+			if(reldef.getNomRelation().equals(relName)) {
 				
 				//ecriture du record dans la relation
-				new Record( heapFiles.get(i).getRelDef(), valeurs);
-				break;
+				Record r = new Record(reldef, valeurs);
+				heapFiles.get(i).insertRecord(r);
 			}
-		}		
+		}
 	}
 	
-	public void insertAll(StringTokenizer stCommandaCouper) {
-		String nomFichierCSV = stCommandaCouper.nextToken();
+	/**
+	 * Cette commande demande l’insertion de plusieurs records dans une relation.
+	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
+	 * séparateur.
+	 * On suppose que le fichier se trouve à la racine de votre dossier projet (au même niveau donc que
+	 * les sous-répertoires Code et DB).
+	 * @param commande
+	 */
+	public void insertAll(StringTokenizer commande) {
+		String relName = commande.nextToken();
+		List<String> valeurs = new ArrayList<String>(); //list valeurs de chaque colonne
+		
+		String nomFichierCSV = commande.nextToken();
+		String path = new String("src" + File.separator + "main" + 
+				File.separator + "resources" + File.separator );
+		FileReader readFile = null ;
 		
 		
-		//recherche du fichier
+		FileInputStream catalogue = null ;//wy
+		ObjectInputStream ois = null ;//wy
 		
+		try {
+			readFile = new FileReader(path+nomFichierCSV);
+			//dans ce fichier lire les element et les classe selon la reldef
+			
+			
+		} catch (FileNotFoundException e) {
+			System.err.println("Le fichier CSV n'a pas été trouvé");
+		} finally {
+			try {
+				readFile.close();
+			} catch (IOException e) {
+				System.err.println("Erreur I/O pour le fichier CSV");
+				e.printStackTrace();
+			}
+		}
+		
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
+
+		//parcourir Heapfiles pour comparer les relName
+		for(int i=0; i<heapFiles.size(); i++) {
+			RelDef reldef = heapFiles.get(i).getRelDef() ; 
+			if(reldef.getNomRelation().equals(relName)) {
+				
+				//
+				//ecriture du record dans la relation
+				Record r = new Record(reldef, valeurs);
+				heapFiles.get(i).insertRecord(r);
+			}
+		}	
+		
+		//######## model
+		try {
+			catalogue = new FileInputStream(path + "nomFichierCSV");
+			ois = new ObjectInputStream(catalogue);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//TODO use stringTokenizer pour cataloguer les record 
+		//on les stock dans une variable 
+		//on ajoute le record avec la variable et le relName
+//		try {
+//			catalogue = new FileInputStream(path + "catalogue.def");
+//			ois = new ObjectInputStream(catalogue);
+//			compteurRelation = ois.readInt() ;
+//			/**
+//			 * Pour chaque relDef : on va creer un relDef
+//			 */
+//			for(int i = 0; i<compteurRelation ; i++) {
+//				String relname = (String) ois.readObject();
+//				int nbCol = ois.readInt();
+//				List <String> typeCol = new ArrayList<>();
+//				for(int j = 0; j<nbCol; j++) {
+//					typeCol.add((String) ois.readObject()) ;
+//				}
+//				int fileIdx = ois.readInt();
+//				int recordSize = ois.readInt();
+//				int slotCount = ois.readInt();
+//				
+//				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
+//				relDefTab.add(relation);
+//			}
+//		}
 	}
 	
 	public void selectAll(StringTokenizer commande ) {
+		String nomFichierCSV = commande.nextToken();
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(commande.toString());
+	
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
+
+//		//parcourir Heapfiles pour comparer les relName
+//		for(int i=0; i<heapFiles.size(); i++) {
+//			RelDef reldef = heapFiles.get(i).getRelDef() ; 
+//			if(reldef.getNomRelation().equals(relName)) {
+//				
+//				//ecriture du record dans la relation
+//				Record r = new Record(reldef, valeurs);
+//				heapFiles.get(i).insertRecord(r);
+//			}
+//		}	
+		
 		System.out.print("Affichage des records de "+commande.toString());
 		
 		for(Record r : listRecords) {
 			r.affiche();
 		}
+		
 		
 		System.out.println("Nombre de records : "+ listRecords.size());
 	}

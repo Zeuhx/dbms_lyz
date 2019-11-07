@@ -152,7 +152,7 @@ public class BufferManager {
 					listFrame.get(1).setLRU_change(false);
 				}
 			 }
-			 else System.out.println("aucune condition n'est realise : ERROR qlq part");
+			 else System.out.println("aucune condition n'est realise : aucun frame dispo");
 		}
 		return (bf);
 	}
