@@ -177,4 +177,8 @@ public class RelDef {
 	public int getRecordSize() { return recordSize;	}
 
 	public int getSlotCount() { return slotCount; }
+	
+	public String getRelName() {
+		return relName;
+	}
 }

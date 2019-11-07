@@ -28,14 +28,14 @@ public class DBDef implements Serializable{
 	private static List<RelDef> relDefTab;
 	private static int compteurRelation;
 
-	/** Constructeur privé */
+	/** Constructeur privee */
 	private DBDef() {
 	}
 
-	/** Instance unique non préinitialisée */
+	/** Instance unique non preinitialisee */
 	private static DBDef INSTANCE = null;
 
-	/** Point d'accès pour l'instance unique du singleton */
+	/** Point d'acces pour l'instance unique du singleton */
 	public static DBDef getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new DBDef();
@@ -60,7 +60,24 @@ public class DBDef implements Serializable{
 			catalogue = new FileInputStream(path + "catalogue.def");
 			ois = new ObjectInputStream(catalogue);
 			compteurRelation = ois.readInt() ;
-			relDefTab = (List<RelDef>) ois.readObject(); 
+			/**
+			 * Pour chaque relDef : on va creer un relDef
+			 */
+			for(int i = 0; i<compteurRelation ; i++) {
+				String relname = (String) ois.readObject();
+				int nbCol = ois.readInt();
+				List <String> typeCol = new ArrayList<>();
+				for(int j = 0; j<nbCol; j++) {
+					typeCol.add((String) ois.readObject()) ;
+				}
+				int fileIdx = ois.readInt();
+				int recordSize = ois.readInt();
+				int slotCount = ois.readInt();
+				
+				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
+				relDefTab.add(relation);
+			}
+			
  		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Le fichier catalogue n'existe pas");
@@ -80,6 +97,7 @@ public class DBDef implements Serializable{
 			}
 		}
 	}
+	
 
 	/**
 	 * Sauvegarde les infos de DBDef dans catalogue.def
@@ -100,7 +118,20 @@ public class DBDef implements Serializable{
 			catalogue = new FileOutputStream (path + "catalogue.def");
 			oos= new ObjectOutputStream(catalogue);
 			oos.writeInt(compteurRelation);
-			oos.writeObject(relDefTab);
+			for(int i = 0; i<compteurRelation; i++) {
+				oos.writeObject(relDefTab.get(i).getRelName());
+				oos.writeInt(relDefTab.get(i).getNbCol());
+				/**
+				 * Compter le nb de col puis ajouter les types de col
+				 * un par un
+				 */
+				for(String type : relDefTab.get(i).getTypeCol()) {
+					oos.writeObject(type);
+				}
+				oos.writeInt(relDefTab.get(i).getFileIdx());
+				oos.writeInt(relDefTab.get(i).getRecordSize());
+				oos.writeInt(relDefTab.get(i).getSlotCount());
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
