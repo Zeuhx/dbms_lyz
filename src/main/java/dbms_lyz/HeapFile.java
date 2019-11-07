@@ -172,17 +172,15 @@ public class HeapFile {
 	}
 	
 	/**
-	 * TODO : est ce que c'est ça ? est ce que il faut voir si il faut traiter la taille de record 
-	 * entré en argument avec des conditions
+	 * TODO : est ce que c'est ï¿½a ? est ce que il faut voir si il faut traiter la taille de record 
+	 * entrï¿½ en argument avec des conditions
 	 */
-
 	public Rid insertRecord(Record record) {
 		return writeRecordToDataPage(record, getFreeDataPageId());
 	}
 
 	// Getters
 	
-	// TODO a faire du TD5
 	/**
 	 * Cherche tous les records d'un heapfile
 	 * 
@@ -191,7 +189,7 @@ public class HeapFile {
 	public List<Record> getAllRecords(){
 	
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
-		int fileIdx = this.relDef.getFileIdx(); //nom du fichier à recuperer les records
+		int fileIdx = this.relDef.getFileIdx(); //nom du fichier ï¿½ recuperer les records
 		PageId page =  new PageId(pageIdx, fileIdx);
 		List<Record> listRecordOfHeapFile = new ArrayList<>(); //variable pour stocker la liste des records d'un heapfile
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
