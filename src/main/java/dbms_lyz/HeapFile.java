@@ -29,7 +29,7 @@ public class HeapFile {
 	 */
 	public void createNewOnDisk() {
 		int fileIdx = relDef.getFileIdx(); // L'indice du fichier est donnee par relDef
-		DiskManager.createFile(fileIdx);
+		DiskManager.getInstance().createFile(fileIdx);
 		DiskManager.addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);
 		ByteBuffer bufferDePageVide = BufferManager.getInstance().getPage(headerPage);

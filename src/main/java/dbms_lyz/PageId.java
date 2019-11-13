@@ -15,7 +15,6 @@ public class PageId {
 
 	public PageId(String nomFichier) {
 		fileIdx = idFichier(nomFichier);
-		System.out.println("file id : " + fileIdx);
 		pageIdx = ID;
 		ID += 1;
 	}
@@ -32,23 +31,6 @@ public class PageId {
 	 * @return le x de Data_x
 	 */
 	public int idFichier(String nomFichier) {
-	/*
-		int id;
-		String s = null;
-		// Si le fichier possede un nom court (chemin nom absolue)
-		if (nomFichier.length() < 20) {
-			s = new String(nomFichier.substring(5, nomFichier.indexOf(".rf")));
-		}
-		// Sinon c'est le chemin absolue
-		else {
-			// 27 car c'est nb de caractere avant l'acces au fichier
-			s = new String(nomFichier.substring(27, nomFichier.indexOf(".rf")));
-		}
-
-		id = Integer.parseInt(s);
-		return (id);
-	*/
-		
 		int taille = nomFichier.length()-4;
 		int debut = nomFichier.length()-3;
 		String nbARecup;
@@ -65,7 +47,6 @@ public class PageId {
 			}
 			
 			else {
-				
 				isInteger = false;	
 			}
 		}

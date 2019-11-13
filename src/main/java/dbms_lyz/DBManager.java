@@ -89,7 +89,7 @@ public class DBManager {
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		// appel du 1er constructeur 
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
-
+		System.out.println("ici on rentre dans createRelation()");
 		/**
 		 * On initialise le recordSize et slotCount car le 1er constructeur 
 		 */
@@ -172,10 +172,11 @@ public class DBManager {
 		/**
 		 * Verification
 		 */
+		System.out.print("La commande saisie est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
-			System.out.println(typeCol.get(i) + ", ");
+			System.out.print(typeCol.get(i) + " ");
 		}
-
+		System.out.println();
 		/**
 		 * Appel de la fonction
 		 */
@@ -210,7 +211,7 @@ public class DBManager {
 		 */
 	}
 	/**
-	 * Cette commande demande l’insertion d’un record dans une
+	 * Cette commande demande lï¿½insertion dï¿½un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
 	 *  colonne) du record et le nom de la relation.
 	 * @param commande
@@ -240,11 +241,11 @@ public class DBManager {
 	}
 	
 	/**
-	 * Cette commande demande l’insertion de plusieurs records dans une relation.
+	 * Cette commande demande lï¿½insertion de plusieurs records dans une relation.
 	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
-	 * séparateur.
-	 * On suppose que le fichier se trouve à la racine de votre dossier projet (au même niveau donc que
-	 * les sous-répertoires Code et DB).
+	 * sï¿½parateur.
+	 * On suppose que le fichier se trouve ï¿½ la racine de votre dossier projet (au mï¿½me niveau donc que
+	 * les sous-rï¿½pertoires Code et DB).
 	 * @param commande
 	 */
 	public void insertAll(StringTokenizer commande) {
@@ -261,7 +262,7 @@ public class DBManager {
 			readFile = new FileReader(path+nomFichierCSV);
 			
 		} catch (FileNotFoundException e) {
-			System.err.println("Le fichier CSV n'a pas été trouvé");
+			System.err.println("Le fichier CSV n'a pas ï¿½tï¿½ trouvï¿½");
 		} finally {
 			try {
 				readFile.close();
@@ -311,7 +312,7 @@ public class DBManager {
 				br.close();
 				readFile.close();
 			} catch (IOException e) {
-				System.out.println("Erreur I/O à la fermeture des readers");
+				System.out.println("Erreur I/O ï¿½ la fermeture des readers");
 			}
 		}
 	}

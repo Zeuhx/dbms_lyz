@@ -47,13 +47,11 @@ public class DBDef implements Serializable{
 	 * Constructeur
 	 */
 	public void init() {
+		// src/main/ressources/DB/catalogue.def
 		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator );
+				File.separator + "resources" + File.separator + "DB" + File.separator);
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
-		/**
-		 * TODO LECTURE
-		 */
 		FileInputStream catalogue = null ;
 		ObjectInputStream ois = null ;
 		try {
@@ -152,25 +150,17 @@ public class DBDef implements Serializable{
 	}
 
 	/**
+	 * [OK] 
 	 * @param rd qui est une RelDef rajoute rd dans la liste et actualise le
 	 *           compteur
 	 */
 	public void addRelation(RelDef rd) {
-		System.out.println("Rentre dans addRelation");
 		if (rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
 		} else
 			System.out.println("Erreur, le contenu est vide");
 	}
-	
-	public static List<RelDef> getList(){ return relDefTab; }
-	
-	public void setList(List <RelDef> l) {
-		relDefTab = l;
-	}
-		
-	public static int getListSize() { return relDefTab.size(); }
 	
 	/**
 	 * Remet DBDef a 0 avec relDefTab
@@ -180,5 +170,13 @@ public class DBDef implements Serializable{
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
 	}
+	
+	public static List<RelDef> getList(){ return relDefTab; }
+	
+	public void setList(List <RelDef> l) {
+		relDefTab = l;
+	}
+		
+	public static int getListSize() { return relDefTab.size(); }
 	
 }

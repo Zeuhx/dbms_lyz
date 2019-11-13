@@ -32,23 +32,18 @@ public class DiskManager {
 	}
 
 	/**
-	 * 
 	 * @param fileIdx Cette méthode crée (dans le sous-dossier DB) un fichier
 	 *                Data_fileIdx.rf initialement vide.
-	 * 
 	 */
-	public static void createFile(int fileIdx) {
-		/**
-		 * f file already exists then it is opened else the file is created and then
-		 * opened
-		 */
+	public void createFile(int fileIdx) {
+		// Ouvre le fichier si ce dernier existe deja
 		File f = new File(path + fileIdx + ".rf");
 
 		try {
 			if (f.createNewFile()) {
-				System.out.println("Fichier id " + fileIdx + "creer");
+				System.out.println("Le fichier dont l'id est " + fileIdx + " a ete cree");
 			} else {
-				System.out.println("Fichier id " + fileIdx + "  non creer");
+				System.out.println("Le fichier id " + fileIdx + " est non cree [peut etre qu'il existe deja]");
 			}
 		} catch (SecurityException e_s) {
 			System.out.println("Security Exception : il n'y a pas les droits necessaires");
@@ -105,7 +100,6 @@ public class DiskManager {
 			rf = new RandomAccessFile(f, "r");
 			channel = rf.getChannel();
 			channel.read(buff, 0);
-
 		} catch (FileNotFoundException e1) {
 			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
@@ -126,8 +120,6 @@ public class DiskManager {
 	public static void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
 		File f = new File(path + pageId.getFileIdx() + ".rf");
-		// Verif : System.out.println(f.getAbsolutePath());
-		// Obtention du flux de donnee du ficheir rf
 		FileChannel channel = null;
 
 		try {
@@ -152,22 +144,6 @@ public class DiskManager {
 
 	}
 	
-	public String getPath() {
-		return path;
-	}
+	public String getPath() { return path; }
 
-	/*
-	 * public void writePage2(PageId pageId, ByteBuffer buff) { byte data[] = new
-	 * byte[40960]; buff = ByteBuffer.wrap(data); RandomAccessFile rf = null ; int i
-	 * = buff.getInt(); try { rf= new RandomAccessFile(new
-	 * File("DB/Data_"+pageId.getFileIdx()+".rf"),"rw"); try { for(i=0 ;
-	 * i<rf.length() ; i++) { rf.write(buff.get()); } } catch (IOException e) { //
-	 * TODO Auto-generated catch block e.printStackTrace(); } }
-	 * catch(FileNotFoundException e1) {
-	 * 
-	 * } try { rf.close(); } catch (IOException e) { // TODO Auto-generated catch
-	 * block e.printStackTrace(); }
-	 * 
-	 * }
-	 */
 }
