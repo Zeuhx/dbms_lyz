@@ -305,6 +305,14 @@ public class DBManager {
 			}
 		} catch (IOException e) {
 			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
+		} finally {
+			
+			try {
+				br.close();
+				readFile.close();
+			} catch (IOException e) {
+				System.out.println("Erreur I/O à la fermeture des readers");
+			}
 		}
 	}
 	
