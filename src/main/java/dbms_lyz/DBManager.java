@@ -1,5 +1,6 @@
 package main.java.dbms_lyz;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -215,7 +216,6 @@ public class DBManager {
 	 * @param commande
 	 */
 	public void insert(StringTokenizer commande) {
-		
 		String relName = commande.nextToken();
 		List<String> valeurs = new ArrayList<String>(); //list valeurs de chaque colonne
 		
@@ -253,17 +253,12 @@ public class DBManager {
 		
 		String nomFichierCSV = commande.nextToken();
 		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator );
+						File.separator + "resources" + File.separator );
+		
 		FileReader readFile = null ;
-		
-		
-		FileInputStream catalogue = null ;//wy
-		ObjectInputStream ois = null ;//wy
-		
 		try {
-			readFile = new FileReader(path+nomFichierCSV);
 			//dans ce fichier lire les element et les classe selon la reldef
-			
+			readFile = new FileReader(path+nomFichierCSV);
 			
 		} catch (FileNotFoundException e) {
 			System.err.println("Le fichier CSV n'a pas été trouvé");
@@ -276,56 +271,41 @@ public class DBManager {
 			}
 		}
 		
-		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
-
+		List<HeapFile> heapFiles = FileManager.getInstance().getHeapFiles();
+		
+		HeapFile leBonHeapFile;
+		
 		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
 			if(reldef.getNomRelation().equals(relName)) {
-				
-				//
-				//ecriture du record dans la relation
-				Record r = new Record(reldef, valeurs);
-				heapFiles.get(i).insertRecord(r);
+				leBonHeapFile = heapFiles.get(i);
+			} else {
+				//on entrera jamais car on part du principe que relName existe 
+				leBonHeapFile = new HeapFile(null);
 			}
 		}	
 		
-		//######## model
+		/**
+		 * cree un string pour stCommande pour faire appel a insert()
+		 * on recup les contenus de record
+		 */		
+		BufferedReader br = new BufferedReader(readFile);
+		String uneLineDeCSV;
+		StringTokenizer uneLigneInsert = new StringTokenizer("");
+		
+		//boucle tant qu'il existe des lignes
 		try {
-			catalogue = new FileInputStream(path + "nomFichierCSV");
-			ois = new ObjectInputStream(catalogue);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			while(br.readLine() != null) {
+				uneLineDeCSV = new String (relName+","+br.readLine());
+				
+				//contenu d'une ligne de csv pour la command insert()
+				uneLigneInsert = new StringTokenizer(uneLineDeCSV, ",");
+				insert(uneLigneInsert);
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
 		}
-		//TODO use stringTokenizer pour cataloguer les record 
-		//on les stock dans une variable 
-		//on ajoute le record avec la variable et le relName
-//		try {
-//			catalogue = new FileInputStream(path + "catalogue.def");
-//			ois = new ObjectInputStream(catalogue);
-//			compteurRelation = ois.readInt() ;
-//			/**
-//			 * Pour chaque relDef : on va creer un relDef
-//			 */
-//			for(int i = 0; i<compteurRelation ; i++) {
-//				String relname = (String) ois.readObject();
-//				int nbCol = ois.readInt();
-//				List <String> typeCol = new ArrayList<>();
-//				for(int j = 0; j<nbCol; j++) {
-//					typeCol.add((String) ois.readObject()) ;
-//				}
-//				int fileIdx = ois.readInt();
-//				int recordSize = ois.readInt();
-//				int slotCount = ois.readInt();
-//				
-//				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
-//				relDefTab.add(relation);
-//			}
-//		}
 	}
 	
 	public void selectAll(StringTokenizer commande ) {
@@ -350,7 +330,6 @@ public class DBManager {
 		for(Record r : listRecords) {
 			r.affiche();
 		}
-		
 		
 		System.out.println("Nombre de records : "+ listRecords.size());
 	}
