@@ -106,8 +106,7 @@ public class HeapFile {
 		try {
 			rf = new RandomAccessFile(new File(path  + fileIdx + ".rf"), "rw");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("le fichier " +path+rf + " n'a pas ete trouver");
 			
 		}
 		// TODO Marcel finir le channel et bytebuffer

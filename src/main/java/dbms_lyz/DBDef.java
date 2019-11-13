@@ -77,21 +77,17 @@ public class DBDef implements Serializable{
 			}
 			
  		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			System.err.println("Le fichier catalogue n'existe pas");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Erreur d'I/O pour le catalogue.def");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("La classe n'a pas ete trouver pour le fichier");
 		} finally {
 			try {
 				catalogue.close() ; 
 				ois.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Erreur d'I/O lors de la fermeture du fichier ");
 			}
 		}
 	}
@@ -101,13 +97,6 @@ public class DBDef implements Serializable{
 	 * Sauvegarde les infos de DBDef dans catalogue.def
 	 */
 	public void finish(){
-		/**
-		 * TODO : ECRITURE & Verifier si les infos sont bien sauvegarder dans la DBDef
-		 * creer un fichier Catalog.def qui contient
-		 * la sauvegarde des infos de DBDef
-		 * Fichier txt ou ObjectOutputStram via la serialisation
-		 */
-		
 		ObjectOutputStream oos = null ;
 		FileOutputStream catalogue = null ;
 		try {
@@ -131,18 +120,15 @@ public class DBDef implements Serializable{
 				oos.writeInt(relDefTab.get(i).getSlotCount());
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Le fichier n'a pas ete trouver ");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Erreur d'I/O lors du fermeture du DBDef (1)");
 		} finally {
 			try {
 				catalogue.close() ; 
-				oos.close();
+				oos.close();	// TODO Erreur lors de l'execution sur cette ligne
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("Erreur d'I/O lors du fermeture du DBDef (2)");
 			}
 		}
 		
