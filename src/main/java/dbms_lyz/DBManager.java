@@ -347,6 +347,7 @@ public class DBManager {
 	
 	public void select(StringTokenizer commande) {
 		
+		
 		String nomRelation = "";
 		int colonne;
 		String valeur = "";
