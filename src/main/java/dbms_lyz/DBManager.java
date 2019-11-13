@@ -317,33 +317,64 @@ public class DBManager {
 	}
 	
 	public void selectAll(StringTokenizer commande ) {
-		String nomFichierCSV = commande.nextToken();
-		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(commande.toString());
-	
-		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
+		
+		String nomRelation = "";
+		int compteurRecord = 0;
+		
+		commande.nextElement();
+		nomRelation = commande.nextToken();
+		
+		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 
-//		//parcourir Heapfiles pour comparer les relName
-//		for(int i=0; i<heapFiles.size(); i++) {
-//			RelDef reldef = heapFiles.get(i).getRelDef() ; 
-//			if(reldef.getNomRelation().equals(relName)) {
-//				
-//				//ecriture du record dans la relation
-//				Record r = new Record(reldef, valeurs);
-//				heapFiles.get(i).insertRecord(r);
-//			}
-//		}	
-		
-		System.out.print("Affichage des records de "+commande.toString());
-		
 		for(Record r : listRecords) {
-			r.affiche();
+			StringBuffer stringBuffRecord = new StringBuffer("");
+			for(String s : r.getValues()) {
+				stringBuffRecord.append(s);
+				stringBuffRecord.append(" ; ");
+			}
+			
+			String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
+			System.out.println(stringRecord);
+			compteurRecord ++;
 		}
+
+	
+		System.out.println("Total Records : "+ compteurRecord);
 		
 		System.out.println("Nombre de records : "+ listRecords.size());
+
 	}
 	
 	public void select(StringTokenizer commande) {
 		
+		
+		String nomRelation = "";
+		int colonne;
+		String valeur = "";
+		
+		commande.nextElement();
+		nomRelation = commande.nextToken();
+		colonne = (int) commande.nextElement();
+		valeur = commande.nextToken(); 
+		
+		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
+		
+		for(Record r : listRecords) {
+			
+			List<String> values = r.getValues();
+			
+			if(values.get(colonne).equals(valeur)) {
+				StringBuffer stringBuffRecord = new StringBuffer("");
+				
+				for(String s : r.getValues()) {
+					stringBuffRecord.append(s);
+					stringBuffRecord.append(" ; ");
+				}
+				
+				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
+				System.out.println(stringRecord);
+			}
+		}
 		
 	}
 }
