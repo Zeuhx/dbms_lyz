@@ -138,7 +138,10 @@ public class Main {
 		
 		
 	}
-
+	
+	public static void testReadPage() {
+		
+	}
 
 	//public File file 
 
