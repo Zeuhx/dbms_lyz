@@ -116,31 +116,30 @@ public class DiskManager {
 		}
 
 	}
-
+	
+	/**
+	 * Ecrire le contenu du ByteBuffer dans la page concerne
+	 * @param pageId
+	 * @param buff
+	 */
 	public static void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
-		
 		File f = new File(path + pageId.getFileIdx() + ".rf");
-		FileChannel channel = null;
+		int positionPage = pageId.getPageIdx();
 
 		try {
 			rf = new RandomAccessFile(f, "rw");
+			/**
+			 * Position du RandomAccessFile
+			 */
+			rf.seek(positionPage * Constants.PAGE_SIZE);
+			rf.write(buff.array());
 		} catch (FileNotFoundException e1) {
 			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
-		}
-
-		// Relier buff et fichier via le channel
-		channel = rf.getChannel();
-		buff.rewind();
-		try {
-			channel.write(buff, 0);
-			// Verif : System.out.println(nbr);
-			channel.close();
-			rf.close();
 		} catch (IOException e) {
-			System.out.println("Erreur au niveau de la fermeture du channel ou du fichier");
+			e.printStackTrace();
 		}
 
 	}
