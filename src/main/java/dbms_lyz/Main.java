@@ -23,12 +23,14 @@ import java.util.Scanner;
  */
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
+		//DBManager.init();
 		//testCommandeDBDef();
 		//testCreationFichiersAvecLeurPage();
-		testEcrireFichierAvecLeurPage();
+		//testEcrireFichierAvecLeurPage();
+		testRelDefEtRecord();
 	}
 	
-	public static void testCommandeDBDef() {
+	public static void testCommandeDBDefPourCreer() {
 		DBManager manager = new DBManager();
 //		DBManager.init();
 		Scanner scan = new Scanner(System.in);
@@ -39,7 +41,6 @@ public class Main {
 			System.out.println("Quelles commandes voulez vous saisir ?");
 			System.out.println("choix : [exit] [commande]");
 			choix = scan.nextLine();
-
 			if(choix.equals("exit")){
 				DBManager.finish();
 			}
@@ -49,9 +50,8 @@ public class Main {
 				commande = scan.nextLine();
 				manager.processCommand(commande);	
 			}
-			
-			
 		} while(!choix.equals("exit"));
+		scan.close();
 	}
 	
 	public static void testCreationFichiersAvecLeurPage()  {
@@ -103,73 +103,10 @@ public class Main {
 		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
 		
 	}
-	public static void test() {
-		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator );
-		
-		FileOutputStream test = null;
-		ObjectOutputStream ous = null;
-		try {
-			test = new FileOutputStream(path+"test.def");
-			ous = new ObjectOutputStream(test);
-			ous.writeInt(3);
-			ous.writeInt(5);
-			ous.writeObject("Bonjour");
-			
-		} catch(FileNotFoundException e) {
-			System.err.println("Not found");
-		} catch (IOException e) {
-			System.err.println("IO");
-		} finally {
-			try {
-				ous.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				test.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		FileInputStream testRead = null;
-		ObjectInputStream ois = null;
-		try {
-			testRead = new FileInputStream(path+"test.def");
-			ois = new ObjectInputStream(testRead);
-			System.out.println(ois.readInt());
-			System.out.println(ois.readInt());
-			System.out.println(ois.readObject());
 
-		}catch(FileNotFoundException e) {
-			System.err.println("Not found");
-		} catch (IOException e) {
-			System.err.println("IO");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				ois.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				testRead.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		
+	public static void testRelDefEtRecord() {
+		testCommandeDBDefPourCreer();
 	}
-
-
-	//public File file 
+	
 
 }
