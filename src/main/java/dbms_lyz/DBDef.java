@@ -133,7 +133,7 @@ public class DBDef implements Serializable{
 		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
-		} else
+		} else 
 			System.err.println("Erreur, le contenu du relDef saisie est vide");
 	}
 	
