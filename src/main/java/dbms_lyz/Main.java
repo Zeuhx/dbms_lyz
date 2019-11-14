@@ -1,19 +1,11 @@
 package main.java.dbms_lyz;
 
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -26,13 +18,8 @@ public class Main {
 		//DBManager.init();
 		//testCommandeDBDef();
 		//testCreationFichiersAvecLeurPage();
-<<<<<<< HEAD
-		testDiskManagerWriteAndRead();
-		
-=======
 		//testEcrireFichierAvecLeurPage();
 		testRelDefEtRecord();
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	}
 	
 	public static void testCommandeDBDefPourCreer() {
@@ -42,7 +29,6 @@ public class Main {
 		String choix = "";
 		String commande = "";
 		do {
-			
 			System.out.println("Quelles commandes voulez vous saisir ?");
 			System.out.println("choix : [exit] [commande]");
 			choix = scan.nextLine();
@@ -50,13 +36,13 @@ public class Main {
 				DBManager.finish();
 			}
 			else if (choix.equals("commande")){
-				System.out.println("Saisir votre commande de processCommand");
+				System.out.println("Saisir votre commande : ");
 				System.out.println("Ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
 				commande = scan.nextLine();
 				manager.processCommand(commande);	
 			}
 		} while(!choix.equals("exit"));
-		scan.close();
+		// scan.close();
 	}
 	
 	public static void testCreationFichiersAvecLeurPage()  {
@@ -94,7 +80,21 @@ public class Main {
 		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
 	}
 	
-	public static void testDiskManagerWriteAndRead() {
+	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		
+		try {
+			f.seek(0);
+			f.read(bf.array());
+			System.out.println("Bonjour");
+		} catch (IOException e) {
+			System.err.println("Erreur I/O");
+		}
+		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		
+	}
+	
+	public static void testDiskManagerWriteAndReadPage() {
 		String chemin = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");
 		File f = new File(chemin +"10.rf");
@@ -111,79 +111,10 @@ public class Main {
 		DiskManager.writePage(p, bf);
 		bf.position(0);
 		DiskManager.readPage(p, bf);
-		
-		
 	}
-
-<<<<<<< HEAD
 	
-	public static void test() {
-		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator );
-		
-		FileOutputStream test = null;
-		ObjectOutputStream ous = null;
-		try {
-			test = new FileOutputStream(path+"test.def");
-			ous = new ObjectOutputStream(test);
-			ous.writeInt(3);
-			ous.writeInt(5);
-			ous.writeObject("Bonjour");
-			
-		} catch(FileNotFoundException e) {
-			System.err.println("Not found");
-		} catch (IOException e) {
-			System.err.println("IO");
-		} finally {
-			try {
-				ous.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				test.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		FileInputStream testRead = null;
-		ObjectInputStream ois = null;
-		try {
-			testRead = new FileInputStream(path+"test.def");
-			ois = new ObjectInputStream(testRead);
-			System.out.println(ois.readInt());
-			System.out.println(ois.readInt());
-			System.out.println(ois.readObject());
-=======
-	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
-		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		
-		try {
-			f.seek(0);
-			f.read(bf.array());
-			System.out.println("Bonjour");
-		} catch (IOException e) {
-			System.err.println("Erreur I/O");
-		}
-		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
-		
-	}
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
-
 	public static void testRelDefEtRecord() {
 		testCommandeDBDefPourCreer();
 	}
-	
-<<<<<<< HEAD
-	public static void testReadPage() {
-		
-	}
-
-	//public File file 
-=======
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 
 }

@@ -8,9 +8,7 @@ public class FileManager {
 	
 	/** Singleton */
 	private static FileManager INSTANCE = null;
-	private FileManager() {
-		heapFiles = new ArrayList<>();
-	}
+	private FileManager() { heapFiles = new ArrayList<>(); }
 	public static FileManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new FileManager();
@@ -46,7 +44,7 @@ public class FileManager {
 	public void createHeapFileWithRelation(RelDef relDef) {
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		hf.createNewOnDisk();	
+		hf.createNewOnDisk();
 	}
 	
 

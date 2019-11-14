@@ -79,7 +79,7 @@ public class BufferManager {
 		if(f != null){
 			try {
 				DiskManager.readPage(pageId, f.getBuffer());
-				f.get();
+				f.getPlus();
 				if(pageId == listFrame.get(0).getPageId()) {
 					listFrame.get(0).setLRU_change(false);
 					listFrame.get(1).setLRU_change(true);

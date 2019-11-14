@@ -24,8 +24,8 @@ import java.util.List;
 public class DBDef implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private static List<RelDef> relDefTab;
-	private static int compteurRelation;
+	private static List<RelDef> relDefTab = new ArrayList<>();
+	private static int compteurRelation = 0;
 
 	/** Singleton */
 	private DBDef() {}
@@ -44,8 +44,6 @@ public class DBDef implements Serializable{
 		// src/main/ressources/DB/catalogue.def
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator);
-		relDefTab = new ArrayList<>();
-		compteurRelation = 0;
 		FileInputStream catalogue = null ;
 		ObjectInputStream ois = null ;
 		try {
@@ -69,7 +67,6 @@ public class DBDef implements Serializable{
 				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 				relDefTab.add(relation);
 			}
-			
  		} catch (FileNotFoundException e) {
 			System.err.println("Le fichier catalogue n'existe pas");
 		} catch (IOException e) {
@@ -129,16 +126,15 @@ public class DBDef implements Serializable{
 	}
 
 	/**
-	 * @param rd qui est une RelDef rajoute rd dans la liste et actualise le
-	 *           compteur
+	 * Rajoute une relation dans la liste et actualise le compteur de relation
+	 * @param rd la relation a ajoute
 	 */
 	public void addRelation(RelDef rd) {
-		if (rd != null) {
-			relDefTab = new ArrayList<RelDef>();
+		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
 		} else
-			System.out.println("Erreur, le contenu est vide");
+			System.err.println("Erreur, le contenu du relDef saisie est vide");
 	}
 	
 	/**
@@ -151,8 +147,8 @@ public class DBDef implements Serializable{
 		compteurRelation = 0;
 	}
 	
+	// Getters et Setters 
 	public static int getListSize() { return relDefTab.size(); }
-	
 	public static List<RelDef> getRelDefTab(){ return relDefTab; }
 	
 	public void setList(List <RelDef> l) { relDefTab = l; }

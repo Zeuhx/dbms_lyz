@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 public class Frame {
 	private ByteBuffer buff;
 	private PageId pageId;
-
 	private int pin_count;
 	private boolean flag_dirty;
 	private boolean LRU_change;
@@ -22,9 +21,14 @@ public class Frame {
 		flag_dirty = false;
 	}
 	
-	//peut etre pas necessaire
+	public Frame() {
+		pageId = null ;
+		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		pin_count = 0;
+		flag_dirty = false;
+	}
+	
 	public Frame(boolean LRU_change) {
-		pageId = null ; 		// ATTENTION : PEUT PROVOQUER UNE EXCEPTION : A REGLER
 		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		pin_count = 0;
 		flag_dirty = false;
@@ -54,15 +58,10 @@ public class Frame {
 	 * @param flag_dirty
 	 */
 	public void free(boolean flag_dirty) {
-		if (pin_count != 0) {
-			pin_count--;
-		}
+		if (pin_count != 0)	pin_count-- ;
 
-		if (this.flag_dirty == true && (flag_dirty==false)) {
-			this.flag_dirty = true;
-		}
-		else
-			this.flag_dirty = false;
+		if (this.flag_dirty == true && (flag_dirty==false)) this.flag_dirty = true ;
+		else this.flag_dirty = false ;
 
 		// Dans quel cas LRU_change => True
 //		if(pin_count == 0) {
@@ -75,39 +74,31 @@ public class Frame {
 //		}
 
 	}
-	public void replace (Frame frame) {
-		
-	}
-	public void get() {
-		pin_count++;
-	}
-
-	public int getPin_count() {
-		return pin_count;
-	}
-
-	public boolean getFlag_dirty() {
-		return flag_dirty;
-	}
-
-	public boolean getLRU_change() {
-		if(pin_count >=1) LRU_change = false;
-		
-		return LRU_change;
-	}
-
-	public ByteBuffer getByteBuffer() {
-		return buff;
-	}
-
+	// public void replace (Frame frame) { }
+	
 	public void flushFrame() {
 		pageId = null;
 		pin_count = 0;
 		flag_dirty = false;
 	}
 	
-	public void setBuff(ByteBuffer buff) {
-		this.buff = buff;
+	// Pas un getter
+	public void getPlus() { pin_count++; }
+
+	// Getters
+	public int getPin_count() { return pin_count ;}
+	public boolean getFlag_dirty() { return flag_dirty; }
+	public ByteBuffer getByteBuffer() { return buff; }
+	
+	// TODO Bizarre, on est pas cense modifier ici
+	public boolean getLRU_change() {
+		if(pin_count >=1) LRU_change = false;
+		return LRU_change;
 	}
 
+	// Setters
+	public void setBuff(ByteBuffer buff) { this.buff = buff; }
+	public void setPageId(PageId pageId) { this.pageId = pageId; }
+	
+	
 }

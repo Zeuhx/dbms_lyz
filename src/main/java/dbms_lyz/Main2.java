@@ -57,7 +57,7 @@ public class Main2 {
 		//si la new pageId n'est pas dans la liste 
 		if (indexFrame == 2)
 			pageExist = false;
-		//si il est dans la liste on récup la Frame qui contient cette page existant 
+		//si il est dans la liste on rï¿½cup la Frame qui contient cette page existant 
 		else {
 			pageExist = true;
 			getFrame = listFrame.get(indexFrame);
@@ -66,7 +66,7 @@ public class Main2 {
 		//si newFrame est dans la liste
 		if (pageExist) {
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
-			getFrame.get(); //pin_count ++
+			getFrame.getPlus(); //pin_count ++
 
 			//Maj du LRU_change
 			//si newFrame correspond au premier
@@ -101,10 +101,10 @@ public class Main2 {
 		else {
 			System.out.println("si newFrame n'est pas dedans");
 			//condition si pin count > 0
-			System.out.println((listFrame.get(0)).getLRU_change()+" pour pin count à "+(listFrame.get(0)).getPin_count());
-			System.out.println((listFrame.get(1)).getLRU_change()+" pour pin count à "+(listFrame.get(1)).getPin_count());
+			System.out.println((listFrame.get(0)).getLRU_change()+" pour pin count ï¿½ "+(listFrame.get(0)).getPin_count());
+			System.out.println((listFrame.get(1)).getLRU_change()+" pour pin count ï¿½ "+(listFrame.get(1)).getPin_count());
 			if (((listFrame.get(0)).getPin_count() == 0) || (listFrame.get(1).getLRU_change())){
-				System.out.println("les pin count sont à zéro");
+				System.out.println("les pin count sont ï¿½ zï¿½ro");
 	
 				//TEST affiche
 //				System.out.println((listFrame.get(0)).getLRU_change());
@@ -167,7 +167,7 @@ public class Main2 {
 			System.out.println("id de la page dans frame : "+i+" est : "+f.getPageId().getPageIdx());
 			if (f.getPageId().getPageIdx() == (pageId.getPageIdx())) {
 
-				System.out.println("résultat incide du frame: "+i);
+				System.out.println("rï¿½sultat incide du frame: "+i);
 				return (i);
 			}
 			i++;

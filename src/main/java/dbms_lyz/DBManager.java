@@ -58,13 +58,13 @@ public class DBManager {
 		stCommandaCouper = new StringTokenizer(commande, " ");
 		String typeCommande = stCommandaCouper.nextToken() ;
 		switch(typeCommande) {
-		case "create" : create(stCommandaCouper) ;
+		case "create" : createCommande(stCommandaCouper) ;
 		break ;
-		case "clean" : clean() ;
+		case "clean" : cleanCommande() ;
 		break ;
-		case "insert" : insert(stCommandaCouper) ;
+		case "insert" : insertCommande(stCommandaCouper) ;
 		break ;
-		case "insertall" : insertAll(stCommandaCouper) ;
+		case "insertall" : insertAllCommande(stCommandaCouper) ;
 		}
 
 		/**
@@ -73,8 +73,6 @@ public class DBManager {
 		 * argument dans la fonction Le troisieme element sera convertit en int Et a
 		 * partir du 4eme element on transforme en sous une liste
 		 */
-
-		
 	}
 
 	/**
@@ -87,21 +85,21 @@ public class DBManager {
 
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
-		// appel du 1er constructeur 
+		System.out.println("[Fonction createRelation]");
+
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
-		System.out.println("ici on rentre dans createRelation()");
-		/**
-		 * On initialise le recordSize et slotCount car le 1er constructeur 
-		 */
+		
+		// On calcul le recordSize et slotCount avec les donnees qu'on a
 		reldef.setRecordSize(calculRecordSize(reldef));
-		reldef.setSlotCount(slotCount(reldef));
+		reldef.setSlotCount(calculSlotCount(reldef));
 		DBDef.getInstance().addRelation(reldef);
 		
 		// Calcul de la taille du record
 		int recordSize = calculRecordSize(reldef);
-		int slotCount = slotCount(reldef);
+		int slotCount = calculSlotCount(reldef);
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
+		System.err.println("[WAH] --> il faut faire un compteur qui incremente automatiquement ");
 		reldef = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
 		DBDef.getInstance().addRelation(reldef);
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
@@ -135,36 +133,40 @@ public class DBManager {
 	 * @param rd la relation concernee
 	 * @return  : ici qu'on calcule slotCount
 	 */
-	public int slotCount(RelDef rd) {
+	public int calculSlotCount(RelDef rd) {
 		return Constants.PAGE_SIZE/(rd.getRecordSize()+1);
 	}
 	
-	
 	/**
-	 * Lit la commande et 
+	 * Lit la commande et creer la relation
 	 * @param commande la commande qui va creer la relation
 	 */
-	public void create(StringTokenizer commande) {
+	public void createCommande(StringTokenizer commande) {
 		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
 		int j = 0;
 		
-		for (int i = 1; commande.hasMoreElements(); i++) {
-			if(i == 1) {
-				nomRelation = commande.nextToken();
-			}
-			if(i == 2) {
-				nbCol = Integer.parseInt(commande.nextToken());
-			}
-			if(i > 2) {
-				while(j < nbCol) {
-					typeCol.add(commande.nextToken());
-					j++;
+		try {
+			for (int i = 1; commande.hasMoreElements(); i++) {
+				if(i == 1) {
+					nomRelation = commande.nextToken();
+				}
+				if(i == 2) {
+					nbCol = Integer.parseInt(commande.nextToken());
+				}
+				if(i > 2) {
+					while(j < nbCol) {
+						typeCol.add(commande.nextToken());
+						j++;
+					}
 				}
 			}
+		} catch(NumberFormatException e) {
+			System.err.println("[Attention] Le nombre de colone n'a pas ete saisie");
+			System.exit(-1);
 		}
-
+		
 		System.out.print("La commande saisie est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
 			System.out.print(typeCol.get(i) + " ");
@@ -178,7 +180,7 @@ public class DBManager {
 	 * Remet a 0 le programme
 	 * TODO s'occuper de BufferManager
 	 */
-	public void clean() {
+	public void cleanCommande() {
 		for(int i = 0; i<DBDef.getListSize(); i++) {
 			try {
 				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
@@ -201,12 +203,12 @@ public class DBManager {
 		 */
 	}
 	/**
-	 * Cette commande demande l�insertion d�un record dans une
+	 * Cette commande demande l'inserttion d'un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
 	 *  colonne) du record et le nom de la relation.
 	 * @param commande
 	 */
-	public void insert(StringTokenizer commande) {
+	public void insertCommande(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		List<String> valeurs = new ArrayList<String>(); //list valeurs de chaque colonne
 		
@@ -238,7 +240,7 @@ public class DBManager {
 	 * les sous-r�pertoires Code et DB).
 	 * @param commande
 	 */
-	public void insertAll(StringTokenizer commande) {
+	public void insertAllCommande(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		
 		String nomFichierCSV = commande.nextToken();
@@ -276,7 +278,7 @@ public class DBManager {
 				
 				//contenu d'une ligne de csv pour la command insert()
 				uneLigneInsert = new StringTokenizer(uneLineDeCSV, ",");
-				insert(uneLigneInsert);
+				insertCommande(uneLigneInsert);
 			}
 		} catch (IOException e) {
 			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
@@ -291,8 +293,7 @@ public class DBManager {
 		}
 	}
 	
-	public void selectAll(StringTokenizer commande ) {
-		
+	public void selectAllCommande(StringTokenizer commande ) {
 		String nomRelation = "";
 		int compteurRecord = 0;
 		
@@ -317,8 +318,7 @@ public class DBManager {
 
 	}
 	
-	public void select(StringTokenizer commande) {
-		
+	public void selectCommande(StringTokenizer commande) {
 		String nomRelation = "";
 		int colonne;
 		String valeur = "";

@@ -12,18 +12,19 @@ import java.util.List;
  */
 public class BufferManager {
 
+	/**
+	 * Singleton
+	 */
 	public static List<Frame> listFrame = new ArrayList<>();
-
 	private BufferManager() {}
-
 	private static BufferManager INSTANCE = null;
 	private Frame frame;
 
 	public static BufferManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new BufferManager();
-			Frame frame1 = new Frame(true);
-			Frame frame2 = new Frame(false);
+			Frame frame1 = new Frame();
+			Frame frame2 = new Frame();
 			listFrame.add(frame1);
 			listFrame.add(frame2);
 		}
@@ -39,21 +40,31 @@ public class BufferManager {
 
 	public int searchFrame(PageId pageId) {
 		BufferManager.getInstance();
-		int i = 0;
-
-		//compare id de la page dans chaque frame avec id de PageID
-		for (Frame f : listFrame) {
+		if(listFrame.get(0).getPageId() == null) {
+			listFrame.get(0).setPageId(pageId);
+			return(0);
+		}
+		else if(listFrame.get(1).getPageId() == null) {
+			listFrame.get(1).setPageId(pageId);
+			return(1);
+		}
+		
+		// sinon, on compare id de la page dans chaque frame avec id de PageID
+		for(int i=0 ; i<listFrame.size() ; i++) {
+			Frame f = listFrame.get(i);
 			if (f.getPageId().equals(pageId))
 				return i;
-			else
-				System.err.println("la PageId "+pageId.getPageIdx()+" n'est pas dans les frames");	
-			i++;
+			else {
+				System.err.println("la PageId " + pageId.getPageIdx() + " n'est pas dans les frames");
+				// TODO ++ Politque de remplacement
+			}
+					
 		}
-		return (2); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est trait� dans getPage()
+		return (2); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traite dans getPage()
 	}
 
 	/**
-	 * POUR LE TEST ( TEMPORAIRE ) NON DEMANDE
+	 * POUR LE TEST (TEMPORAIRE) NON DEMANDE
 	 */
 	public void afficheFrame(List<Frame> listFrame) {
 		for (int i = 0; i < listFrame.size(); i++) {
@@ -66,7 +77,7 @@ public class BufferManager {
 	/**
 	 * Cette methode doit reppondre a une demande de page venant des couches plus
 	 * hautes, et donc retourner un des buffers associeer a une case. Le buffer sera
-	 * rempli avec le contenu de la page designee par  argument pageId.
+	 * rempli avec le contenu de la page designee par argument pageId.
 	 * 
 	 * @param pageId
 	 * @return
@@ -87,7 +98,7 @@ public class BufferManager {
 		if (frame != null) {
 			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
-			frame.get();
+			frame.getPlus();
 			//Maj du LRU_change
 			//si newFrame correspond au premier
 			if (pageId == listFrame.get(0).getPageId()) {
