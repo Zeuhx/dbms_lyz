@@ -82,16 +82,16 @@ public class DiskManager {
 
 	/**
 	 * 
-	 * @param j    un identifiant de page
+	 * @param pageId    un identifiant de page
 	 * @param buff un buffer
 	 * @return Remplir l’argument buff avec le contenu disque de la page identifiée
 	 *         par l’argument pageId. c’est l’appelant de cette méthode qui crée et
 	 *         fournit le buffer à remplir!
 	 * @throws IOException
 	 */
-	public static void readPage(PageId j, ByteBuffer buff) {
+	public static void readPage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
-		File f = new File(path + j.getFileIdx() + ".rf");
+		File f = new File(path + pageId.getFileIdx() + ".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
 		// Obtention du flux de donnee du ficheir rf
 		FileChannel channel = null;
@@ -119,6 +119,7 @@ public class DiskManager {
 
 	public static void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
+		
 		File f = new File(path + pageId.getFileIdx() + ".rf");
 		FileChannel channel = null;
 
