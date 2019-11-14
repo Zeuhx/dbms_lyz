@@ -109,8 +109,7 @@ public class HeapFile {
 			System.err.println("le fichier " +path+rf + " n'a pas ete trouver");
 			
 		}
-		// TODO Marcel finir le channel et bytebuffer
-		FileChannel channel = rf.getChannel();
+
 		
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
 		int positionByteMap = 0;
