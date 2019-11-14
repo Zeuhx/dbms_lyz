@@ -67,7 +67,7 @@ public class PageId {
 	}
 
 	public int getPageIdx() {
-		return (pageIdx);
+		return pageIdx;
 	}
 
 	public boolean equals(PageId p) {
