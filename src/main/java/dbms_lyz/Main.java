@@ -8,8 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,8 +23,9 @@ import java.util.Scanner;
  */
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		// testCommandeDBDef();
-		testDesFichiersAvecLeurPage();
+		//testCommandeDBDef();
+		//testCreationFichiersAvecLeurPage();
+		testLectureEtPutFichierAvecLeurPage();
 		
 	}
 	
@@ -51,26 +55,51 @@ public class Main {
 		} while(!choix.equals("exit"));
 	}
 	
-	public static void testDesFichiersAvecLeurPage() {
+	public static void testCreationFichiersAvecLeurPage()  {
 		// TD2 
 		DiskManager.getInstance().createFile(0);
 		DiskManager.getInstance().createFile(1);
 		
 		PageId pageId1 = new PageId("Data_1.rf");
 		PageId pageId2 = new PageId("Data_2.rf");
-
+		
+		testLectureEtPutFichierAvecLeurPage();
+		
+	}
+	
+	public static void testLectureEtPutFichierAvecLeurPage() {
+		DiskManager.getInstance().createFile(5);
+		PageId pageId5 = new PageId("Data_5.rf");
+		
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		
+		File file = new File("C:\\Users\\cedzh\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_5.rf");
+		RandomAccessFile f;
+		try {
+			f = new RandomAccessFile(file,"rw");
+			FileChannel fc = f.getChannel();
+			bf.putInt(1);
+			bf.putInt(2);
+			DiskManager.writePage(pageId5, bf);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			System.out.println("ByteBuffer" + Arrays.toString((bf.array())));
+		}
 		/**
 		 * Probleme d'allocation d'espace ?
 		 */
-		DiskManager.addPage(4);
+		DiskManager.addPage(5);
+		
 //		DiskManager.readPage(pageId1, bf);
 //		DiskManager.writePage(pageId2, bf);
 		
 		/**
 		 * Il faut tester read and write
 		 */
-		
 	}
 	
 	public static void test() {

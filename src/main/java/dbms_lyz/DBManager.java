@@ -194,12 +194,12 @@ public class DBManager {
 				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
 			}
 			catch(NoSuchFileException e) {
-				System.out.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
+				System.err.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
 				break;
 				//On quitte la boucle car il n y a plus de fichiers
 			}
 			catch(IOException e) {
-				System.out.println("Erreur IO");
+				System.err.println("Erreur IO");
 			}
 		}
 		DBDef.getInstance().reset();
@@ -250,7 +250,6 @@ public class DBManager {
 	 */
 	public void insertAll(StringTokenizer commande) {
 		String relName = commande.nextToken();
-		List<String> valeurs = new ArrayList<String>(); //list valeurs de chaque colonne
 		
 		String nomFichierCSV = commande.nextToken();
 		String path = new String("src" + File.separator + "main" + 
@@ -269,21 +268,6 @@ public class DBManager {
 			} catch (IOException e) {
 				System.err.println("Erreur I/O pour le fichier CSV");
 				e.printStackTrace();
-			}
-		}
-		
-		List<HeapFile> heapFiles = FileManager.getInstance().getHeapFiles();
-		
-		HeapFile leBonHeapFile;
-		
-		//parcourir Heapfiles pour comparer les relName
-		for(int i=0; i<heapFiles.size(); i++) {
-			RelDef reldef = heapFiles.get(i).getRelDef() ; 
-			if(reldef.getNomRelation().equals(relName)) {
-				leBonHeapFile = heapFiles.get(i);
-			} else {
-				//on entrera jamais car on part du principe que relName existe 
-				leBonHeapFile = new HeapFile(null);
 			}
 		}	
 		
