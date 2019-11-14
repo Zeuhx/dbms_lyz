@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 
 /**
  * API : Important! (Cette classe comporte une unique instance)
@@ -93,54 +94,47 @@ public class DiskManager {
 		RandomAccessFile rf = null;
 		File f = new File(path + pageId.getFileIdx() + ".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
-		// Obtention du flux de donnee du ficheir rf
-		FileChannel channel = null;
-
+		
+		
 		try {
 			rf = new RandomAccessFile(f, "r");
-			channel = rf.getChannel();
-			channel.read(buff, 0);
+			rf.seek(0);
+			rf.read(buff.array());
 		} catch (FileNotFoundException e1) {
 			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
-			System.out.println("Erreur d'I/O au niveau de la lecture du channel");
+			System.out.println("Erreur d'I/O au niveau de la position du RandomFileAccess");
 		}
 		// Verif : System.out.println(nbr);
-		try {
-			channel.close();
-			rf.close();
-		} catch (IOException e) {
-			System.out.println("Erreur au niveau de la fermeture du channel ou du fichier");
-		}
+		System.out.println("ByteBuffer pour la pageId "+pageId.getPageIdx()+" " + Arrays.toString(buff.array()));
 
 	}
-
+	
+	/**
+	 * Ecrire le contenu du ByteBuffer dans la page concerne
+	 * @param pageId
+	 * @param buff
+	 */
 	public static void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
-		
 		File f = new File(path + pageId.getFileIdx() + ".rf");
-		FileChannel channel = null;
+		int positionPage = pageId.getPageIdx();
 
 		try {
 			rf = new RandomAccessFile(f, "rw");
+			/**
+			 * Position du RandomAccessFile
+			 */
+			rf.seek(positionPage * Constants.PAGE_SIZE);
+			rf.write(buff.array());
 		} catch (FileNotFoundException e1) {
 			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
-		}
-
-		// Relier buff et fichier via le channel
-		channel = rf.getChannel();
-		buff.rewind();
-		try {
-			channel.write(buff, 0);
-			// Verif : System.out.println(nbr);
-			channel.close();
-			rf.close();
 		} catch (IOException e) {
-			System.out.println("Erreur au niveau de la fermeture du channel ou du fichier");
+			e.printStackTrace();
 		}
 
 	}

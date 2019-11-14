@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -21,21 +22,14 @@ import java.util.List;
  *
  */
 public class DBDef implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private static List<RelDef> relDefTab;
 	private static int compteurRelation;
 
-	/** Constructeur privee */
-	private DBDef() {
-	}
-
-	/** Instance unique non preinitialisee */
+	/** Singleton */
+	private DBDef() {}
 	private static DBDef INSTANCE = null;
-
-	/** Point d'acces pour l'instance unique du singleton */
 	public static DBDef getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new DBDef();
@@ -44,7 +38,7 @@ public class DBDef implements Serializable{
 	}
 
 	/**
-	 * Constructeur
+	 * Ouvre les infos deja stocker dans catalogue.def
 	 */
 	public void init() {
 		// src/main/ressources/DB/catalogue.def
@@ -79,7 +73,7 @@ public class DBDef implements Serializable{
  		} catch (FileNotFoundException e) {
 			System.err.println("Le fichier catalogue n'existe pas");
 		} catch (IOException e) {
-			System.err.println("Erreur d'I/O pour le catalogue.def");
+			System.err.println("Erreur de lecture de donnee (I/O) pour le catalogue.def");
 		} catch (ClassNotFoundException e) {
 			System.err.println("La classe n'a pas ete trouver pour le fichier");
 		} finally {
@@ -92,7 +86,6 @@ public class DBDef implements Serializable{
 		}
 	}
 	
-
 	/**
 	 * Sauvegarde les infos de DBDef dans catalogue.def
 	 */
@@ -136,12 +129,12 @@ public class DBDef implements Serializable{
 	}
 
 	/**
-	 * [OK] 
 	 * @param rd qui est une RelDef rajoute rd dans la liste et actualise le
 	 *           compteur
 	 */
 	public void addRelation(RelDef rd) {
 		if (rd != null) {
+			relDefTab = new ArrayList<RelDef>();
 			relDefTab.add(rd);
 			compteurRelation++;
 		} else
@@ -149,6 +142,7 @@ public class DBDef implements Serializable{
 	}
 	
 	/**
+	 * Pour la commande clean
 	 * Remet DBDef a 0 avec relDefTab
 	 * Remet a 0 le compteur
 	 */
@@ -157,12 +151,10 @@ public class DBDef implements Serializable{
 		compteurRelation = 0;
 	}
 	
-	public static List<RelDef> getList(){ return relDefTab; }
-	
-	public void setList(List <RelDef> l) {
-		relDefTab = l;
-	}
-		
 	public static int getListSize() { return relDefTab.size(); }
+	
+	public static List<RelDef> getRelDefTab(){ return relDefTab; }
+	
+	public void setList(List <RelDef> l) { relDefTab = l; }
 	
 }

@@ -32,9 +32,9 @@ public class HeapFile {
 		DiskManager.getInstance().createFile(fileIdx);
 		DiskManager.addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);
-		ByteBuffer bufferDePageVide = BufferManager.getInstance().getPage(headerPage);
+		ByteBuffer bufferDeHeaderPage = BufferManager.getInstance().getPage(headerPage);
 		for (int i = 0; i < Constants.PAGE_SIZE; i += Integer.BYTES) {
-			bufferDePageVide.putInt(0);
+			bufferDeHeaderPage.putInt(0);
 		}
 		// DiskManager.writePage(pageId, bufferDePageVide);
 		BufferManager.getInstance().freePage(headerPage, true);
@@ -109,8 +109,7 @@ public class HeapFile {
 			System.err.println("le fichier " +path+rf + " n'a pas ete trouver");
 			
 		}
-		// TODO Marcel finir le channel et bytebuffer
-		FileChannel channel = rf.getChannel();
+
 		
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
 		int positionByteMap = 0;

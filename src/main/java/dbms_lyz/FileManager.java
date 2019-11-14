@@ -5,11 +5,12 @@ import java.util.List;
 
 public class FileManager {
 	private List <HeapFile> heapFiles;
+	
+	/** Singleton */
 	private static FileManager INSTANCE = null;
-	public FileManager() {
+	private FileManager() {
 		heapFiles = new ArrayList<>();
 	}
-
 	public static FileManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new FileManager();
@@ -17,14 +18,22 @@ public class FileManager {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Declancheur :
+	 * Parcours la liste des relDef de DBDef pour creer un
+	 * heapFile a chaque relDef
+	 */
 	public void init() {
 		DBDef.getInstance();
-		//on va parcourir la liste des relDef de DBDef
-		//creer pour chq RelDef un objet HeapFile en lui
-		for(RelDef relDef : DBDef.getList()) {
-			HeapFile hf = new HeapFile (relDef);
-			heapFiles.add(hf);
+		if(DBDef.getRelDefTab().isEmpty()) {
+			throw new RuntimeException("Il n'y a pas de RelDef stocke");
+		} else {
+			for(RelDef relDef : DBDef.getRelDefTab()) {
+				HeapFile hf = new HeapFile(relDef);
+				heapFiles.add(hf);
+			}
 		}
+		
 	}
 	
 	/**

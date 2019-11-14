@@ -19,41 +19,6 @@ public class Record {
 		values = new ArrayList<>();
 	}
 	
-	public void affiche() {
-		for(String s : values) {
-			System.out.print(s);
-			System.out.print(" ; ");
-		}
-		System.out.println();
-	}
-	
-	public List<String> getValues(){
-		return values;
-	}
-
-	/**
-	 * Cette methode va permettre de recuperer les valeurs de la liste de listes de
-	 * relDef Sous la forme de string NE pas Oublier d'utiliser des StringBuffer
-	 */
-	
-	/*
-	
-	public void remplirValues() {
-		for (int i = 0; i < relDef.getRecord().size(); i++) {
-			String s = "";
-			// je vais supposer que chq col a le meme nombre d'elements
-			for (int j = 0; j < relDef.getNbCol(); j++) {
-				String t = (String) (relDef.getRecord().get(i).get(j));
-				if (j > 0)
-					s.concat(" ");
-				s.concat(t);
-			}
-			values.add(s);
-		}
-	}
-	*/
-	
-	
 	/**
 	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres
 	 * Ajoute dans le bytebuffer en fonction des types de col
@@ -101,14 +66,10 @@ public class Record {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * On prend un bytebuffer a une certaine position
 	 * Le record est lie a un relDef donc on connait deja les types des cols
 	 * La boucle permet de lire le bytebuffer en fonction des types
 	 * et les affiche avec println
-=======
-	 * " Le contraire " de la version precedente
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	 * @param buff
 	 * @param position
 	 * 
@@ -138,6 +99,23 @@ public class Record {
 				
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder();
+		build.append("[Record] de " + relDef.getNomRelation() + " ");
+		for(String s : values) {
+			build.append(s);
+			build.append(" ; ");
+		}
+		build.append("\n");
+		return build.toString();
+	}
+	
+	public List<String> getValues(){
+		return values;
+	}	
+	
+	
 	/**
 	 * Retourne la taille du record selon le type (en octets)
 	 * 

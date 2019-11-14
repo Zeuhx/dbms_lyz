@@ -49,7 +49,7 @@ public class BufferManager {
 				System.err.println("la PageId "+pageId.getPageIdx()+" n'est pas dans les frames");	
 			i++;
 		}
-		return (2); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traité dans getPage()
+		return (2); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traitï¿½ dans getPage()
 	}
 
 	/**

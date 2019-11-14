@@ -38,7 +38,7 @@ public class DBManager {
 	 */
 	public static void init() {
 		DBDef.getInstance().init();
-		FileManager.getInstance().init();
+		//FileManager.getInstance().init();
 	}
 
 	/**
@@ -93,12 +93,12 @@ public class DBManager {
 		/**
 		 * On initialise le recordSize et slotCount car le 1er constructeur 
 		 */
-		reldef.setRecordSize(recordSize(reldef));
+		reldef.setRecordSize(calculRecordSize(reldef));
 		reldef.setSlotCount(slotCount(reldef));
 		DBDef.getInstance().addRelation(reldef);
 		
 		// Calcul de la taille du record
-		int recordSize = recordSize(reldef);
+		int recordSize = calculRecordSize(reldef);
 		int slotCount = slotCount(reldef);
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
@@ -106,15 +106,13 @@ public class DBManager {
 		DBDef.getInstance().addRelation(reldef);
 		FileManager.getInstance().createRelationFile(reldef);
 		return (reldef);
-		
 	}
 	
 	/**
 	 * On calcule la taille d'un record dans une page
 	 * @return  : ici qu'on calcule recordSize 
 	 */
-	
-	public int recordSize(RelDef rd) {
+	public int calculRecordSize(RelDef rd) {
 		int recordSize = 0;
 		for(String col : rd.getTypeCol()) {
 			if(col.equals("int")) {
@@ -128,14 +126,8 @@ public class DBManager {
 				recordSize += Integer.parseInt(size)*2;
 			}	
 		}
-		/*
-		 * TODO a supprimer car non necessaire
-		 * //recordSize = taille record * le nb de record qui on la taille fixe
-		 * recordSize *= rd.getRecordLenght();
-		 * Parce que on a besoin que de la taille de 1 seul record
-		 */
 		return recordSize;
-		}
+	}
 	
 	/**
 	 * Calcul du nombre de slot qu'on peut avoir sur une page 
@@ -148,8 +140,12 @@ public class DBManager {
 	}
 	
 	
+	/**
+	 * Lit la commande et 
+	 * @param commande la commande qui va creer la relation
+	 */
 	public void create(StringTokenizer commande) {
-		String nomRelation = new String("");
+		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
 		int j = 0;
@@ -169,20 +165,14 @@ public class DBManager {
 			}
 		}
 
-		/**
-		 * Verification
-		 */
 		System.out.print("La commande saisie est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
 			System.out.print(typeCol.get(i) + " ");
 		}
 		System.out.println();
-		/**
-		 * Appel de la fonction
-		 */
-		createRelation(nomRelation, nbCol, typeCol);
+		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
+		DBDef.getInstance().addRelation(relDefcree);
 	}
-	
 	
 	/**
 	 * Remet a 0 le programme
@@ -317,26 +307,22 @@ public class DBManager {
 				stringBuffRecord.append(s);
 				stringBuffRecord.append(" ; ");
 			}
-			
 			String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 			System.out.println(stringRecord);
 			compteurRecord ++;
 		}
 
-	
 		System.out.println("Total Records : "+ compteurRecord);
-		
 		System.out.println("Nombre de records : "+ listRecords.size());
 
 	}
 	
 	public void select(StringTokenizer commande) {
 		
-		
 		String nomRelation = "";
 		int colonne;
 		String valeur = "";
-		
+
 		commande.nextElement();
 		nomRelation = commande.nextToken();
 		colonne = (int) commande.nextElement();
@@ -345,17 +331,13 @@ public class DBManager {
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
 		for(Record r : listRecords) {
-			
 			List<String> values = r.getValues();
-			
 			if(values.get(colonne).equals(valeur)) {
 				StringBuffer stringBuffRecord = new StringBuffer("");
-				
 				for(String s : r.getValues()) {
 					stringBuffRecord.append(s);
 					stringBuffRecord.append(" ; ");
 				}
-				
 				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 				System.out.println(stringRecord);
 			}
