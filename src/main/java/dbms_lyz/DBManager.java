@@ -194,12 +194,12 @@ public class DBManager {
 				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
 			}
 			catch(NoSuchFileException e) {
-				System.out.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
+				System.err.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
 				break;
 				//On quitte la boucle car il n y a plus de fichiers
 			}
 			catch(IOException e) {
-				System.out.println("Erreur IO");
+				System.err.println("Erreur IO");
 			}
 		}
 		DBDef.getInstance().reset();

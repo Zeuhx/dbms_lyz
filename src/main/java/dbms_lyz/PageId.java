@@ -14,9 +14,14 @@ public class PageId {
 	private int pageIdx;
 
 	public PageId(String nomFichier) {
-		fileIdx = idFichier(nomFichier);
-		pageIdx = ID;
-		ID += 1;
+		try {
+			fileIdx = idFichier(nomFichier);
+			pageIdx = ID;
+			ID += 1;
+		}
+		catch(StringIndexOutOfBoundsException e) {
+			System.err.println("Attention : Le fichier " + nomFichier + " n'est pas du bon format");
+		}
 	}
 	
 	public PageId(int pageIdx, int fileIdx) {
