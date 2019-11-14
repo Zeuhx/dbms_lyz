@@ -87,17 +87,18 @@ public class Main {
 			e.printStackTrace();
 		} 
 		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
-		
+		testLireFichierAvecLeurPage(f);
 	}
 
 	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		
 		try {
+			f.seek(0);
 			f.read(bf.array());
+			System.out.println("Bonjour");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Erreur I/O");
 		}
 		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
 		
