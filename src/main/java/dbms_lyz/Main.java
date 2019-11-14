@@ -25,8 +25,7 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		//testCommandeDBDef();
 		//testCreationFichiersAvecLeurPage();
-		testLectureEtPutFichierAvecLeurPage();
-		
+		testEcrireFichierAvecLeurPage();
 	}
 	
 	public static void testCommandeDBDef() {
@@ -63,45 +62,46 @@ public class Main {
 		PageId pageId1 = new PageId("Data_1.rf");
 		PageId pageId2 = new PageId("Data_2.rf");
 		
-		testLectureEtPutFichierAvecLeurPage();
 		
 	}
 	
-	public static void testLectureEtPutFichierAvecLeurPage() {
+	public static void testEcrireFichierAvecLeurPage() {
 		DiskManager.getInstance().createFile(5);
 		PageId pageId5 = new PageId("Data_5.rf");
 		
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		
 		File file = new File("C:\\Users\\cedzh\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_5.rf");
-		RandomAccessFile f;
+		RandomAccessFile f = null;
 		try {
 			f = new RandomAccessFile(file,"rw");
-			FileChannel fc = f.getChannel();
+			//fc = f.getChannel();
 			bf.putInt(1);
-			bf.putInt(2);
-			DiskManager.writePage(pageId5, bf);
+			bf.putInt(5);
+			//DiskManager.writePage(pageId5, bf);
+			f.write(bf.array());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			System.out.println("ByteBuffer" + Arrays.toString((bf.array())));
-		}
-		/**
-		 * Probleme d'allocation d'espace ?
-		 */
-		DiskManager.addPage(5);
+		} 
+		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
 		
-//		DiskManager.readPage(pageId1, bf);
-//		DiskManager.writePage(pageId2, bf);
-		
-		/**
-		 * Il faut tester read and write
-		 */
 	}
-	
+
+	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		
+		try {
+			f.read(bf.array());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		
+	}
 	public static void test() {
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator );
