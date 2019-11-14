@@ -95,6 +95,7 @@ public class DiskManager {
 		File f = new File(path + pageId.getFileIdx() + ".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
 		
+		
 		try {
 			rf = new RandomAccessFile(f, "r");
 			rf.seek(0);

@@ -23,13 +23,19 @@ import java.util.Scanner;
  */
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
+		//DBManager.init();
 		//testCommandeDBDef();
 		//testCreationFichiersAvecLeurPage();
+<<<<<<< HEAD
 		testDiskManagerWriteAndRead();
 		
+=======
+		//testEcrireFichierAvecLeurPage();
+		testRelDefEtRecord();
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 	}
 	
-	public static void testCommandeDBDef() {
+	public static void testCommandeDBDefPourCreer() {
 		DBManager manager = new DBManager();
 //		DBManager.init();
 		Scanner scan = new Scanner(System.in);
@@ -40,7 +46,6 @@ public class Main {
 			System.out.println("Quelles commandes voulez vous saisir ?");
 			System.out.println("choix : [exit] [commande]");
 			choix = scan.nextLine();
-
 			if(choix.equals("exit")){
 				DBManager.finish();
 			}
@@ -50,9 +55,8 @@ public class Main {
 				commande = scan.nextLine();
 				manager.processCommand(commande);	
 			}
-			
-			
 		} while(!choix.equals("exit"));
+		scan.close();
 	}
 	
 	public static void testCreationFichiersAvecLeurPage()  {
@@ -107,8 +111,11 @@ public class Main {
 		DiskManager.writePage(p, bf);
 		bf.position(0);
 		DiskManager.readPage(p, bf);
+		
+		
 	}
 
+<<<<<<< HEAD
 	
 	public static void test() {
 		String path = new String("src" + File.separator + "main" + 
@@ -150,36 +157,33 @@ public class Main {
 			System.out.println(ois.readInt());
 			System.out.println(ois.readInt());
 			System.out.println(ois.readObject());
-
-		}catch(FileNotFoundException e) {
-			System.err.println("Not found");
-		} catch (IOException e) {
-			System.err.println("IO");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				ois.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				testRead.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+=======
+	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		
+		try {
+			f.seek(0);
+			f.read(bf.array());
+			System.out.println("Bonjour");
+		} catch (IOException e) {
+			System.err.println("Erreur I/O");
+		}
+		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
 		
 	}
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
+
+	public static void testRelDefEtRecord() {
+		testCommandeDBDefPourCreer();
+	}
 	
+<<<<<<< HEAD
 	public static void testReadPage() {
 		
 	}
 
 	//public File file 
+=======
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 
 }
