@@ -24,7 +24,7 @@ public class Frame {
 	
 	//peut etre pas necessaire
 	public Frame(boolean LRU_change) {
-		pageId = null ; 		// ATTENTION : PEUT PROVOQUER UNE EXCEPTION : A REGLER
+//		TODO
 		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		pin_count = 0;
 		flag_dirty = false;

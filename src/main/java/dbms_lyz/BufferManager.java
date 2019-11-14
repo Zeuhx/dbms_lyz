@@ -35,11 +35,16 @@ public class BufferManager {
 	 * 
 	 * @param page
 	 * @return l'index de Frame qui correspondant au PageId
+	 * @return 2 : la pageId n'est pas dans le
 	 */
 
 	public int searchFrame(PageId pageId) {
 		BufferManager.getInstance();
 		int i = 0;
+
+		//TODO si y 'a rien dans le premier frame on remplace directement
+		//TODO si y 'a rien dans le deuxieme frame on remplace directement
+		
 
 		//compare id de la page dans chaque frame avec id de PageID
 		for (Frame f : listFrame) {
