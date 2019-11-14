@@ -25,7 +25,8 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		//testCommandeDBDef();
 		//testCreationFichiersAvecLeurPage();
-		testEcrireFichierAvecLeurPage();
+		testDiskManagerWriteAndRead();
+		
 	}
 	
 	public static void testCommandeDBDef() {
@@ -87,22 +88,28 @@ public class Main {
 			e.printStackTrace();
 		} 
 		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
-		testLireFichierAvecLeurPage(f);
+	}
+	
+	public static void testDiskManagerWriteAndRead() {
+		String chemin = new String("src" + File.separator + "main" + 
+				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");
+		File f = new File(chemin +"10.rf");
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		PageId p = DiskManager.addPage(10);
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		bf.putInt(6);
+		DiskManager.writePage(p, bf);
+		bf.position(0);
+		DiskManager.readPage(p, bf);
 	}
 
-	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
-		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		
-		try {
-			f.seek(0);
-			f.read(bf.array());
-			System.out.println("Bonjour");
-		} catch (IOException e) {
-			System.err.println("Erreur I/O");
-		}
-		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
-		
-	}
+	
 	public static void test() {
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator );
