@@ -34,21 +34,22 @@ public class BufferManager {
 	 * On cherche le Frame qui correpond a un PageId
 	 * 
 	 * @param page
-	 * @return le Frame correspondant au PageId
+	 * @return l'index de Frame qui correspondant au PageId
 	 */
 
 	public int searchFrame(PageId pageId) {
 		BufferManager.getInstance();
-		frame = null;
 		int i = 0;
 
+		//compare id de la page dans chaque frame avec id de PageID
 		for (Frame f : listFrame) {
 			if (f.getPageId().equals(pageId))
 				return i;
 			else
-				System.err.println("la PageId "+pageId.getPageIdx()+" n'est pas dans les frames");			
+				System.err.println("la PageId "+pageId.getPageIdx()+" n'est pas dans les frames");	
+			i++;
 		}
-		return (2); // Pour retourner l'index de la frame concernï¿½ retourne 2 si pas trouve
+		return (2); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traité dans getPage()
 	}
 
 	/**
@@ -63,15 +64,14 @@ public class BufferManager {
 	}
 
 	/**
-	 * Cette methode doit reppondre aï¿½ une demande de page venant des couches plus
-	 * hautes, et donc retourner un des buffers associeer aï¿½ une case. Le buffer sera
+	 * Cette methode doit reppondre a une demande de page venant des couches plus
+	 * hautes, et donc retourner un des buffers associeer a une case. Le buffer sera
 	 * rempli avec le contenu de la page designee par  argument pageId.
 	 * 
 	 * @param pageId
 	 * @return
 	 */
 	public ByteBuffer getPage(PageId pageId) {
-		//newFrame est de type Frame
 		//TODO : on recupere le buff de newFrame puis on l'ajoute sur la listFrame si exist
 		Frame newFrame = new Frame(pageId);
 		ByteBuffer bf = newFrame.getBuffer();

@@ -58,8 +58,11 @@ public class Frame {
 			pin_count--;
 		}
 
-		if (flag_dirty == false)
+		if (this.flag_dirty == true && (flag_dirty==false)) {
 			this.flag_dirty = true;
+		}
+		else
+			this.flag_dirty = false;
 
 		// Dans quel cas LRU_change => True
 //		if(pin_count == 0) {
@@ -72,7 +75,9 @@ public class Frame {
 //		}
 
 	}
-
+	public void replace (Frame frame) {
+		
+	}
 	public void get() {
 		pin_count++;
 	}
@@ -87,6 +92,7 @@ public class Frame {
 
 	public boolean getLRU_change() {
 		if(pin_count >=1) LRU_change = false;
+		
 		return LRU_change;
 	}
 

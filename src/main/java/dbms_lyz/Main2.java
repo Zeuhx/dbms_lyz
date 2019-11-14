@@ -21,44 +21,164 @@ import java.util.Scanner;
 public class Main2 {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		//		test();
-		//		
-		//		PageId pageId1 = new PageId("Data_1.rf");
-		//		PageId pageId2 = new PageId("Data_2.rf");
-		//
-		
-		testSearchFrame();
+		testGetPagee();
+
 
 	}
-	public static void testSearchFrame() {
-		System.out.println("##### DEBUT testSearchFrame() #####");
-		
+	public static void testGetPagee() {
 		List<Frame> listFrame = new ArrayList<Frame>();
-		PageId pageId = new PageId("Data_1.rf");
-		PageId pageId2 = new PageId("Data_2.rf");
+		PageId pageId = new PageId("Data_11.rf");
+		PageId pageId2 = new PageId("Data_22.rf");
 		Frame frame = new Frame(pageId);
 		Frame frame2 = new Frame(pageId2);
 		listFrame.add(frame);
 		listFrame.add(frame2);
+
+		PageId pageId3 = new PageId("Data_33.rf");		
+		pageId3.setPageIdx(3);
+		//		testAfficheFrame(listFrame);
+		//		testSearchFrame(pageId3, listFrame);
+
+		testGetPage(pageId, listFrame);
+		testGetPage(pageId3, listFrame);
+		testFreePage(pageId, false, listFrame);
+		testAfficheFrame(listFrame);
+
+		testGetPage(pageId3, listFrame);
+		testAfficheFrame(listFrame);
 		
-		PageId celuiQChercher = pageId;
-		BufferManager.getInstance();
-		frame = null;
-		int i = 0;
-		System.out.println("id de la classe pageId : "+pageId.getPageIdx());
-		TestAfficheFrame(listFrame);
-		for (Frame f : listFrame) {
-			if (f.getPageId().equals(celuiQChercher))
-				System.out.println("résultat : "+i);
-			else
-				System.out.println("Attention : la PageId de id : "+celuiQChercher.getPageIdx()+" n'est pas dans les frames");			
+	}
+	public static ByteBuffer testGetPage(PageId pageId, List<Frame> listFrame) {
+		boolean pageExist = false;
+		//TODO : on recupere le buff de newFrame puis on l'ajoute sur la listFrame si exist
+		Frame getFrame = new Frame(pageId);
+		ByteBuffer bf = getFrame.getBuffer();
+		int indexFrame = testSearchFrame(getFrame.getPageId(), listFrame);
+		//si la new pageId n'est pas dans la liste 
+		if (indexFrame == 2)
+			pageExist = false;
+		//si il est dans la liste on récup la Frame qui contient cette page existant 
+		else {
+			pageExist = true;
+			getFrame = listFrame.get(indexFrame);
 		}
-		
-		System.out.println("##### FIN testSearchFrame() #####");
+
+		//si newFrame est dans la liste
+		if (pageExist) {
+			//on ajoute si frame exist dans la liste le buffer de newFrame 
+			getFrame.get(); //pin_count ++
+
+			//Maj du LRU_change
+			//si newFrame correspond au premier
+			if (pageId == (listFrame.get(0)).getPageId()) {
+
+				// si jamais l'autre frame a pin_count>0 
+				if(!(listFrame.get(1)).getLRU_change()) {
+					//les deux frame ne peuvent ï¿½tre remplacer
+					(listFrame.get(0)).setLRU_change(false);
+				}
+				else {
+					(listFrame.get(0)).setLRU_change(false);
+					(listFrame.get(1)).setLRU_change(true);
+				}
+
+				//si newFrame correspond au deuxieme
+			} else {
+
+				// si jamais l'autre frame a pin_count>0 
+				if(!(listFrame.get(0)).getLRU_change()) {
+					//les deux frame ne peuvent etre remplacer
+					(listFrame.get(1)).setLRU_change(false);
+				}
+				else {
+					(listFrame.get(0)).setLRU_change(true);
+					(listFrame.get(1)).setLRU_change(false);
+				}
+			}
+		}
+
+		//si jamais le newFrame (pageId en entre) n est pas dans la liste on remplaces 
+		else {
+			System.out.println("si newFrame n'est pas dedans");
+			//condition si pin count > 0
+			System.out.println((listFrame.get(0)).getLRU_change()+" pour pin count à "+(listFrame.get(0)).getPin_count());
+			System.out.println((listFrame.get(1)).getLRU_change()+" pour pin count à "+(listFrame.get(1)).getPin_count());
+			if (((listFrame.get(0)).getPin_count() == 0) || (listFrame.get(1).getLRU_change())){
+				System.out.println("les pin count sont à zéro");
+	
+				//TEST affiche
+//				System.out.println((listFrame.get(0)).getLRU_change());
+//				System.out.println((listFrame.get(0)).getPin_count());
+				//changement new frame par rapport a LRU
+				
+				if((listFrame.get(0)).getLRU_change() == true) {
+					System.out.println("changement du premier frame ");
+					listFrame.remove(0);
+					listFrame.add(getFrame);
+
+					//maj LRU etat si jamais l'autre frame a pin_count>0 
+					if(!(listFrame.get(1)).getLRU_change()){
+						(listFrame.get(0)).setLRU_change(true);
+					}
+					else {
+						//maj de la valeur de LRU etat
+						(listFrame.get(0)).setLRU_change(false);
+						(listFrame.get(1)).setLRU_change(true);
+					}
+				}
+				else if ((listFrame.get(1)).getLRU_change() == true){
+					System.out.println("changement du second frame");
+					listFrame.remove(1);
+					listFrame.add(getFrame);
+					// si jamais l'autre frame a pin_count>0 
+					if(!(listFrame.get(0)).getLRU_change()){
+						(listFrame.get(1)).setLRU_change(true);
+					}
+					else {
+						//maj de la valeur de LRU etat
+						(listFrame.get(0)).setLRU_change(true);
+						(listFrame.get(1)).setLRU_change(false);
+					}
+				}
+				System.out.println("aucune condition n'est realise : aucun frame dispo");
+			}
+		}
+		return (bf);
+	}
+	
+	public static void testFreePage(PageId pageId, boolean valdirty, List<Frame> listFrame) {
+		int indexFrame = testSearchFrame(pageId, listFrame);
+		if (indexFrame == 2)
+			System.out.println("Frame pas trouve");
+		else {
+			Frame frame = listFrame.get(indexFrame);
+			frame.free(valdirty);
+		}
 	}
 
-	public static void TestAfficheFrame(List<Frame> listFrame) {
+	/////////////////////////////////////////////////////
+	public static int testSearchFrame(PageId pageId, List<Frame> listFrame) {
+		System.out.println("##### DEBUT testSearchFrame() #####");
+		BufferManager.getInstance();
+		int i = 0;
+		System.out.println("id de pageId a chercher : "+pageId.getPageIdx());
+
+		for (Frame f : listFrame) {
+			System.out.println("id de la page dans frame : "+i+" est : "+f.getPageId().getPageIdx());
+			if (f.getPageId().getPageIdx() == (pageId.getPageIdx())) {
+
+				System.out.println("résultat incide du frame: "+i);
+				return (i);
+			}
+			i++;
+		}		
+		System.out.println("##### FIN testSearchFrame() #####");
+		return (2);
+	}
+
+	public static void testAfficheFrame(List<Frame> listFrame) {
 		System.out.println("##### DEBUT testAfficheFrame() #####");
-		
+
 		for (int i = 0; i < listFrame.size(); i++) {
 			System.out.print("[frame " + i + "] : ");
 			System.out.println("page id : " + (listFrame.get(i)).getPageIdx() + "| pin count : "
