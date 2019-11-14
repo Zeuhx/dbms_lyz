@@ -45,6 +45,8 @@ public class BufferManager {
 		for (Frame f : listFrame) {
 			if (f.getPageId().equals(pageId))
 				return i;
+			else
+				System.err.println("la PageId "+pageId.getPageIdx()+" n'est pas dans les frames");			
 		}
 		return (2); // Pour retourner l'index de la frame concern� retourne 2 si pas trouve
 	}
@@ -54,9 +56,9 @@ public class BufferManager {
 	 */
 	public void afficheFrame(List<Frame> listFrame) {
 		for (int i = 0; i < listFrame.size(); i++) {
-			System.out.println("frame " + i);
-			System.out.println("page id : " + (listFrame.get(i)).getPageIdx() + ", pin count : "
-					+ (listFrame.get(i)).getPin_count() + ", dirty : " + (listFrame.get(i)).getFlag_dirty());
+			System.out.println("[frame \" + i + \"] : ");
+			System.out.println("page id : " + (listFrame.get(i)).getPageIdx() + "| pin count : "
+					+ (listFrame.get(i)).getPin_count() + "| dirty : " + (listFrame.get(i)).getFlag_dirty());
 		}
 	}
 
