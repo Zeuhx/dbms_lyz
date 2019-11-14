@@ -67,7 +67,6 @@ public class Main {
 	
 	public static void testEcrireFichierAvecLeurPage() {
 		DiskManager.getInstance().createFile(5);
-		
 		PageId pageId5 = new PageId("Data_5.rf");
 		
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
