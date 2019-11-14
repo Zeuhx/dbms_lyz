@@ -104,7 +104,7 @@ public class DBManager {
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
 		reldef = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
 		DBDef.getInstance().addRelation(reldef);
-		FileManager.getInstance().createRelationFile(reldef);
+		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
 	

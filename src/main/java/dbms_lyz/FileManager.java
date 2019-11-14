@@ -43,7 +43,7 @@ public class FileManager {
 	 * puis appeler sur cet objet la methode createNewOnDisk
 	 * @param relDef
 	 */
-	public void createRelationFile(RelDef relDef) {
+	public void createHeapFileWithRelation(RelDef relDef) {
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
 		hf.createNewOnDisk();	
