@@ -99,8 +99,8 @@ public class Main2 {
 		else {
 			System.out.println("si newFrame n'est pas dedans");
 			//condition si pin count > 0
-			System.out.println((listFrame.get(0)).getLRU_change()+" pour pin count à "+(listFrame.get(0)).getPin_count());
-			System.out.println((listFrame.get(1)).getLRU_change()+" pour pin count à "+(listFrame.get(1)).getPin_count());
+//			System.out.println((listFrame.get(0)).getLRU_change()+" pour pin count à "+(listFrame.get(0)).getPin_count());
+//			System.out.println((listFrame.get(1)).getLRU_change()+" pour pin count à "+(listFrame.get(1)).getPin_count());
 			if (((listFrame.get(0)).getPin_count() == 0) || (listFrame.get(1).getLRU_change())){
 				System.out.println("les pin count sont à zéro");
 	
@@ -138,8 +138,9 @@ public class Main2 {
 						(listFrame.get(1)).setLRU_change(false);
 					}
 				}
-				System.out.println("aucune condition n'est realise : aucun frame dispo");
 			}
+			else
+				System.out.println("aucune condition n'est realise : aucun frame dispo");
 		}
 		return (bf);
 	}
