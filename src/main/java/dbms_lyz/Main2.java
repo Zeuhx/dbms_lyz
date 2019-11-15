@@ -34,18 +34,16 @@ public class Main2 {
 		listFrame.add(frame);
 		listFrame.add(frame2);
 
-		PageId pageId3 = new PageId("Data_33.rf");		
+		PageId pageId3 = new PageId("Data_33.rf");	
 		pageId3.setPageIdx(3);
 		//		testAfficheFrame(listFrame);
 		//		testSearchFrame(pageId3, listFrame);
-
-		testGetPage(pageId, listFrame);
-		testGetPage(pageId3, listFrame);
+		testAfficheFrame(listFrame);
+		testFreePage(pageId2, false, listFrame);
+		testAfficheFrame(listFrame);
 		testFreePage(pageId, false, listFrame);
-		testAfficheFrame(listFrame);
-
-		testGetPage(pageId3, listFrame);
-		testAfficheFrame(listFrame);
+//		testGetPage(pageId3, listFrame);
+//		testAfficheFrame(listFrame);
 		
 	}
 	public static ByteBuffer testGetPage(PageId pageId, List<Frame> listFrame) {
@@ -140,8 +138,9 @@ public class Main2 {
 						(listFrame.get(1)).setLRU_change(false);
 					}
 				}
-				System.out.println("aucune condition n'est realise : aucun frame dispo");
 			}
+			else
+				System.out.println("aucune condition n'est realise : aucun frame dispo");
 		}
 		return (bf);
 	}
@@ -158,7 +157,6 @@ public class Main2 {
 
 	/////////////////////////////////////////////////////
 	public static int testSearchFrame(PageId pageId, List<Frame> listFrame) {
-		System.out.println("##### DEBUT testSearchFrame() #####");
 		BufferManager.getInstance();
 		int i = 0;
 		System.out.println("id de pageId a chercher : "+pageId.getPageIdx());
@@ -166,24 +164,19 @@ public class Main2 {
 		for (Frame f : listFrame) {
 			System.out.println("id de la page dans frame : "+i+" est : "+f.getPageId().getPageIdx());
 			if (f.getPageId().getPageIdx() == (pageId.getPageIdx())) {
-
-				System.out.println("r�sultat incide du frame: "+i);
+				System.out.println("resultat incide du frame: "+i);
 				return (i);
 			}
 			i++;
 		}		
-		System.out.println("##### FIN testSearchFrame() #####");
 		return (2);
 	}
 
 	public static void testAfficheFrame(List<Frame> listFrame) {
-		System.out.println("##### DEBUT testAfficheFrame() #####");
-
 		for (int i = 0; i < listFrame.size(); i++) {
 			System.out.print("[frame " + i + "] : ");
 			System.out.println("page id : " + (listFrame.get(i)).getPageIdx() + "| pin count : "
-					+ (listFrame.get(i)).getPin_count() + "| dirty : " + (listFrame.get(i)).getFlag_dirty());
+					+ (listFrame.get(i)).getPin_count() + "| dirty : " + (listFrame.get(i)).getFlag_dirty()+ "| LRU : " + (listFrame.get(i)).getLRU_change());
 		}
-		System.out.println("##### FIN testAfficheFrame() #####");
 	}
 }

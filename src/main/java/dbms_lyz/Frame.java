@@ -17,7 +17,7 @@ public class Frame {
 	public Frame(PageId pageId) {
 		this.pageId = pageId;
 		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		pin_count = 0;
+		pin_count = 1;
 		flag_dirty = false;
 	}
 	
@@ -63,6 +63,14 @@ public class Frame {
 		if (this.flag_dirty == true && (flag_dirty==false)) this.flag_dirty = true ;
 		else this.flag_dirty = false ;
 
+		if (this.flag_dirty == true && (flag_dirty==false)) {
+			this.flag_dirty = true;
+		}
+		else
+			this.flag_dirty = false;
+		
+		if(pin_count == 0) 
+			this.LRU_change = true;
 		// Dans quel cas LRU_change => True
 //		if(pin_count == 0) {
 //			
