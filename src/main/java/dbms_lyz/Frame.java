@@ -16,8 +16,8 @@ public class Frame {
 
 	public Frame(PageId pageId) {
 		this.pageId = pageId;
-		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		pin_count = 1;
+		DiskManager.writePage(pageId, buff);
+		pin_count = 0;
 		flag_dirty = false;
 	}
 	
@@ -40,9 +40,7 @@ public class Frame {
 		else LRU_change = b;
 	}
 
-	public PageId getPageId() {
-		return pageId;
-	}
+	public PageId getPageId() { return pageId; }
 
 	public int getPageIdx() {
 		return pageId.getPageIdx();
@@ -57,7 +55,7 @@ public class Frame {
 	 * 
 	 * @param flag_dirty
 	 */
-	public void free(boolean flag_dirty) {
+	public void freeMoins(boolean flag_dirty) {
 		if (pin_count != 0)	pin_count-- ;
 
 		if (this.flag_dirty == true && (flag_dirty==false)) this.flag_dirty = true ;
@@ -82,7 +80,6 @@ public class Frame {
 //		}
 
 	}
-	// public void replace (Frame frame) { }
 	
 	public void flushFrame() {
 		pageId = null;

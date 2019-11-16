@@ -18,7 +18,6 @@ public class BufferManager {
 	public static List<Frame> listFrame = new ArrayList<>();
 	private BufferManager() {}
 	private static BufferManager INSTANCE = null;
-	private Frame frame;
 
 	public static BufferManager getInstance() {
 		if (INSTANCE == null) {
@@ -66,7 +65,7 @@ public class BufferManager {
 			}
 					
 		}
-		return (2); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traite dans getPage()
+		return (-1); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traite dans getPage()
 	}
 
 	/**
@@ -92,95 +91,92 @@ public class BufferManager {
 	 */
 	public ByteBuffer getPage(PageId pageId) {
 		boolean pageExist;
-		Frame f = new Frame(pageId);
-		ByteBuffer bf = f.getBuffer();
 		int indexFrame = searchFrame(pageId);
+		ByteBuffer byteBuff ;
+		Frame f = null ;
 		
-		//si la new pageId n'est pas trouve dans la liste de frame??
-		if (indexFrame == 2)
+		// on n'a pas trouver la page
+		if (indexFrame == -1)
 			pageExist = false;
-		else
-			pageExist = true;
-			f = listFrame.get(indexFrame);
-
-		//si newFrame est dans la liste
-		if (pageExist) {
-			DiskManager.readPage(pageId, BufferManager.listFrame.get(indexFrame).getBuffer());
-			//on ajoute si frame exist dans la liste le buffer de newFrame 
-			frame.getPlus();
-			//Maj du LRU_change
-			//si newFrame correspond au premier
-			if (pageId == listFrame.get(0).getPageId()) {
-				DiskManager.readPage(listFrame.get(0).getPageId(), bf);
-				
-				// si jamais l'autre frame a pin_count>0 
-				if(!listFrame.get(1).getLRU_change()) {
-					//les deux frame ne peuvent etre remplacer
-					listFrame.get(0).setLRU_change(false);
-				}
-				else {
-					listFrame.get(0).setLRU_change(false);
-					listFrame.get(1).setLRU_change(true);
-				}
-			
-				//si newFrame correspond au deuxieme
-			} else {
-				DiskManager.readPage(listFrame.get(1).getPageId(), bf);
-
-				// si jamais l'autre frame a pin_count>0 
-				if(!listFrame.get(0).getLRU_change()) {
-					//les deux frame ne peuvent etre remplacer
-					listFrame.get(1).setLRU_change(false);
-				}
-				else {
-					listFrame.get(0).setLRU_change(true);
-					listFrame.get(1).setLRU_change(false);
-				}
-			}
-		}
-		
-		//si jamais le newFrame (pageId en entre) n est pas dans la liste on remplace
-
 		else {
-			System.out.println("la page n'existe pas dans les frame");
-			//condition si pin count > 0
-			if (((listFrame.get(0)).getPin_count() == 0) || (listFrame.get(1).getLRU_change())){
-				System.out.println("Frame dispo, condition pin_count = 0 [OK]");
-
-				//changement new frame par rapport a LRU
-				if(listFrame.get(0).getLRU_change() == true) {
-					System.out.println("changement du premier frame ");
-					listFrame.remove(0);
-					listFrame.add(f);
-
-					//maj LRU etat si jamais l'autre frame a pin_count>0 
-					if(!listFrame.get(1).getLRU_change()){
-						listFrame.get(0).setLRU_change(true);
-					}
-					else {
-						//maj de la valeur de LRU etat
-						listFrame.get(0).setLRU_change(false);
-						listFrame.get(1).setLRU_change(true);
-					}
-				}
-				else if (listFrame.get(1).getLRU_change() == true){
-					System.out.println("changement du second frame");
-					listFrame.remove(1);
-					listFrame.add(f);
-					// si jamais l'autre frame a pin_count>0 
-					if(!listFrame.get(0).getLRU_change()){
-						listFrame.get(1).setLRU_change(true);
-					}
-					else {
-						//maj de la valeur de LRU etat
-						listFrame.get(0).setLRU_change(true);
-						listFrame.get(1).setLRU_change(false);
-					}
+			// La page est dans un des deux frames
+			f = listFrame.get(indexFrame) ;
+			pageExist = true;
+			byteBuff = f.getBuffer();
+		}
+			
+		// la page est dans l'une des deux frames, donc on incremente juste le pinCount
+		if (pageExist) {
+			f = listFrame.get(indexFrame);
+			f.getPlus(); 
+			return f.getBuffer();
+		}
+		else {
+			// On verifie si l'un des deux frame du pool est bon
+			if(listFrame.get(0) == null) {
+				listFrame.set(0, new Frame(pageId));
+				listFrame.get(0).getPlus();
+				return(listFrame.get(0).getBuffer());
+			} else {
+				if(listFrame.get(1) == null) {
+					listFrame.set(1, new Frame(pageId));
+					listFrame.get(1).getPlus();
+					return(listFrame.get(1).getBuffer());
 				}
 			}
-			else System.out.println("aucune condition n'est realise : aucun frame dispo");
+			
+			// On rentre dans le cas ou les deux sont occupe
+			if(listFrame.get(0).getPin_count() >= 1 && listFrame.get(1).getPin_count() >= 1) {
+				throw new RuntimeException("Les deux frames sont occupe");
+			}
+			
+			// Si un des deux pinCount est a 0, alors on peut remplacer directement
+			if(listFrame.get(0).getPin_count()==0 || listFrame.get(1).getPin_count()==0) {
+				if(listFrame.get(0).getFlag_dirty()==false) {
+					listFrame.set(0, new Frame(pageId));
+					listFrame.get(0).getPlus();
+					return(listFrame.get(0).getBuffer());
+				} 
+				else if(listFrame.get(1).getFlag_dirty()==false) {
+					listFrame.set(1, new Frame(pageId));
+					listFrame.get(1).getPlus();
+					return(listFrame.get(1).getBuffer());
+				} 
+			}
+			// Sinon il faut verifier leur etat de LRU
+			else {
+				// si les deux sont occupe 
+				// On ecrit le contenu de la frame concerne dans le disque
+				// Pour ne pas perdre les donnees
+				if(listFrame.get(0).getLRU_change() && listFrame.get(0).getFlag_dirty()) {
+					DiskManager.writePage(listFrame.get(0).getPageId(), listFrame.get(0).getBuffer());
+					listFrame.set(0, new Frame(pageId));
+					listFrame.get(0).getPlus();
+					return(listFrame.get(0).getBuffer());
+				}
+				else if(listFrame.get(1).getLRU_change() && listFrame.get(1).getFlag_dirty()){
+					DiskManager.writePage(listFrame.get(1).getPageId(), listFrame.get(1).getBuffer());
+					listFrame.set(1, new Frame(pageId));
+					listFrame.get(1).getPlus();
+					return(listFrame.get(1).getBuffer());
+				}
+				//Si le flag dirty est false
+				else if(listFrame.get(0).getLRU_change() && !listFrame.get(0).getFlag_dirty()){
+					listFrame.set(0, new Frame(pageId));
+					listFrame.get(0).getPlus();
+					return(listFrame.get(0).getBuffer());
+				}
+				else if(listFrame.get(1).getLRU_change() && !listFrame.get(1).getFlag_dirty()) {
+					listFrame.set(1, new Frame(pageId));
+					listFrame.get(1).getPlus();
+					return(listFrame.get(1).getBuffer());
+				}
+				else {
+					throw new RuntimeException("(bis) Les deux frames sont occupe");
+				}
+			}
 		}
-		return (bf);
+		return(null);
 	}
 
 	/**
@@ -193,11 +189,11 @@ public class BufferManager {
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
 		int indexFrame = searchFrame(pageId);
-		if (indexFrame == 2)
-			System.out.println("Frame pas trouve");
+		Frame f = listFrame.get(indexFrame);
+		if (indexFrame == -1)
+			System.err.println("Frame pas trouve");
 		else {
-			frame = listFrame.get(indexFrame);
-			frame.free(valdirty);
+			f.freeMoins(valdirty);
 		}
 	}
 

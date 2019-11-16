@@ -35,7 +35,6 @@ public class HeapFile {
 		DiskManager.addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);
 		ByteBuffer bufferDeHeaderPage = BufferManager.getInstance().getPage(headerPage);
-		ByteBuffer.allocate(Constants.PAGE_SIZE);
 		for (int i = 0 ; i < Constants.PAGE_SIZE ; i += Integer.BYTES) {
 			bufferDeHeaderPage.putInt(0);
 		}
