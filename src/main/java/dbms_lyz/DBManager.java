@@ -26,7 +26,7 @@ public class DBManager {
 	public DBManager() {
 	}
 	
-	public DBManager getInstance() {
+	public static DBManager getInstance() {
 		if(INSTANCE == null) {
 			INSTANCE = new DBManager();
 		}
@@ -181,9 +181,16 @@ public class DBManager {
 	 * TODO s'occuper de BufferManager
 	 */
 	public void cleanCommande() {
-		for(int i = 0; i<DBDef.getListSize(); i++) {
+		
+		//TODO faire en sorte qu'on lise le catalogue
+		String path = new String("src\\main\\resources\\DB\\");
+		int compteurRelation = 3;
+		
+		
+		
+		for(int i = 0; i<compteurRelation; i++) {
 			try {
-				Files.deleteIfExists(Paths.get(DiskManager.getInstance().getPath()+i));
+				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
 			}
 			catch(NoSuchFileException e) {
 				System.err.println("No such file existed : "+DiskManager.getInstance().getPath()+i);

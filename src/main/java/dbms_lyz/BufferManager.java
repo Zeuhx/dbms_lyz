@@ -139,7 +139,7 @@ public class BufferManager {
 			}
 		}
 		
-		//si jamais le newFrame (pageId en entre) n est pas dans la liste on remplaces 
+		//si jamais le newFrame (pageId en entre) n est pas dans la liste on remplace
 
 		else {
 			System.out.println("la page n'existe pas dans les frame");

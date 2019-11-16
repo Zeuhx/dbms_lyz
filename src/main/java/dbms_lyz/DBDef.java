@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,6 +147,22 @@ public class DBDef implements Serializable{
 	public void reset() {
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
+		String path = new String("src" + File.separator + "main" + 
+				File.separator + "resources" + File.separator + "DB" + File.separator);
+		try {
+			Files.delete(Paths.get(path+"catalogue.def"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		File f = new File(path+"catalogue.def");
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// Getters et Setters 
