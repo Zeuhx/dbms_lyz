@@ -23,8 +23,7 @@ public class DBManager {
 	
 	private static DBManager INSTANCE = null;
 	
-	public DBManager() {
-	}
+	public DBManager() { }
 	
 	public static DBManager getInstance() {
 		if(INSTANCE == null) {
@@ -66,18 +65,12 @@ public class DBManager {
 		break ;
 		case "insertall" : insertAllCommande(stCommandaCouper) ;
 		}
-
-		/**
-		 * On coupe le StringTokenizer en plusieurs partie : On compare le premier
-		 * element avec create Le deuxieme element sera stocker pour etre passer en
-		 * argument dans la fonction Le troisieme element sera convertit en int Et a
-		 * partir du 4eme element on transforme en sous une liste
-		 */
 	}
 
 	/**
 	 * Methode qui creer une relation de type RelDef avec son nom, le nb de col , et les types de col
-	 *  
+	 * On ajotuera cette relation par la suite lors de l'appel 
+	 * 
 	 * @param nomRelation
 	 * @param nombreCol
 	 * @param typeCol     
@@ -89,19 +82,23 @@ public class DBManager {
 
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
 		
-		// On calcul le recordSize et slotCount avec les donnees qu'on a
-		reldef.setRecordSize(calculRecordSize(reldef));
-		reldef.setSlotCount(calculSlotCount(reldef));
-		DBDef.getInstance().addRelation(reldef);
-		
+		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
 		// Calcul de la taille du record
 		int recordSize = calculRecordSize(reldef);
 		int slotCount = calculSlotCount(reldef);
+		reldef.setRecordSize(calculRecordSize(reldef));
+		reldef.setSlotCount(calculSlotCount(reldef));
+		System.out.println("Taille d'un record de cette relation : "+ recordSize);
+		System.out.println("La taille d'une page est de "+ Constants.PAGE_SIZE);
+		System.out.println("On peut saisir "+ calculSlotCount(reldef) + " records sur une page");
 		
-		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
-		System.err.println("[WAH] --> il faut faire un compteur qui incremente automatiquement ");
+		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount); 
-		DBDef.getInstance().addRelation(reldef);
+		System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
+		
+		// On creer le heapFile
+		System.out.println("Affichage du relDef : " + reldef.toString());
+		
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
@@ -120,8 +117,13 @@ public class DBManager {
 				recordSize += 4;
 			}
 			else {
-				String size = col.substring(6);
-				recordSize += Integer.parseInt(size)*2;
+				try {
+					String size = col.substring(6);
+					recordSize += Integer.parseInt(size)*2;
+				} catch(NumberFormatException e) {
+					System.err.println("Il n'y a pas la taille du String : le format doit etre stringx avec x un nombre");
+				}
+				
 			}	
 		}
 		return recordSize;
@@ -142,6 +144,7 @@ public class DBManager {
 	 * @param commande la commande qui va creer la relation
 	 */
 	public void createCommande(StringTokenizer commande) {
+		System.out.println("----- COMMANDE CREATE -----");
 		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
@@ -167,13 +170,17 @@ public class DBManager {
 			System.exit(-1);
 		}
 		
-		System.out.print("La commande saisie est la suivante : ");
+		System.out.print("La relation cree est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
 			System.out.print(typeCol.get(i) + " ");
 		}
-		System.out.println();
+		
+		System.out.println(); System.out.println();
+		System.out.println("----- INFORMATION SUR LA RELATION CREEE  -----");
 		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
-		DBDef.getInstance().addRelation(relDefcree);
+		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
+		System.out.println();
+		System.out.println("----- FIN COMMANDE CREATE -----");
 	}
 	
 	/**

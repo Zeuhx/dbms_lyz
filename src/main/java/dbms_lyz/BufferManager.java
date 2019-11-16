@@ -92,8 +92,8 @@ public class BufferManager {
 	 */
 	public ByteBuffer getPage(PageId pageId) {
 		boolean pageExist;
-		Frame getFrame = new Frame(pageId);
-		ByteBuffer bf = getFrame.getBuffer();
+		Frame f = new Frame(pageId);
+		ByteBuffer bf = f.getBuffer();
 		int indexFrame = searchFrame(pageId);
 		
 		//si la new pageId n'est pas trouve dans la liste de frame??
@@ -101,11 +101,11 @@ public class BufferManager {
 			pageExist = false;
 		else
 			pageExist = true;
-			getFrame = listFrame.get(indexFrame);
+			f = listFrame.get(indexFrame);
 
 		//si newFrame est dans la liste
 		if (pageExist) {
-			DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
+			DiskManager.readPage(pageId, BufferManager.listFrame.get(indexFrame).getBuffer());
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
 			frame.getPlus();
 			//Maj du LRU_change
@@ -151,7 +151,7 @@ public class BufferManager {
 				if(listFrame.get(0).getLRU_change() == true) {
 					System.out.println("changement du premier frame ");
 					listFrame.remove(0);
-					listFrame.add(getFrame);
+					listFrame.add(f);
 
 					//maj LRU etat si jamais l'autre frame a pin_count>0 
 					if(!listFrame.get(1).getLRU_change()){
@@ -166,7 +166,7 @@ public class BufferManager {
 				else if (listFrame.get(1).getLRU_change() == true){
 					System.out.println("changement du second frame");
 					listFrame.remove(1);
-					listFrame.add(getFrame);
+					listFrame.add(f);
 					// si jamais l'autre frame a pin_count>0 
 					if(!listFrame.get(0).getLRU_change()){
 						listFrame.get(1).setLRU_change(true);

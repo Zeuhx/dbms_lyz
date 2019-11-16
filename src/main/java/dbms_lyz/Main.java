@@ -42,6 +42,7 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		String choix = "";
 		String commande = "";
+		System.out.println("----- BASE DE DONNEE -----");
 		do {
 			System.out.println("Quelles commandes voulez vous saisir ?");
 			System.out.println("choix : [exit] [commande]");
@@ -50,13 +51,14 @@ public class Main {
 				DBManager.finish();
 			}
 			else if (choix.equals("commande")){
-				System.out.println("Saisir votre commande : ");
-				System.out.println("Ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
+				System.out.print("Saisir votre commande");
+				System.out.println(", ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
 				commande = scan.nextLine();
 				manager.processCommand(commande);	
 			}
 		} while(!choix.equals("exit"));
 		// scan.close();
+		System.out.println();
 	}
 	
 	public static void testCreationFichiersAvecLeurPage()  {

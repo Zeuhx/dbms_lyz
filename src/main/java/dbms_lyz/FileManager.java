@@ -35,16 +35,18 @@ public class FileManager {
 	}
 	
 	/**
-	 * 	 Cette methode doit :
+	 * Cette methode doit :
 	 * creer un nouvel objet de type HeapFile 
 	 * et lui attribuer relDef le rajouter la liste heapFiles
 	 * puis appeler sur cet objet la methode createNewOnDisk
 	 * @param relDef
 	 */
 	public void createHeapFileWithRelation(RelDef relDef) {
+		System.out.println("\n \n----- CREATION DU FICHIER HEAP -----");
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
 		hf.createNewOnDisk();
+		System.out.println("\n");
 	}
 	
 
