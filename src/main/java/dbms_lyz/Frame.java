@@ -98,9 +98,7 @@ public class Frame {
 	public boolean getFlag_dirty() { return flag_dirty; }
 	public ByteBuffer getByteBuffer() { return buff; }
 	
-	// TODO Bizarre, on est pas cense modifier ici
 	public boolean getLRU_change() {
-		if(pin_count >=1) LRU_change = false;
 		return LRU_change;
 	}
 
