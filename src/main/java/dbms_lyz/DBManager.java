@@ -84,13 +84,15 @@ public class DBManager {
 		
 		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
 		// Calcul de la taille du record
+		
 		int recordSize = calculRecordSize(reldef);
 		int slotCount = calculSlotCount(reldef);
-		reldef.setRecordSize(calculRecordSize(reldef));
-		reldef.setSlotCount(calculSlotCount(reldef));
 		System.out.println("Taille d'un record de cette relation : "+ recordSize);
 		System.out.println("La taille d'une page est de "+ Constants.PAGE_SIZE);
 		System.out.println("On peut saisir "+ calculSlotCount(reldef) + " records sur une page");
+		
+		reldef.setRecordSize(calculRecordSize(reldef));
+		reldef.setSlotCount(calculSlotCount(reldef));
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount); 
@@ -98,11 +100,11 @@ public class DBManager {
 		
 		// On creer le heapFile
 		System.out.println("Affichage du relDef : " + reldef.toString());
-		
+		DBDef.getInstance().addRelationInRelDefTab(reldef);
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
-	
+
 	/**
 	 * On calcule la taille d'un record dans une page
 	 * @return  : ici qu'on calcule recordSize 
@@ -166,7 +168,7 @@ public class DBManager {
 				}
 			}
 		} catch(NumberFormatException e) {
-			System.err.println("[Attention] Le nombre de colone n'a pas ete saisie");
+			System.err.println("[Attention] Un element de la commande n'a pas ete saisie");
 			System.exit(-1);
 		}
 		
