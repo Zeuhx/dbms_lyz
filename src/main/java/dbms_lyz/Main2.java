@@ -1,30 +1,121 @@
-
 package main.java.dbms_lyz;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
+import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * CECI EST UN MAIN <BROUILLON>, pour tester les fonctions 
- * @author cedzh
- *
- */
 public class Main2 {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		//		test();
-		testGetPagee();
+//		testGetPagee();
+//		testCommandeDBDefPourCreer();
+//		testC();
+		creetest();
+		
+	}
+	
 
+	public static void creetest() throws IOException {
+		DiskManager.getInstance().createFile(9); //creation fichier		
+		PageId pageId = new PageId("Data_9.rf"); //creation page 
+		PageId pageId2 = new PageId("Data_8.rf");
+		
+//		////
+//		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+//		File file = new File("C:\\Users\\willy\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_0.rf");
+//		RandomAccessFile f = new RandomAccessFile(file,"rw");
+//		bf.putInt(1);
+//		bf.putInt(5);
+//		//DiskManager.writePage(pageId5, bf);
+//		f.write(bf.array());
+//		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+//		///
+		
+		List<String> typeCol = new ArrayList<String>(); 
+		typeCol.add("int");
+		RelDef relDef = new RelDef ("R", typeCol); // reldef R 1 int
+		HeapFile heapFile = new HeapFile (relDef); 
+		
+		heapFile.createNewOnDisk(); //creation header page via cette methode
+		
+		File file = new File("C:\\Users\\willy\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_9"+ ".rf");
+		RandomAccessFile f = new RandomAccessFile(file,"rw");
+		testLireFichierAvecLeurPage(f);
+		
+		DiskManager.getInstance();
+		PageId newPage = DiskManager.addPage(7);
+		testLireFichierAvecLeurPage(f);
+		
+//		ByteBuffer bufferDeHeaderPage = BufferManager.getPage(0);
+		
+		ByteBuffer bufferDeHeaderPage = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		for (int i = 0; i < Constants.PAGE_SIZE; i += Integer.BYTES) {
+			bufferDeHeaderPage.putInt(0);
+		}
+		
+		System.out.println("#TEST# cree header pager [OK]");
+		
+		heapFile.addDataPage(pageId); //ajout de la page au heapfile
+		System.out.println("ByteBuffer : " + Arrays.toString(bufferDeHeaderPage.array()));
+		
+		
+//		//	suite ajoute de la page
+//		DiskManager.getInstance();
+//		DiskManager.addPage(1);
+//		
+//		System.out.println("#TEST# ajout 1page au headerpage [OK]");
+////		testLireFichierAvecLeurPage(rf);
+//		
+//		System.out.println("get rel def "+heapFile.getRelDef());
 
 	}
+	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		
+		try {
+			f.seek(0);
+			f.read(bf.array());
+			System.out.println("Bonjour");
+		} catch (IOException e) {
+			System.err.println("Erreur I/O");
+		}
+		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		
+	}
+	public static void testCommandeDBDefPourCreer() {
+		DBManager manager = new DBManager();
+//		DBManager.init();
+		Scanner scan = new Scanner(System.in);
+		String choix = "";
+		String commande = "";
+		do {
+			System.out.println("Quelles commandes voulez vous saisir ?");
+			System.out.println("choix : [exit] [commande]");
+			choix = scan.nextLine();
+			if(choix.equals("exit")){
+				DBManager.finish();
+			}
+			else if (choix.equals("commande")){
+				System.out.println("Saisir votre commande : ");
+				System.out.println("Ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
+				commande = scan.nextLine();
+				manager.processCommand(commande);	
+			}
+		} while(!choix.equals("exit"));
+		scan.close();
+	}
+
+	
+	////////////////////////////////////////
+	
 	public static void testGetPagee() {
 		List<Frame> listFrame = new ArrayList<Frame>();
 		PageId pageId = new PageId("Data_11.rf");
@@ -46,9 +137,10 @@ public class Main2 {
 //		testAfficheFrame(listFrame);
 		
 	}
+	
+	
 	public static ByteBuffer testGetPage(PageId pageId, List<Frame> listFrame) {
 		boolean pageExist = false;
-		//TODO : on recupere le buff de newFrame puis on l'ajoute sur la listFrame si exist
 		Frame getFrame = new Frame(pageId);
 		ByteBuffer bf = getFrame.getBuffer();
 		int indexFrame = testSearchFrame(getFrame.getPageId(), listFrame);

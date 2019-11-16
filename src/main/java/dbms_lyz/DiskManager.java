@@ -78,6 +78,7 @@ public class DiskManager {
 			System.out.println("Il y a une erreur d'I/O");
 		}
 		PageId p = new PageId("Data_" + (fileIdx + 1) + ".rf");
+		//TODO : maj header page ici ?
 		return (p);
 	}
 
