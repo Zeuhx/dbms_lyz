@@ -129,10 +129,11 @@ public class DBDef implements Serializable{
 	 * Rajoute une relation dans la liste et actualise le compteur de relation
 	 * @param rd la relation a ajoute
 	 */
-	public void addRelation(RelDef rd) {
+	public void addRelationInRelDefTab(RelDef rd) {
 		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
+			System.out.println("Affichage du nombre de relation : " + compteurRelation);
 		} else 
 			System.err.println("Erreur, le contenu du relDef saisie est vide");
 	}

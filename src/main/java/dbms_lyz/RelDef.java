@@ -160,25 +160,25 @@ public class RelDef {
 			return false;
 	}
 	
-	public String getNomRelation() { return relName; }
 	
-	public int getNbCol() { return (nbCol); }
-
-	public int getFileIdx() { return fileIdx ; }
-
-	public List<String> getTypeCol(){ return typeCol ; }
-	
-	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
-
-	public void setSlotCount(int slotCount) { this.slotCount = slotCount; }
-	
-	public void setRelName(String relName) { this.relName = relName; }
-	
-	public int getRecordSize() { return recordSize;	}
-
-	public int getSlotCount() { return slotCount; }
-	
-	public String getRelName() {
-		return relName;
+	@Override
+	public String toString() {
+		return "RelDef [relName=" + relName + ", nbCol=" + nbCol + ", typeCol=" + typeCol + ", fileIdx=" + fileIdx
+				+ ", recordSize=" + recordSize + ", slotCount=" + slotCount + "]";
 	}
+
+	// Getters
+	public String getNomRelation() { return relName; }
+	public int getNbCol() { return (nbCol); }
+	public int getFileIdx() { return fileIdx ; }
+	public List<String> getTypeCol(){ return typeCol ; }
+	public int getRecordSize() { return recordSize;	}
+	public int getSlotCount() { return slotCount; }
+	public String getRelName() { return relName; }
+	
+	// Setters
+	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
+	public void setSlotCount(int slotCount) { this.slotCount = slotCount; }
+	public void setRelName(String relName) { this.relName = relName; }
+
 }

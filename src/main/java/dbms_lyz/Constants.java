@@ -7,7 +7,7 @@ package main.java.dbms_lyz;
  *
  */
 public final class Constants {
-	public static final int PAGE_SIZE = 8;
+	public static final int PAGE_SIZE = 16;
 	public static final int FRAME_COUNT = 2;
 
 }
