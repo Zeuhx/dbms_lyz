@@ -28,9 +28,13 @@ public class HeapFile {
 	 * affecte " ce buffer a la page et on libere avec 1 car on a modifier la page
 	 */
 	public void createNewOnDisk() {
-		System.out.println("[Creation du fichier via l'id du fichier] ");
+		// L'indice du fichier est donnee par relDef
+		System.out.println(relDef.toString());
+		DiskManager.getInstance();
+		int fileIdx = relDef.getFileIdx(); 
+		System.out.println("[Creation du fichier via l'id du fichier] : " + fileIdx);
 		// TODO PAS BIEN DE METTRE +1, A REVOIR
-		int fileIdx = relDef.getFileIdx(); // L'indice du fichier est donnee par relDef
+		
 		DiskManager.getInstance().createFile(fileIdx);
 		DiskManager.addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);

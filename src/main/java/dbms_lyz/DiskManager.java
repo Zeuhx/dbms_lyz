@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.Arrays;
 
 /**
@@ -120,20 +119,26 @@ public class DiskManager {
 	public static void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
 		File f = new File(path + pageId.getFileIdx() + ".rf");
+		System.out.println(f.toString());
 		int positionPage = pageId.getPageIdx();
-
+		if(buff == null) {
+			throw new RuntimeException("Le fichier buffer est vide");
+		}
 		try {
 			rf = new RandomAccessFile(f, "rw");
 			/**
 			 * Position du RandomAccessFile
 			 */
 			
+			System.out.println("ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
+			
+			// TODO Le buffer est vide !
 			rf.write(buff.array());
 		} catch (FileNotFoundException e1) {
-			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
+			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
-			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
+			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

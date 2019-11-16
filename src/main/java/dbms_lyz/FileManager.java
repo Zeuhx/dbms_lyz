@@ -42,10 +42,12 @@ public class FileManager {
 	 * @param relDef
 	 */
 	public void createHeapFileWithRelation(RelDef relDef) {
-		System.out.println("\n \n----- CREATION DU FICHIER HEAP -----");
+		System.out.println("\n \n----- CREATION DU FICHIER HEAP ----- \n TESTCD");
+		System.out.println(relDef.toString());
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
 		hf.createNewOnDisk();
+		
 		System.out.println("\n");
 	}
 	

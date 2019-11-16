@@ -86,21 +86,20 @@ public class DBManager {
 		// Calcul de la taille du record
 		
 		int recordSize = calculRecordSize(reldef);
+		reldef.setRecordSize(recordSize);
 		int slotCount = calculSlotCount(reldef);
+		reldef.setSlotCount(slotCount);
 		System.out.println("Taille d'un record de cette relation : "+ recordSize);
 		System.out.println("La taille d'une page est de "+ Constants.PAGE_SIZE);
-		System.out.println("On peut saisir "+ calculSlotCount(reldef) + " records sur une page");
-		
-		reldef.setRecordSize(calculRecordSize(reldef));
-		reldef.setSlotCount(calculSlotCount(reldef));
+		System.out.println("On peut saisir "+ slotCount + " records sur une page");
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
-		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount); 
+		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
+		DBDef.getInstance().addRelationInRelDefTab(reldef);
 		System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
 		System.out.println("Affichage du relDef : " + reldef.toString());
-		DBDef.getInstance().addRelationInRelDefTab(reldef);
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}

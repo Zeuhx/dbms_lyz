@@ -117,7 +117,7 @@ public class BufferManager {
 			if(listFrame.get(0).getPin_count() >= 1 && listFrame.get(1).getPin_count() >= 1) {
 				throw new RuntimeException("Les deux frames sont occupe");
 			}
-			
+
 			// Si un des deux pinCount est a 0, alors on peut remplacer directement
 			if(listFrame.get(0).getPin_count()==0 || listFrame.get(1).getPin_count()==0) {
 				if(listFrame.get(0).getFlag_dirty()==false) {
@@ -206,34 +206,4 @@ public class BufferManager {
 
 	}
 
-	// Une methode pour modif les pages qui sont dans les frames
-
-	
-	/**
-	 * Autre getPage()
-	 */
-//	public ByteBuffer getPage(PageId pageId) {
-//	ByteBuffer bf = null;
-//	int indexFrame = searchFrame(pageId);
-//	
-//	//si la new pageId n'est pas trouve dans la liste de frame??;
-//	if (indexFrame == 2)
-//		frame = null;
-//	else
-//		//comprend pas pourquoi f doit get le indexFrame
-//		frame = listFrame.get(indexFrame);
-//
-//	if (frame != null) {
-//		DiskManager.readPage(pageId, BufferManager.listFrame.get(0).getBuffer());
-//		frame.get();
-//		if (pageId == listFrame.get(0).getPageId()) {
-//			listFrame.get(0).setLRU_change(false);
-//			listFrame.get(1).setLRU_change(true);
-//		} else {
-//			listFrame.get(1).setLRU_change(false);
-//			listFrame.get(0).setLRU_change(true);
-//		}
-//	}
-//	return (bf);
-//}
 }

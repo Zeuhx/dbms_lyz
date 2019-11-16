@@ -16,7 +16,8 @@ public class Frame {
 
 	public Frame(PageId pageId) {
 		this.pageId = pageId;
-		DiskManager.writePage(pageId, buff);
+		DiskManager.readPage(pageId, buff);
+		DiskManager.writePage(pageId, buff); //cette ligne est fausse car on ecrit depuis un buffer non itiliaser
 		pin_count = 0;
 		flag_dirty = false;
 	}

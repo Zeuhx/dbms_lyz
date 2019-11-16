@@ -8,16 +8,12 @@ package main.java.dbms_lyz;
  *
  */
 public class PageId {
-	public static int ID = 0;
-
 	private int fileIdx;
 	private int pageIdx;
 
 	public PageId(String nomFichier) {
 		try {
 			fileIdx = idFichier(nomFichier);
-			pageIdx = ID;
-			ID += 1;
 		}
 		catch(StringIndexOutOfBoundsException e) {
 			System.err.println("Attention : Le fichier " + nomFichier + " n'est pas du bon format");
