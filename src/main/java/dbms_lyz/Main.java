@@ -23,17 +23,13 @@ public class Main {
 		//testCommandeDBDef();
 		//testCreationFichiersAvecLeurPage();
 		//testEcrireFichierAvecLeurPage();
-		
-		
-		testClean();
+		testRelDefEtRecord();
+		//testClean();
 		
 	}
 	
 	public static void testClean() {
-		
 		DBManager.getInstance().cleanCommande();
-		
-		
 	}
 	
 	public static void testCommandeDBDefPourCreer() {

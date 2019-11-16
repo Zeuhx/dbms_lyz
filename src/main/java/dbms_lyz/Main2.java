@@ -151,7 +151,7 @@ public class Main2 {
 			System.out.println("Frame pas trouve");
 		else {
 			Frame frame = listFrame.get(indexFrame);
-			frame.free(valdirty);
+			frame.freeMoins(valdirty);
 		}
 	}
 
