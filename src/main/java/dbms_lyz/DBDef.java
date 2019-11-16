@@ -150,6 +150,7 @@ public class DBDef implements Serializable{
 	// Getters et Setters 
 	public static int getListSize() { return relDefTab.size(); }
 	public static List<RelDef> getRelDefTab(){ return relDefTab; }
+	public static int getCompteurRelation(){ return compteurRelation; }
 	
 	public void setList(List <RelDef> l) { relDefTab = l; }
 	

@@ -100,7 +100,7 @@ public class DBManager {
 		
 		// WARNING : TODO on connait pas le fileIdx -> il faudra recuperer le fileIdx
 		System.err.println("[WAH] --> il faut faire un compteur qui incremente automatiquement ");
-		reldef = new RelDef(nomRelation, typeCol, 0, recordSize, slotCount); 
+		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount); 
 		DBDef.getInstance().addRelation(reldef);
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
