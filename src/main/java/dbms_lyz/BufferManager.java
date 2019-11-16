@@ -35,37 +35,23 @@ public class BufferManager {
 	 * 
 	 * @param page
 	 * @return l'index de Frame qui correspondant au PageId
-	 * @return 2 : la pageId n'est pas dans le
+	 * @return -1 : la pageId n'est pas dans le
 	 */
 
 	public int searchFrame(PageId pageId) {
+		if(pageId == null) {
+			throw new NullPointerException("PageId dans searchFrame est null");
+		}
 		BufferManager.getInstance();
-		if(listFrame.get(0).getPageId() == null) {
-			listFrame.get(0).setPageId(pageId);
+		if(listFrame.get(0).getPageId() == (pageId)) {
 			return(0);
 		}
-		else if(listFrame.get(1).getPageId() == null) {
-			listFrame.get(1).setPageId(pageId);
+		else if(listFrame.get(1).getPageId() == (pageId)) {
 			return(1);
 		}
+		else
+			return -1;
 		
-		// sinon, on compare id de la page dans chaque frame avec id de PageID
-		for(int i=0 ; i<listFrame.size() ; i++) {
-			Frame f = listFrame.get(i);
-
-		//TODO si y 'a rien dans le premier frame on remplace directement
-		//TODO si y 'a rien dans le deuxieme frame on remplace directement
-		
-
-			if (f.getPageId().equals(pageId))
-				return i;
-			else {
-				System.err.println("la PageId " + pageId.getPageIdx() + " n'est pas dans les frames");
-				// TODO ++ Politque de remplacement
-			}
-					
-		}
-		return (-1); // Pour retourner l'index de la frame concerne retourne 2 l'exeption est traite dans getPage()
 	}
 
 	/**
@@ -95,6 +81,8 @@ public class BufferManager {
 		ByteBuffer byteBuff ;
 		Frame f = null ;
 		
+		if(pageId == null)
+			throw new RuntimeException("PageId dans le getPage est null");
 		// on n'a pas trouver la page
 		if (indexFrame == -1)
 			pageExist = false;

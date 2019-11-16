@@ -127,6 +127,7 @@ public class DiskManager {
 			/**
 			 * Position du RandomAccessFile
 			 */
+			
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 			rf.write(buff.array());
 		} catch (FileNotFoundException e1) {

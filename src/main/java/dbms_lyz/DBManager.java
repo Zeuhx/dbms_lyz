@@ -356,6 +356,7 @@ public class DBManager {
 				}
 				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 				System.out.println(stringRecord);
+				
 			}
 		}
 		
