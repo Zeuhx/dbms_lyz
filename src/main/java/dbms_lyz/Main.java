@@ -21,9 +21,10 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		//DBManager.init();
 		//testCommandeDBDef();
+		testCommandeDBDefPourCreer();
 		//testCreationFichiersAvecLeurPage();
 		//testEcrireFichierAvecLeurPage();
-		testRelDefEtRecord();
+		//testRelDefEtRecord();
 		//testClean();
 		
 	}
@@ -34,7 +35,7 @@ public class Main {
 	
 	public static void testCommandeDBDefPourCreer() {
 		DBManager manager = new DBManager();
-//		DBManager.init();
+		DBManager.init();
 		Scanner scan = new Scanner(System.in);
 		String choix = "";
 		String commande = "";
@@ -53,7 +54,7 @@ public class Main {
 				manager.processCommand(commande);	
 			}
 		} while(!choix.equals("exit"));
-		// scan.close();
+		//scan.close();
 		System.out.println();
 	}
 	
@@ -117,12 +118,12 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		PageId p = DiskManager.addPage(10);
+		PageId p = DiskManager.getInstance().addPage(10);
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		bf.putInt(6);
-		DiskManager.writePage(p, bf);
+		DiskManager.getInstance().writePage(p, bf);
 		bf.position(0);
-		DiskManager.readPage(p, bf);
+		DiskManager.getInstance().readPage(p, bf);
 	}
 	
 	public static void testRelDefEtRecord() {

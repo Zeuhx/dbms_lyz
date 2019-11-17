@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,15 +47,12 @@ public class DBDef implements Serializable{
 		// src/main/ressources/DB/catalogue.def
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator);
-		FileInputStream catalogue = null ;
-		ObjectInputStream ois = null ;
-		try {
-			catalogue = new FileInputStream(path + "catalogue.def");
-			ois = new ObjectInputStream(catalogue);
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path + "catalogue.def")))	{
 			compteurRelation = ois.readInt() ;
 			/**
 			 * Pour chaque relDef : on va creer un relDef
 			 */
+			System.out.println("Affichage du compteur de relation du catalogue.def : " + compteurRelation);
 			for(int i = 0; i<compteurRelation ; i++) {
 				String relname = (String) ois.readObject();
 				int nbCol = ois.readInt();
@@ -72,30 +70,19 @@ public class DBDef implements Serializable{
  		} catch (FileNotFoundException e) {
 			System.err.println("Le fichier catalogue n'existe pas");
 		} catch (IOException e) {
-			System.err.println("Erreur de lecture de donnee (I/O) pour le catalogue.def");
+			System.err.println("Il n'y a pas d'information dans le catalogue.def");
 		} catch (ClassNotFoundException e) {
 			System.err.println("La classe n'a pas ete trouver pour le fichier");
-		} finally {
-			try {
-				catalogue.close() ; 
-				ois.close();
-			} catch (IOException e) {
-				System.out.println("Erreur d'I/O lors de la fermeture du fichier ");
-			}
-		}
+		} 
 	}
 	
 	/**
 	 * Sauvegarde les infos de DBDef dans catalogue.def
 	 */
 	public void finish(){
-		ObjectOutputStream oos = null ;
-		FileOutputStream catalogue = null ;
-		try {
-			String path = new String("src" + File.separator + "main" + 
-			File.separator + "resources" + File.separator + "DB" + File.separator );
-			catalogue = new FileOutputStream (path + "catalogue.def");
-			oos= new ObjectOutputStream(catalogue);
+		String path = new String("src" + File.separator + "main" + 
+		File.separator + "resources" + File.separator + "DB" + File.separator );
+		try(ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream (path + "catalogue.def"))) {
 			oos.writeInt(compteurRelation);
 			for(int i = 0; i<compteurRelation; i++) {
 				oos.writeObject(relDefTab.get(i).getRelName());
@@ -115,15 +102,7 @@ public class DBDef implements Serializable{
 			System.err.println("Le fichier n'a pas ete trouver ");
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O lors du fermeture du DBDef (1)");
-		} finally {
-			try {
-				catalogue.close() ; 
-				oos.close();	// TODO Erreur lors de l'execution sur cette ligne
-			} catch (IOException e) {
-				System.err.println("Erreur d'I/O lors du fermeture du DBDef (2)");
-			}
 		}
-		
 		System.out.println("ici le finish");
 	}
 
@@ -132,6 +111,7 @@ public class DBDef implements Serializable{
 	 * @param rd la relation a ajoute
 	 */
 	public void addRelationInRelDefTab(RelDef rd) {
+		System.out.println("(Erreur X2) : "+rd.getTypeCol() + " Nb de colonne " + rd.getTypeCol().size());
 		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;

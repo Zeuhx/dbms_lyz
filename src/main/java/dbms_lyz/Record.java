@@ -113,39 +113,10 @@ public class Record {
 	
 	public List<String> getValues(){
 		return values;
-	}	
+	}
+
+	public RelDef getRelDef() { return relDef; }	
 	
 	
-	/**
-	 * Retourne la taille du record selon le type (en octets)
-	 * 
-	 * @return
-	 */
-//	public int getRecordSize() {
-//		RelDef rd = relDef;
-//		int i = 0;
-//
-//		// Verifie si c'est bien un Integer
-//		if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
-//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
-//			recordLength += 4;
-//		}
-//		// Float
-//		else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
-//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
-//			recordLength += 4;
-//		}
-//		// String
-//		/**
-//		 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
-//		 */
-//		else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
-//			recordLength += 2;
-//		} else
-//			recordLength += 0;
-//
-//		return recordLength;
-//	}
 
 }

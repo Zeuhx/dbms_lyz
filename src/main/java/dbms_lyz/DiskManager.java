@@ -50,7 +50,6 @@ public class DiskManager {
 		} catch (IOException e) {
 			System.out.println("Il y a une erreur d'I/O");
 		}
-
 		System.out.println("Voici le chemin du fichier : " + f.getAbsolutePath());
 	}
 
@@ -61,7 +60,7 @@ public class DiskManager {
 	 * 
 	 * @throws FileNotFoundException
 	 */
-	public static PageId addPage(int fileIdx) {
+	public PageId addPage(int fileIdx) {
 		RandomAccessFile rf = null;
 		byte[] bt = new byte[Constants.PAGE_SIZE];
 		try {
@@ -76,7 +75,7 @@ public class DiskManager {
 		} catch (IOException e) {
 			System.out.println("Il y a une erreur d'I/O");
 		}
-		PageId p = new PageId("Data_" + (fileIdx + 1) + ".rf");
+		PageId p = new PageId("Data_" + fileIdx + ".rf");
 		return (p);
 	}
 
@@ -89,12 +88,11 @@ public class DiskManager {
 	 *         fournit le buffer à remplir!
 	 * @throws IOException
 	 */
-	public static void readPage(PageId pageId, ByteBuffer buff) {
+	public void readPage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
 		File f = new File(path + pageId.getFileIdx() + ".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
-		
-		
+			
 		try {
 			rf = new RandomAccessFile(f, "r");
 			rf.seek(0);
@@ -116,20 +114,16 @@ public class DiskManager {
 	 * @param pageId
 	 * @param buff
 	 */
-	public static void writePage(PageId pageId, ByteBuffer buff) {
+	public void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
 		File f = new File(path + pageId.getFileIdx() + ".rf");
 		System.out.println(f.toString());
 		int positionPage = pageId.getPageIdx();
-		if(buff == null) {
-			throw new RuntimeException("Le fichier buffer est vide");
-		}
 		try {
 			rf = new RandomAccessFile(f, "rw");
 			/**
 			 * Position du RandomAccessFile
 			 */
-			
 			System.out.println("ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 			
@@ -142,7 +136,6 @@ public class DiskManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	public String getPath() { return path; }

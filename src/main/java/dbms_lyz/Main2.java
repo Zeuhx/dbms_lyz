@@ -64,7 +64,7 @@ public class Main2 {
 		//si newFrame est dans la liste
 		if (pageExist) {
 			//on ajoute si frame exist dans la liste le buffer de newFrame 
-			getFrame.getPlus(); //pin_count ++
+			getFrame.incrementePinCount(); //pin_count ++
 
 			//Maj du LRU_change
 			//si newFrame correspond au premier
@@ -151,7 +151,7 @@ public class Main2 {
 			System.out.println("Frame pas trouve");
 		else {
 			Frame frame = listFrame.get(indexFrame);
-			frame.freeMoins(valdirty);
+			frame.decrementePinCount(valdirty);
 		}
 	}
 

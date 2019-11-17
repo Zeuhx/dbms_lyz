@@ -79,7 +79,7 @@ public class DBManager {
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		System.out.println("[Fonction createRelation]");
-
+		System.err.println("Erreur X5 : " + typeCol);
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
 		
 		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
@@ -95,11 +95,11 @@ public class DBManager {
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
-		DBDef.getInstance().addRelationInRelDefTab(reldef);
-		System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
+		System.err.println("Erreur X6 : " + reldef.getTypeCol());
+		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
-		System.out.println("Affichage du relDef : " + reldef.toString());
+		// System.out.println("Affichage du relDef : " + reldef.toString());
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
@@ -168,9 +168,7 @@ public class DBManager {
 			}
 		} catch(NumberFormatException e) {
 			System.err.println("[Attention] Un element de la commande n'a pas ete saisie");
-			System.exit(-1);
 		}
-		
 		System.out.print("La relation cree est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
 			System.out.print(typeCol.get(i) + " ");
@@ -179,6 +177,7 @@ public class DBManager {
 		System.out.println(); System.out.println();
 		System.out.println("----- INFORMATION SUR LA RELATION CREEE  -----");
 		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
+		System.out.println("INFO X1 : relDef cree " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 		System.out.println();
 		System.out.println("----- FIN COMMANDE CREATE -----");
@@ -192,10 +191,8 @@ public class DBManager {
 		
 		//TODO faire en sorte qu'on lise le catalogue
 		String path = new String("src\\main\\resources\\DB\\");
-		int compteurRelation = 3;
-		
-		
-		
+		int compteurRelation = 4 ;
+
 		for(int i = 0; i<compteurRelation; i++) {
 			try {
 				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
@@ -206,7 +203,7 @@ public class DBManager {
 				//On quitte la boucle car il n y a plus de fichiers
 			}
 			catch(IOException e) {
-				System.err.println("Erreur IO");
+				System.err.println("Erreur d'I/O et de lecture de donnees");
 			}
 		}
 		DBDef.getInstance().reset();

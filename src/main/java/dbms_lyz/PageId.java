@@ -58,17 +58,12 @@ public class PageId {
 		
 	}
 
-	public int getFileIdx() {
-		return (fileIdx);
-	}
-
-	public int getPageIdx() {
-		return pageIdx;
-	}
+	public int getFileIdx() { return fileIdx ; }
+	public int getPageIdx() { return pageIdx; }
 
 	public boolean equals(PageId p) {
 		boolean bool = false;
-		if (this.fileIdx == p.getFileIdx() && this.pageIdx == p.getFileIdx()) {
+		if (this.fileIdx == p.getFileIdx() && this.pageIdx == p.getPageIdx()) {
 			bool = true;
 		}
 		return (bool);
@@ -77,4 +72,18 @@ public class PageId {
 	public void setPageIdx(int pageIdx) {
 		this.pageIdx = pageIdx;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof PageId 
+				&& fileIdx == ((PageId) obj).getFileIdx() 
+				&& pageIdx == ((PageId) obj).getPageIdx();
+	}
+
+	@Override
+	public String toString() {
+		return "P[fileIdx=" + fileIdx + ", pageIdx=" + pageIdx + "]";
+	}
+	
+	
 }
