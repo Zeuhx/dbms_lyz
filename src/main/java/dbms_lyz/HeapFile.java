@@ -29,10 +29,10 @@ public class HeapFile {
 	 */
 	public void createNewOnDisk() {
 		// L'indice du fichier est donnee par relDef
-		System.out.println(relDef.toString());
+		System.out.println("Affichage X11 - Affichage du relDef : \n "+ "\t" +relDef.toString());
 		DiskManager.getInstance();
 		int fileIdx = relDef.getFileIdx(); 
-		System.out.println("[Creation du fichier via l'id du fichier] : " + fileIdx);
+//		System.out.println("Affichage X12 \n[Creation du fichier via l'id du fichier] : " + fileIdx);
 		DiskManager.getInstance().createFile(fileIdx);
 		DiskManager.getInstance().addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);
@@ -58,7 +58,7 @@ public class HeapFile {
 		bufferPage.putInt(0, bufferPage.getInt(0) + 1); // A l'indice 0, on ajoute 1
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		int i;
-		System.err.println("Affichage X9 : " + bufferPage.getInt(0));
+		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
 		for (i = 1; i < bufferPage.getInt(0); i++) ;
 		bufferPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
 		// DiskManager.writePage(pageId, bufferPage);
@@ -105,7 +105,7 @@ public class HeapFile {
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		RandomAccessFile rf = null;
 		
-		System.err.println("Erreur X7 : " + pageId.getFileIdx());
+		System.err.println("Affichage X7 : Verification - Affichage du fichierId saisie en parametre " + pageId.getFileIdx());
 		int fileIdx = pageId.getFileIdx();
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");;
@@ -199,7 +199,7 @@ public class HeapFile {
 		if(pageLibre == null) {
 			pageLibre = addDataPage();
 		}
-		System.err.println("Erreur X8 : Affichage page libre " + pageLibre);
+		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
 		return writeRecordToDataPage(record, pageLibre);
 						
 	}

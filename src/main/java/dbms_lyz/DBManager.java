@@ -64,6 +64,9 @@ public class DBManager {
 		case "insert" : insertCommande(stCommandaCouper) ;
 		break ;
 		case "insertall" : insertAllCommande(stCommandaCouper) ;
+		break ;
+		case "exit" : exitCommande(stCommandaCouper) ;
+		break ;
 		}
 	}
 
@@ -78,8 +81,8 @@ public class DBManager {
 
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
-		System.out.println("[Fonction createRelation]");
-		System.err.println("Erreur X5 : " + typeCol);
+//		System.out.println("Affichage X10 [Fonction createRelation]");
+//		System.err.println("Erreur X5 : " + typeCol);
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
 		
 		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
@@ -95,11 +98,11 @@ public class DBManager {
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
-		System.err.println("Erreur X6 : " + reldef.getTypeCol());
+//		System.err.println("Erreur X6 : " + reldef.getTypeCol());
 		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
-		// System.out.println("Affichage du relDef : " + reldef.toString());
+		// System.out.println("Affichage X19 - Affichage du relDef : " + reldef.toString());
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
@@ -177,7 +180,7 @@ public class DBManager {
 		System.out.println(); System.out.println();
 		System.out.println("----- INFORMATION SUR LA RELATION CREEE  -----");
 		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
-		System.out.println("INFO X1 : relDef cree " + relDefcree.toString());
+		System.out.println("Affichage X1 : relDef cree " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 		System.out.println();
 		System.out.println("----- FIN COMMANDE CREATE -----");
@@ -234,6 +237,7 @@ public class DBManager {
 
 		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
+			System.out.println("Affichage X19 - Entre dans le insert");
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
 			if(reldef.getNomRelation().equals(relName)) {
 				
@@ -356,5 +360,8 @@ public class DBManager {
 			}
 		}
 		
+	}
+	public void exitCommande(StringTokenizer commande) {
+		DBManager.finish();
 	}
 }

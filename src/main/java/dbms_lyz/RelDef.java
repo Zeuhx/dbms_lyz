@@ -170,7 +170,7 @@ public class RelDef {
 		else {
 			for(int i=0 ; i<typeCol.size() ; i++) {
 				build.append(typeCol.get(i));
-				build.append(" | ");
+				build.append(" ");
 			}
 		}
 		return "RelDef [relName=" + relName + ", nbCol=" + nbCol + ", typeCol=" + build.toString() + ", fileIdx=" + fileIdx

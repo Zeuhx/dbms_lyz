@@ -43,14 +43,14 @@ public class DiskManager {
 			if (f.createNewFile()) {
 				System.out.println("Le fichier dont l'id est " + fileIdx + " a ete cree");
 			} else {
-				System.out.println("Le fichier id " + fileIdx + " est non cree [peut etre qu'il existe deja]");
+				System.err.println("Erreur X13 : Le fichier id " + fileIdx + " est non cree [peut etre qu'il existe deja]");
 			}
 		} catch (SecurityException e_s) {
 			System.out.println("Security Exception : il n'y a pas les droits necessaires");
 		} catch (IOException e) {
 			System.out.println("Il y a une erreur d'I/O");
 		}
-		System.out.println("Voici le chemin du fichier : " + f.getAbsolutePath());
+		System.out.println("Affichage X14 : Voici le chemin du fichier : " + f.getAbsolutePath());
 	}
 
 	/**
@@ -66,14 +66,14 @@ public class DiskManager {
 		try {
 			rf = new RandomAccessFile(new File(path + fileIdx + ".rf"), "rw");
 		} catch (FileNotFoundException e1) {
-			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
+			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
-			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
+			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		}
 		try {
 			rf.write(bt);
 		} catch (IOException e) {
-			System.out.println("Il y a une erreur d'I/O");
+			System.err.println("Il y a une erreur d'I/O");
 		}
 		PageId p = new PageId("Data_" + fileIdx + ".rf");
 		return (p);
@@ -105,7 +105,7 @@ public class DiskManager {
 			System.out.println("Erreur d'I/O au niveau de la position du RandomFileAccess");
 		}
 		// Verif : System.out.println(nbr);
-		System.out.println("ByteBuffer pour la pageId "+pageId.getPageIdx()+" " + Arrays.toString(buff.array()));
+		System.out.println("Affichage X15 - ByteBuffer pour la pageId "+pageId.getPageIdx()+" " + Arrays.toString(buff.array()));
 
 	}
 	
@@ -124,7 +124,7 @@ public class DiskManager {
 			/**
 			 * Position du RandomAccessFile
 			 */
-			System.out.println("ByteBuffer : " + Arrays.toString(buff.array()));
+			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 			
 			// TODO Le buffer est vide !

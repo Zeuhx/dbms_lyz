@@ -57,8 +57,10 @@ public class Record {
 						buff.putChar(list.get(i).charAt(j));
 				}
 			}
-			else if(isInt)
+			else if(isInt) {
+				System.err.println("Erreur X9bis : Affichage number exception : " + list.get(i));
 				buff.putInt(Integer.parseInt(list.get(i)));
+			}
 			else if(isFloat)
 				buff.putFloat(Float.parseFloat(list.get(i)));
 		}

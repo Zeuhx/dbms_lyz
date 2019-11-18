@@ -37,23 +37,13 @@ public class Main {
 		DBManager manager = new DBManager();
 		DBManager.init();
 		Scanner scan = new Scanner(System.in);
-		String choix = "";
 		String commande = "";
 		System.out.println("----- BASE DE DONNEE -----");
 		do {
 			System.out.println("Quelles commandes voulez vous saisir ?");
-			System.out.println("choix : [exit] [commande]");
-			choix = scan.nextLine();
-			if(choix.equals("exit")){
-				DBManager.finish();
-			}
-			else if (choix.equals("commande")){
-				System.out.print("Saisir votre commande");
-				System.out.println(", ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
-				commande = scan.nextLine();
-				manager.processCommand(commande);	
-			}
-		} while(!choix.equals("exit"));
+			commande = scan.nextLine();
+			manager.processCommand(commande);	
+		} while(!commande.equals("exit"));
 		//scan.close();
 		System.out.println();
 	}
@@ -90,7 +80,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		System.out.println("Affichage X3 - ByteBuffer : " + Arrays.toString(bf.array()));
 	}
 	
 	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
@@ -103,7 +93,7 @@ public class Main {
 		} catch (IOException e) {
 			System.err.println("Erreur I/O");
 		}
-		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		System.out.println("Affichage X4 -ByteBuffer : " + Arrays.toString(bf.array()));
 		
 	}
 	

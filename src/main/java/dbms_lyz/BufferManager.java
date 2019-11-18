@@ -54,7 +54,7 @@ public class BufferManager {
 		ByteBuffer bytebuff ;
 		Frame f = searchFrame(pageId);
 		
-		System.out.println("get("+pageId +")");
+		System.err.println("Affichage X18 - get("+pageId +")");
 		if(f==null) {
 			int i = indexLibre();
 			if(i==-1) {
@@ -82,7 +82,7 @@ public class BufferManager {
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
 		Frame f = searchFrame(pageId);
-		System.out.println("free("+pageId+")");
+		System.out.println("Affichage X17 - free("+pageId+")");
 		if (f == null)
 			throw new RuntimeException("Frame pas trouve");
 		else {
