@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class HeapFile {
 		System.out.println("Affichage X45 - " + headerPage);
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage);
 		bufferPage.putInt(0, bufferPage.getInt(0) + 1); // A l'indice 0, on ajoute 1
-		System.out.println("Affichage X46 - ");
+		System.out.println("Affichage X46 - Affichage buffer" + Arrays.toString(bufferPage.array()));
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		int i;
 		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
