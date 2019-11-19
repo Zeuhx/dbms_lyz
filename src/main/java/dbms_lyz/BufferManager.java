@@ -95,7 +95,7 @@ public class BufferManager {
 	public int indexLibre() {
 		for(int i = 0 ; i<framePool.length ; i++) {
 			if(framePool[i] == null) {
-				System.out.println("La frame " + i + " est libre");
+				System.out.println("Affichage X20 - Le frame " + i + " est libre, on place la page dedans");
 				return i ;
 			}
 		}

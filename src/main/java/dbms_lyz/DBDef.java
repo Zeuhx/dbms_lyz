@@ -136,7 +136,7 @@ public class DBDef implements Serializable{
 		try {
 			Files.delete(Paths.get(path+"catalogue.def"));
 		} catch(FileSystemException e) {
-			System.err.println("Un autre fichier est en train d'utiliser un des fichier que vous essayez de supprimer, vous ne pouvez pas vous en servir");
+			System.out.println("C'est fait, meme si il n'y avait rien a supprimer");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

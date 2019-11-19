@@ -40,7 +40,8 @@ public class Main {
 		String commande = "";
 		System.out.println("----- BASE DE DONNEE -----");
 		do {
-			System.out.println("Quelles commandes voulez vous saisir ?");
+			System.out.println("Saisir la commande" 
+					+ "\n\tElle doit commencer par : create, clean, insert, select, insertAll, selectAll");
 			commande = scan.nextLine();
 			manager.processCommand(commande);	
 		} while(!commande.equals("exit"));
