@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Reader;
@@ -17,13 +18,36 @@ public class Main2 {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 //		test();
 //		testGetPagee();
-//		testCommandeDBDefPourCreer();
+		testCommandeDBDefPourCreer();
 //		testC();
 //		creetest();
 //		testCommandeDBDefPourCreere();
 		
 		// src/main/ressources/DB/catalogue.def
-		DBManager.init();
+//		DBManager.init();
+		
+	}
+
+	public void testt(){
+		
+		//npouvelle version
+		String path = new String("src\\main\\resources\\DB\\");
+		int cptDataFile=0;
+		//recuperer les fichier commencant par "Data_" dans une listData
+		File dir = new File(path);
+		File [] foundFiles = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				System.err.println("Affichage Y3");
+				return name.startsWith("Data");
+			}
+		});
+		//suppression des fichiers dans listData
+		for (File file : foundFiles) {
+			System.out.println("Affichage Y2 : suppression de fichier Data  ");
+			file.delete();
+			cptDataFile ++;
+		}
+		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
 	}
 	public static void testCommandeDBDefPourCreere() {
 		DBManager manager = new DBManager();
@@ -57,25 +81,18 @@ public class Main2 {
 	}
 	public static void testCommandeDBDefPourCreer() {
 		DBManager manager = new DBManager();
-//		DBManager.init();
+		DBManager.init();
 		Scanner scan = new Scanner(System.in);
-		String choix = "";
 		String commande = "";
+		System.out.println("----- BASE DE DONNEE -----");
 		do {
-			System.out.println("Quelles commandes voulez vous saisir ?");
-			System.out.println("choix : [exit] [commande]");
-			choix = scan.nextLine();
-			if(choix.equals("exit")){
-				DBManager.finish();
-			}
-			else if (choix.equals("commande")){
-				System.out.println("Saisir votre commande : ");
-				System.out.println("Ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
-				commande = scan.nextLine();
-				manager.processCommand(commande);	
-			}
-		} while(!choix.equals("exit"));
-		scan.close();
+			System.out.println("Saisir la commande" 
+					+ "\n\tElle doit commencer par : create, clean, insert, select, insertAll, selectAll");
+			commande = scan.nextLine();
+			manager.processCommand(commande);	
+		} while(!commande.equals("exit"));
+		//scan.close();
+		System.out.println();
 	}
 
 	
