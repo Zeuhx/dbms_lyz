@@ -44,13 +44,10 @@ public class DBDef implements Serializable{
 	 */
 	public void init() {
 		// src/main/ressources/DB/catalogue.def
-		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator);
-
 		//condition si le fichier n'exist pas on le cree
-		if(!(new File (path + "catalogue.def").isFile())) {
+		if(!(new File (Constants.PATH + "catalogue.def").isFile())) {
 			System.out.println("Affichage Y1 - Verification du fichier s'il dois etre cree : Fichier est cree");
-			File creatingCatalogue = new File (path + "catalogue.def");
+			File creatingCatalogue = new File (Constants.PATH + "catalogue.def");
 			try {
 				creatingCatalogue.createNewFile();
 			} catch (IOException e) {
@@ -58,7 +55,7 @@ public class DBDef implements Serializable{
 			}
 		}
 		
-		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path + "catalogue.def")))	{
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def")))	{
 			compteurRelation = ois.readInt() ;
 			/**
 			 * Pour chaque relDef : on va creer un relDef
@@ -93,9 +90,7 @@ public class DBDef implements Serializable{
 	 * Sauvegarde les infos de DBDef dans catalogue.def
 	 */
 	public void finish(){
-		String path = new String("src" + File.separator + "main" + 
-		File.separator + "resources" + File.separator + "DB" + File.separator );
-		try(ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream (path + "catalogue.def"))) {
+		try(ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream (Constants.PATH + "catalogue.def"))) {
 			oos.writeInt(compteurRelation);
 			for(int i = 0; i<compteurRelation; i++) {
 				oos.writeObject(relDefTab.get(i).getRelName());
@@ -141,10 +136,9 @@ public class DBDef implements Serializable{
 	public void reset() {
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
-		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator);
+		
 		try {
-			Files.delete(Paths.get(path+"catalogue.def"));
+			Files.delete(Paths.get(Constants.PATH+"catalogue.def"));
 		} catch(FileSystemException e) {
 			System.out.println("C'est fait, meme si il n'y avait rien a supprimer");
 		} catch (IOException e) {
@@ -152,7 +146,7 @@ public class DBDef implements Serializable{
 			e.printStackTrace();
 		}
 		
-		File f = new File(path+"catalogue.def");
+		File f = new File(Constants.PATH+"catalogue.def");
 		try {
 			f.createNewFile();
 		} catch (IOException e) {

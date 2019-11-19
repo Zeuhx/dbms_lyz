@@ -36,10 +36,10 @@ public class Main2 {
 	public void testt(){
 		
 		//npouvelle version
-		String path = new String("src\\main\\resources\\DB\\");
+		
 		int cptDataFile=0;
 		//recuperer les fichier commencant par "Data_" dans une listData
-		File dir = new File(path);
+		File dir = new File(Constants.PATH);
 		File [] foundFiles = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				System.err.println("Affichage Y3");

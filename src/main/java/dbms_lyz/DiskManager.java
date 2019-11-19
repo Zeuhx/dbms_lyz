@@ -12,9 +12,7 @@ import java.util.Arrays;
  * @author LYZ
  */
 public class DiskManager {
-	// Chemin du fichier
-	private static String path = new String("src" + File.separator + "main" + 
-			File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");
+	// Chemin du fichier src/main/resources/DB/
 
 	/** Constructeur prive */
 	private DiskManager() {
@@ -37,7 +35,7 @@ public class DiskManager {
 	 */
 	public void createFile(int fileIdx) {
 		// Ouvre le fichier si ce dernier existe deja
-		File f = new File(path + fileIdx + ".rf");
+		File f = new File(Constants.PATH + "Data_"+ fileIdx + ".rf");
 
 		try {
 			if (f.createNewFile()) {
@@ -64,7 +62,7 @@ public class DiskManager {
 		RandomAccessFile rf = null;
 		byte[] bt = new byte[Constants.PAGE_SIZE];
 		try {
-			rf = new RandomAccessFile(new File(path + fileIdx + ".rf"), "rw");
+			rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw");
 		} catch (FileNotFoundException e1) {
 			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
@@ -91,7 +89,7 @@ public class DiskManager {
 	 */
 	public void readPage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
-		File f = new File(path + pageId.getFileIdx() + ".rf");
+		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		// Verif : System.out.println(f.getAbsolutePath());
 			
 		try {
@@ -117,7 +115,7 @@ public class DiskManager {
 	 */
 	public void writePage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
-		File f = new File(path + pageId.getFileIdx() + ".rf");
+		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		System.out.println(f.toString());
 		int positionPage = pageId.getPageIdx();
 		try {
@@ -138,6 +136,6 @@ public class DiskManager {
 		}
 	}
 	
-	public String getPath() { return path; }
+	public String getPath() { return Constants.PATH + "Data_"; }
 
 }
