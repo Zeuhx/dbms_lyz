@@ -112,7 +112,7 @@ public class BufferManager {
 				position = i ;
 			}
 		}
-		if(min == Integer.MAX_VALUE) throw new RuntimeException("Il n'y a pas de frame dispo");
+		if(min == Integer.MAX_VALUE) throw new RuntimeException("Il n'y a pas de frame dispo, car les deux sont en cours d'utilisation");
 		return position;
 	}
 	

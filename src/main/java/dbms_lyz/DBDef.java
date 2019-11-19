@@ -79,6 +79,8 @@ public class DBDef implements Serializable{
 				
 				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 				relDefTab.add(relation);
+				
+				//TODO créer heapfile avec
 			}
  		} catch (FileNotFoundException e) {
 			System.err.println("Le fichier catalogue n'existe pas");
