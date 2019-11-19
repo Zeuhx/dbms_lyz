@@ -364,6 +364,7 @@ public class DBManager {
 			String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 			System.out.println(stringRecord);
 			compteurRecord ++;
+			System.out.println("Affichage X42 - "+ r);
 		}
 
 		System.out.println("Total Records : "+ compteurRecord);

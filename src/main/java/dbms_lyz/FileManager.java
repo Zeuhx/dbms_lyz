@@ -1,5 +1,9 @@
 package main.java.dbms_lyz;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,20 +93,39 @@ public class FileManager {
 	 * @return
 	 * @throws RuntimeException
 	 */
-	public List<Record> selectAllFromRelation (String relName) throws RuntimeException{
-		List<Record> listeDeRecords = new ArrayList<Record>();
-		//RandomAccessFile 
+	public List<Record> selectAllFromRelation (String relName) {
+		List<Record> listRecord = new ArrayList<>();
+		RandomAccessFile rf = null;
 		
 		//Parcours du heapfile pour recuperer la liste de records dont le relName correspond
 		for(HeapFile hf : heapFiles) {
 			if(hf.getRelDef().getNomRelation().equals(relName)){
-				//listeDeRecords.addA(hf.getAllRecords());
+				int fileIdx = hf.getRelDef().getFileIdx();
+				try {
+					rf = new RandomAccessFile(Constants.PATH + "Data_" + fileIdx + ".rf" , "r" );
+					int nbPage = rf.read();
+					System.err.println("Affichage X39 - Affichage du nombre de page dans le heapFile : " + nbPage + "pages");
+					rf.seek(Constants.PAGE_SIZE);
+					System.err.println("Affichage X40 - Affichage du pointeur " + rf);
+					for(int numeroPage = 1; numeroPage<=nbPage ; numeroPage++) {
+						PageId pageId = new PageId(numeroPage, hf.getRelDef().getFileIdx());
+						for (Record record : hf.getRecordInDataPage(pageId)) {
+							listRecord.add(record);
+							System.err.println("Affichage X43 : " + record);
+						}
+					}
+					System.out.println("Affichage X41 - Affichage de la list de record " + listRecord);
+				} catch (FileNotFoundException e) {
+					System.err.println("Pas de fichier trouve");
+				} catch (IOException e) {
+					System.err.println("On a pas acces a la page depuis le selectAll");
+				}
 			}
 			else {
 				throw new RuntimeException("Il n'y a pas heapFile avec ce relName");
 			}
 		}
-		return listeDeRecords;
+		return listRecord;
 	}
 
 	/**

@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,8 +55,10 @@ public class HeapFile {
 	 */
 	public PageId addDataPage() {
 		PageId headerPage = new PageId(0, relDef.getFileIdx());
+		System.out.println("Affichage X45 - " + headerPage);
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage);
 		bufferPage.putInt(0, bufferPage.getInt(0) + 1); // A l'indice 0, on ajoute 1
+		System.out.println("Affichage X46 - Affichage buffer" + Arrays.toString(bufferPage.array()));
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		int i;
 		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
@@ -63,7 +66,6 @@ public class HeapFile {
 		bufferPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
 		// DiskManager.writePage(pageId, bufferPage);
 		BufferManager.getInstance().freePage(headerPage, true);
-		
 		return DiskManager.getInstance().addPage(relDef.getFileIdx());
 	}
 
@@ -178,13 +180,16 @@ public class HeapFile {
 			if (bufferPage.get(positionByteMap) == 1) {
 				bufferPage.position(positionRecord);
 				List<String> listElementRecord = new ArrayList<String>();
+				/**
+				 * 
+				 */
 				for (int i = 0; i < relDef.getTypeCol().size(); i++) {
 					if (relDef.getTypeCol().get(i).equals("int")) {
 						String s = Integer.toString(bufferPage.getInt());
 						listElementRecord.add(s);
 					}
-					else if (relDef.getTypeCol().get(i).equals("int")) {
-						String s = Integer.toString(bufferPage.getInt());
+					else if (relDef.getTypeCol().get(i).equals("float")) {
+						String s = Float.toString(bufferPage.getFloat());
 						listElementRecord.add(s);
 					}
 					else {
@@ -192,8 +197,10 @@ public class HeapFile {
 						String valARecup = "";
 						for (int j = 0; j < taille; j++) {
 							String charBuff = Character.toString(bufferPage.getChar());
-							valARecup.concat(charBuff);
+							valARecup = valARecup.concat(charBuff);
+							System.out.println("Affichage X44 - Affichage du charbuff" + valARecup);
 						}
+						listElementRecord.add(valARecup);
 					}
 				}
 				listRecord.add(new Record(relDef, listElementRecord));
@@ -221,7 +228,6 @@ public class HeapFile {
 	 * @return la liste de records dans le heapfile
 	 */
 	public List<Record> getAllRecords(){
-	
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
 		int fileIdx = this.relDef.getFileIdx(); //nom du fichier � recuperer les records
 		PageId page =  new PageId(pageIdx, fileIdx);
