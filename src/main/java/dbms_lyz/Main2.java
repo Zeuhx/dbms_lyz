@@ -43,7 +43,7 @@ public class Main2 {
 		});
 		//suppression des fichiers dans listData
 		for (File file : foundFiles) {
-			System.out.println("Affichage Y2 : suppression de fichier Data ");
+			System.out.println("Affichage Y2 : suppression de fichier Data  ");
 			file.delete();
 			cptDataFile ++;
 		}
