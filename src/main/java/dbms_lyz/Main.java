@@ -21,10 +21,12 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		//DBManager.init();
 		//testCommandeDBDef();
+		testCommandeDBDefPourCreer();
 		//testCreationFichiersAvecLeurPage();
 		//testEcrireFichierAvecLeurPage();
-		testRelDefEtRecord();
+		//testRelDefEtRecord();
 		//testClean();
+		
 		
 	}
 	
@@ -34,26 +36,17 @@ public class Main {
 	
 	public static void testCommandeDBDefPourCreer() {
 		DBManager manager = new DBManager();
-//		DBManager.init();
+		DBManager.init();
 		Scanner scan = new Scanner(System.in);
-		String choix = "";
 		String commande = "";
 		System.out.println("----- BASE DE DONNEE -----");
 		do {
-			System.out.println("Quelles commandes voulez vous saisir ?");
-			System.out.println("choix : [exit] [commande]");
-			choix = scan.nextLine();
-			if(choix.equals("exit")){
-				DBManager.finish();
-			}
-			else if (choix.equals("commande")){
-				System.out.print("Saisir votre commande");
-				System.out.println(", ex : create NomRelation NbCol TypeColl[1] TypeCol[2] … TypeCol[NbCol]");
-				commande = scan.nextLine();
-				manager.processCommand(commande);	
-			}
-		} while(!choix.equals("exit"));
-		// scan.close();
+			System.out.println("Saisir la commande" 
+					+ "\n\tElle doit commencer par : create, clean, insert, select, insertAll, selectAll");
+			commande = scan.nextLine();
+			manager.processCommand(commande);	
+		} while(!commande.equals("exit"));
+		//scan.close();
 		System.out.println();
 	}
 	
@@ -89,7 +82,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		System.out.println("Affichage X3 - ByteBuffer : " + Arrays.toString(bf.array()));
 	}
 	
 	public static void testLireFichierAvecLeurPage(RandomAccessFile f) {
@@ -102,7 +95,7 @@ public class Main {
 		} catch (IOException e) {
 			System.err.println("Erreur I/O");
 		}
-		System.out.println("ByteBuffer : " + Arrays.toString(bf.array()));
+		System.out.println("Affichage X4 -ByteBuffer : " + Arrays.toString(bf.array()));
 		
 	}
 	
@@ -117,12 +110,12 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		PageId p = DiskManager.addPage(10);
+		PageId p = DiskManager.getInstance().addPage(10);
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		bf.putInt(6);
-		DiskManager.writePage(p, bf);
+		DiskManager.getInstance().writePage(p, bf);
 		bf.position(0);
-		DiskManager.readPage(p, bf);
+		DiskManager.getInstance().readPage(p, bf);
 	}
 	
 	public static void testRelDefEtRecord() {

@@ -57,8 +57,10 @@ public class Record {
 						buff.putChar(list.get(i).charAt(j));
 				}
 			}
-			else if(isInt)
+			else if(isInt) {
+				System.err.println("Erreur X9bis : Affichage number exception : " + list.get(i));
 				buff.putInt(Integer.parseInt(list.get(i)));
+			}
 			else if(isFloat)
 				buff.putFloat(Float.parseFloat(list.get(i)));
 		}
@@ -113,39 +115,10 @@ public class Record {
 	
 	public List<String> getValues(){
 		return values;
-	}	
+	}
+
+	public RelDef getRelDef() { return relDef; }	
 	
 	
-	/**
-	 * Retourne la taille du record selon le type (en octets)
-	 * 
-	 * @return
-	 */
-//	public int getRecordSize() {
-//		RelDef rd = relDef;
-//		int i = 0;
-//
-//		// Verifie si c'est bien un Integer
-//		if (rd.getTypeCol().get(i).getClass().toString().contains("Integer")) {
-//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
-//			recordLength += 4;
-//		}
-//		// Float
-//		else if (rd.getTypeCol().get(i).getClass().toString().equals("Float")) {
-//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+4");
-//			recordLength += 4;
-//		}
-//		// String
-//		/**
-//		 * ATTENTION : RESTE A MULTIPLIER PAR LE NB DE CHAR
-//		 */
-//		else if (rd.getTypeCol().get(i).getClass().toString().equals("String")) {
-//			System.out.println("Type de la colone : " + rd.getTypeCol().get(i).getClass() + "+2");
-//			recordLength += 2;
-//		} else
-//			recordLength += 0;
-//
-//		return recordLength;
-//	}
 
 }

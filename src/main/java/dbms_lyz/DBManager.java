@@ -12,6 +12,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
@@ -64,6 +65,9 @@ public class DBManager {
 		case "insert" : insertCommande(stCommandaCouper) ;
 		break ;
 		case "insertall" : insertAllCommande(stCommandaCouper) ;
+		break ;
+		case "exit" : exitCommande(stCommandaCouper) ;
+		break ;
 		}
 	}
 
@@ -78,31 +82,32 @@ public class DBManager {
 
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
-		System.out.println("[Fonction createRelation]");
-
+//		System.out.println("Affichage X10 [Fonction createRelation]");
+//		System.err.println("Erreur X5 : " + typeCol);
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
 		
 		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
 		// Calcul de la taille du record
+		
 		int recordSize = calculRecordSize(reldef);
+		reldef.setRecordSize(recordSize);
 		int slotCount = calculSlotCount(reldef);
-		reldef.setRecordSize(calculRecordSize(reldef));
-		reldef.setSlotCount(calculSlotCount(reldef));
+		reldef.setSlotCount(slotCount);
 		System.out.println("Taille d'un record de cette relation : "+ recordSize);
 		System.out.println("La taille d'une page est de "+ Constants.PAGE_SIZE);
-		System.out.println("On peut saisir "+ calculSlotCount(reldef) + " records sur une page");
+		System.out.println("On peut saisir "+ slotCount + " records sur une page");
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
-		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount); 
-		System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
+		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
+//		System.err.println("Erreur X6 : " + reldef.getTypeCol());
+		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
-		System.out.println("Affichage du relDef : " + reldef.toString());
-		
+		// System.out.println("Affichage X19 - Affichage du relDef : " + reldef.toString());
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
-	
+
 	/**
 	 * On calcule la taille d'un record dans une page
 	 * @return  : ici qu'on calcule recordSize 
@@ -148,7 +153,6 @@ public class DBManager {
 		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
-		int j = 0;
 		
 		try {
 			for (int i = 1; commande.hasMoreElements(); i++) {
@@ -159,17 +163,22 @@ public class DBManager {
 					nbCol = Integer.parseInt(commande.nextToken());
 				}
 				if(i > 2) {
-					while(j < nbCol) {
+					for(int j=0 ; j<nbCol ; j++) {
 						typeCol.add(commande.nextToken());
-						j++;
+						// TODO Pas placer comme il faut
+						if(j>nbCol) {
+							System.err.println("[Attention] Vous avez saisie plus d'element qu'il ne faut, "
+									+ "les elements en trop n'ont pas ete prise en compte");
+						}
 					}
 				}
 			}
 		} catch(NumberFormatException e) {
-			System.err.println("[Attention] Le nombre de colone n'a pas ete saisie");
+			System.err.println("[Attention] Un element de la commande n'a pas ete saisie");
+		} catch(NoSuchElementException e) {
+			System.err.println("[Attention] Il vous manque des elements a remplir, le programme s'arrete");
 			System.exit(-1);
 		}
-		
 		System.out.print("La relation cree est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
 			System.out.print(typeCol.get(i) + " ");
@@ -178,6 +187,7 @@ public class DBManager {
 		System.out.println(); System.out.println();
 		System.out.println("----- INFORMATION SUR LA RELATION CREEE  -----");
 		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
+		System.out.println("Affichage X1 : relDef cree " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 		System.out.println();
 		System.out.println("----- FIN COMMANDE CREATE -----");
@@ -185,27 +195,30 @@ public class DBManager {
 	
 	/**
 	 * Remet a 0 le programme
-	 * TODO s'occuper de BufferManager
+	 * Efface le contenu du catalogue.def
+	 * Supprime les fichiers Data
 	 */
 	public void cleanCommande() {
 		
-		//TODO faire en sorte qu'on lise le catalogue
 		String path = new String("src\\main\\resources\\DB\\");
-		int compteurRelation = 3;
-		
-		
-		
+		System.err.println("Affichage X21 : Compteur relation de cleanCommande : " + DBDef.getCompteurRelation());
+		int compteurRelation = DBDef.getCompteurRelation() ;
+
 		for(int i = 0; i<compteurRelation; i++) {
 			try {
 				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
+				System.out.println("Affichage X22 : Suppression des fichiers : "+ path+"Data_"+i+".rf");
 			}
 			catch(NoSuchFileException e) {
-				System.err.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
-				break;
+				System.err.println("Il n'y a pas plus de fichier : "+DiskManager.getInstance().getPath()+i);
+				System.exit(-1);;
 				//On quitte la boucle car il n y a plus de fichiers
 			}
 			catch(IOException e) {
-				System.err.println("Erreur IO");
+				System.err.println("[Attention] Des fichiers viennent d'etre cree "
+						+ "et sont donc en cours d'utilisation par le systeme, "
+						+ "\nil ne peut pas etre supprimer, "
+						+ "pour cela il faut quitter le programme et faire la commande clean apres");
 			}
 		}
 		DBDef.getInstance().reset();
@@ -236,6 +249,7 @@ public class DBManager {
 
 		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
+			System.out.println("Affichage X19 - Entre dans le insert");
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
 			if(reldef.getNomRelation().equals(relName)) {
 				
@@ -354,8 +368,12 @@ public class DBManager {
 				}
 				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 				System.out.println(stringRecord);
+				
 			}
 		}
 		
+	}
+	public void exitCommande(StringTokenizer commande) {
+		DBManager.finish();
 	}
 }

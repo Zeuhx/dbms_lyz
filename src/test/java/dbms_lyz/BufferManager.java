@@ -79,7 +79,7 @@ public class BufferManager {
 		if(f != null){
 			try {
 				DiskManager.readPage(pageId, f.getBuffer());
-				f.getPlus();
+				f.incrementePinCount();
 				if(pageId == listFrame.get(0).getPageId()) {
 					listFrame.get(0).setLRU_change(false);
 					listFrame.get(1).setLRU_change(true);
@@ -106,7 +106,7 @@ public class BufferManager {
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
 		Frame f = searchFrame(pageId);
-		f.freeMoins(valdirty);
+		f.decrementePinCount(valdirty);
 	}
 
 	/**

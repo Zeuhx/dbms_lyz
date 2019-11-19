@@ -8,46 +8,19 @@ import java.nio.ByteBuffer;
  *
  */
 public class Frame {
-	private ByteBuffer buff;
+	private static int compteurGeneralLRU  = 0;
+	private int compteurPersoLRU ;
+	private ByteBuffer buff = ByteBuffer.allocate(Constants.PAGE_SIZE);;
 	private PageId pageId;
 	private int pin_count;
 	private boolean flag_dirty;
-	private boolean LRU_change;
 
 	public Frame(PageId pageId) {
+		compteurPersoLRU = compteurGeneralLRU ;
+		compteurGeneralLRU++ ;
 		this.pageId = pageId;
-		DiskManager.writePage(pageId, buff);
 		pin_count = 0;
 		flag_dirty = false;
-	}
-	
-	public Frame() {
-		pageId = null ;
-		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		pin_count = 0;
-		flag_dirty = false;
-	}
-	
-	public Frame(boolean LRU_change) {
-		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		pin_count = 0;
-		flag_dirty = false;
-		this.LRU_change = LRU_change;
-	}
-
-	public void setLRU_change(boolean b) {
-		if(pin_count >=1) LRU_change = false;
-		else LRU_change = b;
-	}
-
-	public PageId getPageId() { return pageId; }
-
-	public int getPageIdx() {
-		return pageId.getPageIdx();
-	}
-
-	public ByteBuffer getBuffer() {
-		return buff;
 	}
 
 	/**
@@ -55,30 +28,8 @@ public class Frame {
 	 * 
 	 * @param flag_dirty
 	 */
-	public void freeMoins(boolean flag_dirty) {
-		if (pin_count != 0)	pin_count-- ;
-
-		if (this.flag_dirty == true && (flag_dirty==false)) this.flag_dirty = true ;
-		else this.flag_dirty = false ;
-
-		if (this.flag_dirty == true && (flag_dirty==false)) {
-			this.flag_dirty = true;
-		}
-		else
-			this.flag_dirty = false;
-		
-		if(pin_count == 0) 
-			this.LRU_change = true;
-		// Dans quel cas LRU_change => True
-//		if(pin_count == 0) {
-//			
-//			if(f.getLRU_change()) {
-//			LRU_change = false;
-//			f.setLRU_change(true);
-//			}
-//			else LRU_change = true;
-//		}
-
+	public void decrementePinCount() {
+		if (pin_count>0) pin_count-- ;
 	}
 	
 	public void flushFrame() {
@@ -86,24 +37,48 @@ public class Frame {
 		pin_count = 0;
 		flag_dirty = false;
 	}
+
+	// Met le buffer de la page dans le Frame
+	public void chargerPage() {
+		DiskManager.getInstance().readPage(pageId, buff);
+	}
 	
+	// enregistre la page dans le buffer
+	public void enregistrerPage() {
+		if(flag_dirty) { 
+			DiskManager.getInstance().writePage(pageId, buff); 
+			pin_count = 0 ;
+		}
+	}
+	
+	public boolean equals(PageId autrePageId) { return this.pageId.equals(autrePageId); }
+
 	// Pas un getter
-	public void getPlus() { pin_count++; }
+	public void incrementePinCount() { pin_count++; }
+	
+	// Pas un setter 
+	public void setDirty() { this.flag_dirty = true ; }
 
 	// Getters
+	public PageId getPageId() { return pageId; }
+	public int getPageIdx() { return pageId.getPageIdx(); }
+	public ByteBuffer getBuffer() { return buff; }
 	public int getPin_count() { return pin_count ;}
 	public boolean getFlag_dirty() { return flag_dirty; }
 	public ByteBuffer getByteBuffer() { return buff; }
-	
-	// TODO Bizarre, on est pas cense modifier ici
-	public boolean getLRU_change() {
-		if(pin_count >=1) LRU_change = false;
-		return LRU_change;
-	}
+	public int getCompteurPersoLRU() { return compteurPersoLRU; }
 
 	// Setters
 	public void setBuff(ByteBuffer buff) { this.buff = buff; }
 	public void setPageId(PageId pageId) { this.pageId = pageId; }
+	public static void setCompteurGeneralLRU(int compteurGeneralLRU) { Frame.compteurGeneralLRU = compteurGeneralLRU; }
+
+	@Override
+	public String toString() {
+		return "Frame [pageId=" + pageId + ", pc="
+				+ pin_count + ", dirty=" + flag_dirty + "]";
+	}
+	
 	
 	
 }

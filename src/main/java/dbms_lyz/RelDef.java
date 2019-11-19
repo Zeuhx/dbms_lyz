@@ -26,7 +26,6 @@ public class RelDef {
 	}
 
 	/**
-	 * TODO Verifier le fileIdx
 	 * 
 	 * @param nomRelation
 	 * @param typeCol
@@ -36,6 +35,7 @@ public class RelDef {
 	 */
 	public RelDef(String nomRelation, List<String> typeCol, int fileIdx, int recordSize, int slotCount) {
 		this.relName = nomRelation;
+		this.typeCol = typeCol ;
 		this.nbCol = typeCol.size();
 		this.fileIdx = fileIdx;		// le fichier
 		this.recordSize = recordSize; // Attention : il faut directement initialiser selon la taille du record
@@ -163,7 +163,17 @@ public class RelDef {
 	
 	@Override
 	public String toString() {
-		return "RelDef [relName=" + relName + ", nbCol=" + nbCol + ", typeCol=" + typeCol + ", fileIdx=" + fileIdx
+		StringBuilder build = new StringBuilder();
+		if(typeCol == null) {
+			build.append("NULL");
+		}
+		else {
+			for(int i=0 ; i<typeCol.size() ; i++) {
+				build.append(typeCol.get(i));
+				build.append(" ");
+			}
+		}
+		return "RelDef [relName=" + relName + ", nbCol=" + nbCol + ", typeCol=" + build.toString() + ", fileIdx=" + fileIdx
 				+ ", recordSize=" + recordSize + ", slotCount=" + slotCount + "]";
 	}
 

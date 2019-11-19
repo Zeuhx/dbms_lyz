@@ -28,17 +28,19 @@ public class HeapFile {
 	 * affecte " ce buffer a la page et on libere avec 1 car on a modifier la page
 	 */
 	public void createNewOnDisk() {
-		System.out.println("[Creation du fichier via l'id du fichier] ");
-		// TODO PAS BIEN DE METTRE +1, A REVOIR
-		int fileIdx = relDef.getFileIdx(); // L'indice du fichier est donnee par relDef
+		// L'indice du fichier est donnee par relDef
+		System.out.println("Affichage X11 - Affichage du relDef : \n "+ "\t" +relDef.toString());
+		DiskManager.getInstance();
+		int fileIdx = relDef.getFileIdx(); 
+//		System.out.println("Affichage X12 \n[Creation du fichier via l'id du fichier] : " + fileIdx);
 		DiskManager.getInstance().createFile(fileIdx);
-		DiskManager.addPage(fileIdx);
+		DiskManager.getInstance().addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);
 		ByteBuffer bufferDeHeaderPage = BufferManager.getInstance().getPage(headerPage);
 		for (int i = 0 ; i < Constants.PAGE_SIZE ; i += Integer.BYTES) {
 			bufferDeHeaderPage.putInt(0);
 		}
-		DiskManager.writePage(headerPage, bufferDeHeaderPage);
+		DiskManager.getInstance().writePage(headerPage, bufferDeHeaderPage);
 		BufferManager.getInstance().freePage(headerPage, true);
 	}
 
@@ -50,17 +52,19 @@ public class HeapFile {
 	 * 
 	 * @param pageId
 	 */
-	public void addDataPage(PageId pageId) {
-		pageId = new PageId(0, pageId.getFileIdx());
-		DiskManager.addPage(pageId.getFileIdx());
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
+	public PageId addDataPage() {
+		PageId headerPage = new PageId(0, relDef.getFileIdx());
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage);
 		bufferPage.putInt(0, bufferPage.getInt(0) + 1); // A l'indice 0, on ajoute 1
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		int i;
+		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
 		for (i = 1; i < bufferPage.getInt(0); i++) ;
-		bufferPage.putInt(i, relDef.getSlotCount());
+		bufferPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
 		// DiskManager.writePage(pageId, bufferPage);
-		BufferManager.getInstance().freePage(pageId, true);
+		BufferManager.getInstance().freePage(headerPage, true);
+		
+		return DiskManager.getInstance().addPage(relDef.getFileIdx());
 	}
 
 	/*
@@ -84,12 +88,11 @@ public class HeapFile {
 			}
 			i += Integer.BYTES;
 		}
-		;
 		BufferManager.getInstance().freePage(page, false);
 		if (deLaPlace == false) {
 			return null;
 		}
-		return page;
+		return new PageId(i/4,fileIdx);
 	}
 
 	/**
@@ -102,6 +105,7 @@ public class HeapFile {
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		RandomAccessFile rf = null;
 		
+		System.err.println("Affichage X7 : Verification - Affichage du fichierId saisie en parametre " + pageId.getFileIdx());
 		int fileIdx = pageId.getFileIdx();
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");;
@@ -190,12 +194,14 @@ public class HeapFile {
 		return listRecord;
 	}
 	
-	/**
-	 * TODO : est ce que c'est �a ? est ce que il faut voir si il faut traiter la taille de record 
-	 * entr� en argument avec des conditions
-	 */
 	public Rid insertRecord(Record record) {
-		return writeRecordToDataPage(record, getFreeDataPageId());
+		PageId pageLibre = getFreeDataPageId();
+		if(pageLibre == null) {
+			pageLibre = addDataPage();
+		}
+		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
+		return writeRecordToDataPage(record, pageLibre);
+						
 	}
 
 	// Getters

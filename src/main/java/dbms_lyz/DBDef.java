@@ -9,9 +9,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,15 +48,24 @@ public class DBDef implements Serializable{
 		// src/main/ressources/DB/catalogue.def
 		String path = new String("src" + File.separator + "main" + 
 				File.separator + "resources" + File.separator + "DB" + File.separator);
-		FileInputStream catalogue = null ;
-		ObjectInputStream ois = null ;
-		try {
-			catalogue = new FileInputStream(path + "catalogue.def");
-			ois = new ObjectInputStream(catalogue);
+
+		//condition si le fichier n'exist pas on le cree
+		if(!(new File (path + "catalogue.def").isFile())) {
+			System.out.println("Affichage Y1 - Verification du fichier s'il dois etre cree : Fichier est cree");
+			File creatingCatalogue = new File (path + "catalogue.def");
+			try {
+				creatingCatalogue.createNewFile();
+			} catch (IOException e) {
+				System.err.println("Attention pas de possibilite d'acceder au dossier");
+			}
+		}
+		
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path + "catalogue.def")))	{
 			compteurRelation = ois.readInt() ;
 			/**
 			 * Pour chaque relDef : on va creer un relDef
 			 */
+			System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def à " + compteurRelation);
 			for(int i = 0; i<compteurRelation ; i++) {
 				String relname = (String) ois.readObject();
 				int nbCol = ois.readInt();
@@ -72,30 +83,19 @@ public class DBDef implements Serializable{
  		} catch (FileNotFoundException e) {
 			System.err.println("Le fichier catalogue n'existe pas");
 		} catch (IOException e) {
-			System.err.println("Erreur de lecture de donnee (I/O) pour le catalogue.def");
+			System.out.println("Bienvenue sur une nouvelle session du SGBD LYZ");
 		} catch (ClassNotFoundException e) {
 			System.err.println("La classe n'a pas ete trouver pour le fichier");
-		} finally {
-			try {
-				catalogue.close() ; 
-				ois.close();
-			} catch (IOException e) {
-				System.out.println("Erreur d'I/O lors de la fermeture du fichier ");
-			}
-		}
+		} 
 	}
 	
 	/**
 	 * Sauvegarde les infos de DBDef dans catalogue.def
 	 */
 	public void finish(){
-		ObjectOutputStream oos = null ;
-		FileOutputStream catalogue = null ;
-		try {
-			String path = new String("src" + File.separator + "main" + 
-			File.separator + "resources" + File.separator + "DB" + File.separator );
-			catalogue = new FileOutputStream (path + "catalogue.def");
-			oos= new ObjectOutputStream(catalogue);
+		String path = new String("src" + File.separator + "main" + 
+		File.separator + "resources" + File.separator + "DB" + File.separator );
+		try(ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream (path + "catalogue.def"))) {
 			oos.writeInt(compteurRelation);
 			for(int i = 0; i<compteurRelation; i++) {
 				oos.writeObject(relDefTab.get(i).getRelName());
@@ -115,16 +115,8 @@ public class DBDef implements Serializable{
 			System.err.println("Le fichier n'a pas ete trouver ");
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O lors du fermeture du DBDef (1)");
-		} finally {
-			try {
-				catalogue.close() ; 
-				oos.close();	// TODO Erreur lors de l'execution sur cette ligne
-			} catch (IOException e) {
-				System.err.println("Erreur d'I/O lors du fermeture du DBDef (2)");
-			}
 		}
-		
-		System.out.println("ici le finish");
+		System.out.println("Le programme s'est arrete correctement ! Merci d'avoir utiliser le SGBD LYZ");
 	}
 
 	/**
@@ -132,6 +124,7 @@ public class DBDef implements Serializable{
 	 * @param rd la relation a ajoute
 	 */
 	public void addRelationInRelDefTab(RelDef rd) {
+//		System.err.println("Erreur X2 : "+rd.getTypeCol() + " Nb de colonne " + rd.getTypeCol().size());
 		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
@@ -152,6 +145,8 @@ public class DBDef implements Serializable{
 				File.separator + "resources" + File.separator + "DB" + File.separator);
 		try {
 			Files.delete(Paths.get(path+"catalogue.def"));
+		} catch(FileSystemException e) {
+			System.out.println("C'est fait, meme si il n'y avait rien a supprimer");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
