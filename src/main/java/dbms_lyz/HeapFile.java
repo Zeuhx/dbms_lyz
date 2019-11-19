@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -109,12 +108,11 @@ public class HeapFile {
 		
 		System.err.println("Affichage X7 : Verification - Affichage du fichierId saisie en parametre " + pageId.getFileIdx());
 		int fileIdx = pageId.getFileIdx();
-		String path = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");;
+		
 		try {
-			rf = new RandomAccessFile(new File(path  + fileIdx + ".rf"), "rw");
+			rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw");
 		} catch (FileNotFoundException e) {
-			System.err.println("le fichier " +path+rf + " n'a pas ete trouver");
+			System.err.println("le fichier " +Constants.PATH + "Data_" +rf + " n'a pas ete trouver");
 			
 		}
 		
