@@ -16,7 +16,7 @@ public class Record {
 
 	public Record(RelDef reldef, List<String> values) {
 		relDef = reldef;
-		values = new ArrayList<>();
+		this.values = values;
 	}
 	
 	/**
@@ -28,6 +28,10 @@ public class Record {
 	 * @param position
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
+		System.out.println("Affichage X23 - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
+		System.out.println("Affichage X29 : Affichage Buff depuis writeToBuffer - " + buff);
+		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
 		buff.position(position);
 		int i = 0;
 		List<String> list = relDef.getTypeCol();
@@ -54,15 +58,15 @@ public class Record {
 					if(j>=tailleString)
 						buff.putChar(' ');
 					else
-						buff.putChar(list.get(i).charAt(j));
+						buff.putChar(values.get(i).charAt(j));
 				}
 			}
 			else if(isInt) {
-				System.err.println("Erreur X9bis : Affichage number exception : " + list.get(i));
-				buff.putInt(Integer.parseInt(list.get(i)));
+				System.out.println("Affichage X9bis : Affichage number exception : " + values.get(i));
+				buff.putInt(Integer.parseInt(values.get(i)));
 			}
 			else if(isFloat)
-				buff.putFloat(Float.parseFloat(list.get(i)));
+				buff.putFloat(Float.parseFloat(values.get(i)));
 		}
 		
 	}
@@ -105,6 +109,8 @@ public class Record {
 	public String toString() {
 		StringBuilder build = new StringBuilder();
 		build.append("[Record] de " + relDef.getNomRelation() + " ");
+		System.out.println("Affichage X28 : Affichage values : " + values);
+		
 		for(String s : values) {
 			build.append(s);
 			build.append(" ; ");

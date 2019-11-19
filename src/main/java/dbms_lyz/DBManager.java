@@ -66,6 +66,8 @@ public class DBManager {
 		break ;
 		case "insertall" : insertAllCommande(stCommandaCouper) ;
 		break ;
+		case "selectall" : selectAllCommande(stCommandaCouper);
+		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
 		}
@@ -243,6 +245,7 @@ public class DBManager {
 		while(commande.hasMoreTokens()) {
 			valeurs.add(commande.nextToken());
 		}
+		System.out.println("Affichage X23 : Affichage values depuis insertCommande : " + valeurs);
 		
 		//accede au Heapfiles pour avoir la liste
 		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
@@ -251,10 +254,12 @@ public class DBManager {
 		for(int i=0; i<heapFiles.size(); i++) {
 			System.out.println("Affichage X19 - Entre dans le insert");
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
+			System.err.println("Affichage X24 : Affichage du getRelDef de insertCommande : " + heapFiles.get(i).getRelDef());
 			if(reldef.getNomRelation().equals(relName)) {
-				
 				//ecriture du record dans la relation
+				System.out.println("Affichage X25 : Affichage des valeurs 2 : " + valeurs);
 				Record r = new Record(reldef, valeurs);
+				System.out.println("Affichage X26 : Affichage du record depuis Insert : " + r.toString());
 				heapFiles.get(i).insertRecord(r);
 			}
 		}
@@ -325,7 +330,6 @@ public class DBManager {
 		String nomRelation = "";
 		int compteurRecord = 0;
 		
-		commande.nextElement();
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);

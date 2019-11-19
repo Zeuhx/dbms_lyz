@@ -195,6 +195,7 @@ public class HeapFile {
 	}
 	
 	public Rid insertRecord(Record record) {
+		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record);
 		PageId pageLibre = getFreeDataPageId();
 		if(pageLibre == null) {
 			pageLibre = addDataPage();
