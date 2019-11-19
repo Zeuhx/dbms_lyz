@@ -12,6 +12,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
@@ -152,7 +153,6 @@ public class DBManager {
 		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
-		int j = 0;
 		
 		try {
 			for (int i = 1; commande.hasMoreElements(); i++) {
@@ -163,14 +163,21 @@ public class DBManager {
 					nbCol = Integer.parseInt(commande.nextToken());
 				}
 				if(i > 2) {
-					while(j < nbCol) {
+					for(int j=0 ; j<nbCol ; j++) {
 						typeCol.add(commande.nextToken());
-						j++;
+						// TODO Pas placer comme il faut
+						if(j>nbCol) {
+							System.err.println("[Attention] Vous avez saisie plus d'element qu'il ne faut, "
+									+ "les elements en trop n'ont pas ete prise en compte");
+						}
 					}
 				}
 			}
 		} catch(NumberFormatException e) {
 			System.err.println("[Attention] Un element de la commande n'a pas ete saisie");
+		} catch(NoSuchElementException e) {
+			System.err.println("[Attention] Il vous manque des elements a remplir, le programme s'arrete");
+			System.exit(-1);
 		}
 		System.out.print("La relation cree est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
@@ -188,25 +195,30 @@ public class DBManager {
 	
 	/**
 	 * Remet a 0 le programme
-	 * TODO s'occuper de BufferManager
+	 * Efface le contenu du catalogue.def
+	 * Supprime les fichiers Data
 	 */
 	public void cleanCommande() {
 		
-		//TODO faire en sorte qu'on lise le catalogue
 		String path = new String("src\\main\\resources\\DB\\");
-		int compteurRelation = 4 ;
+		System.err.println("Affichage X21 : Compteur relation de cleanCommande : " + DBDef.getCompteurRelation());
+		int compteurRelation = DBDef.getCompteurRelation() ;
 
 		for(int i = 0; i<compteurRelation; i++) {
 			try {
 				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
+				System.out.println("Affichage X22 : Suppression des fichiers : "+ path+"Data_"+i+".rf");
 			}
 			catch(NoSuchFileException e) {
-				System.err.println("No such file existed : "+DiskManager.getInstance().getPath()+i);
-				break;
+				System.err.println("Il n'y a pas plus de fichier : "+DiskManager.getInstance().getPath()+i);
+				System.exit(-1);;
 				//On quitte la boucle car il n y a plus de fichiers
 			}
 			catch(IOException e) {
-				System.err.println("Erreur d'I/O et de lecture de donnees");
+				System.err.println("[Attention] Des fichiers viennent d'etre cree "
+						+ "et sont donc en cours d'utilisation par le systeme, "
+						+ "\nil ne peut pas etre supprimer, "
+						+ "pour cela il faut quitter le programme et faire la commande clean apres");
 			}
 		}
 		DBDef.getInstance().reset();
