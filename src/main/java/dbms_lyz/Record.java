@@ -2,6 +2,7 @@ package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,12 +58,17 @@ public class Record {
 				for(int j=0; j<taille; j++) {
 					if(j>=tailleString)
 						buff.putChar(' ');
-					else
+					else {
+						System.out.println("Affichage X31 : Affichage du charAt(j) : " + values.get(i).charAt(j));
+						System.out.println("Affichage X32 - ByteBuffer : " + Arrays.toString(buff.array()));
 						buff.putChar(values.get(i).charAt(j));
+						System.out.println("Affichage X33 - ByteBuffer : " + Arrays.toString(buff.array()));
+					}
 				}
 			}
 			else if(isInt) {
-				System.out.println("Affichage X9bis : Affichage number exception : " + values.get(i));
+				System.out.println("Affichage X9bis : Affichage du nombre passe en parametre: " + values.get(i));
+				
 				buff.putInt(Integer.parseInt(values.get(i)));
 			}
 			else if(isFloat)
