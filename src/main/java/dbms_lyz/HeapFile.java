@@ -115,7 +115,6 @@ public class HeapFile {
 			System.err.println("le fichier " +path+rf + " n'a pas ete trouver");
 			
 		}
-
 		
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
 		int positionByteMap = 0;
@@ -125,14 +124,23 @@ public class HeapFile {
 				caseLibre = true;
 			}
 			// Attention : ByteMap
-			positionByteMap += Byte.BYTES;
+			else {
+				positionByteMap += Byte.BYTES;
+			}
 		}
-		;
+		
 		bufferPage.put(positionByteMap, (byte) 1); // C'est occupe mtn
 
 		// On insere apres avoir focus la place dans la page
+		System.out.println("Affichage X35 - Affichage positionbyteMap depuis depuis le writeToDataPage de Heap : " + positionByteMap);
 		int positionSlot = relDef.getSlotCount() + relDef.getRecordSize() * positionByteMap;
+		System.out.println("Affichage X36 - Affichage positionSlot byteMap depuis depuis le writeToDataPage de Heap : " + positionSlot);
 		record.writeToBuffer(bufferPage, positionSlot);
+		
+		System.out.println("Affichage X37 : Affichage du PageId " + pageId.toString());
+		System.out.println("Affichage X38 : Affichage du bufferPage " + bufferPage);
+		DiskManager.getInstance().writePage(pageId, bufferPage);
+		
 		BufferManager.getInstance().freePage(pageId, true);
 		/**
 		 * On retourne a la headerPage et on arrive jusqu'a la pageIdx et on enleve 1

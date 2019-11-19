@@ -91,11 +91,12 @@ public class FileManager {
 	 */
 	public List<Record> selectAllFromRelation (String relName) throws RuntimeException{
 		List<Record> listeDeRecords = new ArrayList<Record>();
+		//RandomAccessFile 
 		
 		//Parcours du heapfile pour recuperer la liste de records dont le relName correspond
 		for(HeapFile hf : heapFiles) {
-			if(hf.getRelDef().getNomRelation().equals(relName)) {
-				listeDeRecords.addAll(hf.getAllRecords());
+			if(hf.getRelDef().getNomRelation().equals(relName)){
+				//listeDeRecords.addA(hf.getAllRecords());
 			}
 			else {
 				throw new RuntimeException("Il n'y a pas heapFile avec ce relName");

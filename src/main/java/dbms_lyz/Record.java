@@ -2,6 +2,7 @@ package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,9 +31,10 @@ public class Record {
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		System.out.println("Affichage X23 - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
 		System.out.println("Affichage X29 : Affichage Buff depuis writeToBuffer - " + buff);
-		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
+		//buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		System.out.println("Affichage X34 - Affichage de la postion : " + position);
 		buff.position(position);
+		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
 		int i = 0;
 		List<String> list = relDef.getTypeCol();
 		for(i=0 ; i<list.size() ; i++) {
@@ -57,18 +59,22 @@ public class Record {
 				for(int j=0; j<taille; j++) {
 					if(j>=tailleString)
 						buff.putChar(' ');
-					else
+					else {
+						System.out.println("Affichage X31 : Affichage du charAt(j) : " + values.get(i).charAt(j));
+						System.out.println("Affichage X32 - ByteBuffer : " + Arrays.toString(buff.array()));
 						buff.putChar(values.get(i).charAt(j));
+						System.out.println("Affichage X33 - ByteBuffer : " + Arrays.toString(buff.array()));
+					}
 				}
 			}
 			else if(isInt) {
-				System.out.println("Affichage X9bis : Affichage number exception : " + values.get(i));
+				System.out.println("Affichage X9bis : Affichage du nombre passe en parametre: " + values.get(i));
+				
 				buff.putInt(Integer.parseInt(values.get(i)));
 			}
 			else if(isFloat)
 				buff.putFloat(Float.parseFloat(values.get(i)));
 		}
-		
 	}
 
 	/**

@@ -127,8 +127,7 @@ public class DiskManager {
 			 */
 			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
-			
-			// TODO Le buffer est vide !
+
 			rf.write(buff.array());
 		} catch (FileNotFoundException e1) {
 			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");

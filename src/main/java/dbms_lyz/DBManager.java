@@ -65,9 +65,9 @@ public class DBManager {
 		break ;
 		case "insert" : insertCommande(stCommandaCouper) ;
 		break ;
-		case "insertall" : insertAllCommande(stCommandaCouper) ;
+		case "insertAll" : case "insertall" : insertAllCommande(stCommandaCouper) ;
 		break ;
-		case "selectall" : selectAllCommande(stCommandaCouper);
+		case "selectAll" : case "selectall" : selectAllCommande(stCommandaCouper);
 		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
@@ -294,7 +294,7 @@ public class DBManager {
 	 * Cette commande demande l�insertion de plusieurs records dans une relation.
 	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
 	 * s�parateur.
-	 * On suppose que le fichier se trouve � la racine de votre dossier projet (au m�me niveau donc que
+	 * On suppose que le fichier se trouve � la racine de votre dossier projet (au meme niveau donc que
 	 * les sous-r�pertoires Code et DB).
 	 * @param commande
 	 */
@@ -351,7 +351,7 @@ public class DBManager {
 		}
 	}
 	
-	public void selectAllCommande(StringTokenizer commande ) {
+	public void selectAllCommande(StringTokenizer commande) {
 		String nomRelation = "";
 		int compteurRecord = 0;
 		
