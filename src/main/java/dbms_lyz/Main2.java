@@ -26,6 +26,11 @@ public class Main2 {
 		// src/main/ressources/DB/catalogue.def
 //		DBManager.init();
 		
+		//pour test sur la console
+		//create S1 string2 int string4 int string5 int int int
+		//create S 8 string2 int string4 float string5 int int int
+		//insert S1 MO 97 Conc 180 Prod3 25 23 0
+		//insert S1 PO 29 Conc 535.8 Prod6 6 32 1
 	}
 
 	public void testt(){
@@ -43,7 +48,7 @@ public class Main2 {
 		});
 		//suppression des fichiers dans listData
 		for (File file : foundFiles) {
-			System.out.println("Affichage Y2 : suppression de fichier Data  ");
+			System.out.println("Affichage Y2 : suppression de fichier Data ");
 			file.delete();
 			cptDataFile ++;
 		}

@@ -213,7 +213,6 @@ public class DBManager {
 		File dir = new File(path);
 		File [] foundFiles = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				System.err.println("Affichage Y3");
 				return name.startsWith("Data");
 			}
 		});
@@ -223,12 +222,9 @@ public class DBManager {
 			file.delete();
 			cptDataFile ++;
 		}
-		
+		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
 		
 		//ancienne version
-//		
-//		
-//		
 //		for(int i = 0; i<compteurRelation; i++) {
 //			try {
 //				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
@@ -305,20 +301,14 @@ public class DBManager {
 		String path = new String("src" + File.separator + "main" + 
 						File.separator + "resources" + File.separator );
 		
+		System.out.println("Affichage Y4 - nom du fichier recupere : " + nomFichierCSV);
+		
 		FileReader readFile = null ;
 		try {
 			//dans ce fichier lire les element et les classe selon la reldef
 			readFile = new FileReader(path+nomFichierCSV);
-			
 		} catch (FileNotFoundException e) {
-			System.err.println("Le fichier CSV n'a pas �t� trouv�");
-		} finally {
-			try {
-				readFile.close();
-			} catch (IOException e) {
-				System.err.println("Erreur I/O pour le fichier CSV");
-				e.printStackTrace();
-			}
+			System.err.println("Le fichier CSV n'a pas ete trouve");
 		}	
 		
 		/**
@@ -328,25 +318,31 @@ public class DBManager {
 		BufferedReader br = new BufferedReader(readFile);
 		String uneLineDeCSV;
 		StringTokenizer uneLigneInsert = new StringTokenizer("");
+		System.err.println("Affichage Y5");
 		
 		//boucle tant qu'il existe des lignes
+		System.err.println("Affichage 6 - fin de trycatch");
 		try {
+			System.out.println("Affichage Y6 - entre dans le try catch pour recuperer les lignes");
 			while(br.readLine() != null) {
+				System.out.println("Affichage Y7a - creation String pour recuperer la ligne");
 				uneLineDeCSV = new String (relName+","+br.readLine());
-				
+				System.out.println("Affichage Y7b - creation String pour recuperer la ligne "+uneLineDeCSV);
 				//contenu d'une ligne de csv pour la command insert()
 				uneLigneInsert = new StringTokenizer(uneLineDeCSV, ",");
 				insertCommande(uneLigneInsert);
+				uneLineDeCSV.toString();
+				System.err.println("Affichage YX");
 			}
 		} catch (IOException e) {
 			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
-		} finally {
-			
+		} 
+		finally {
 			try {
 				br.close();
 				readFile.close();
 			} catch (IOException e) {
-				System.out.println("Erreur I/O � la fermeture des readers");
+				System.out.println("Erreur I/O a la fermeture des readers");
 			}
 		}
 	}
