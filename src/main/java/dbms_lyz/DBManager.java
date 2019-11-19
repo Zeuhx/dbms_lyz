@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
@@ -200,29 +201,52 @@ public class DBManager {
 	 * Efface le contenu du catalogue.def
 	 * Supprime les fichiers Data
 	 */
-	public void cleanCommande() {
+	public void cleanCommande(){
 		
 		String path = new String("src\\main\\resources\\DB\\");
 		System.err.println("Affichage X21 : Compteur relation de cleanCommande : " + DBDef.getCompteurRelation());
-		int compteurRelation = DBDef.getCompteurRelation() ;
-
-		for(int i = 0; i<compteurRelation; i++) {
-			try {
-				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
-				System.out.println("Affichage X22 : Suppression des fichiers : "+ path+"Data_"+i+".rf");
+//		int compteurRelation = DBDef.getCompteurRelation() ;
+		int cptDataFile=0;
+		
+		//npouvelle version
+		//recuperer les fichier commencant par "Data_" dans une listData
+		File dir = new File(path);
+		File [] foundFiles = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				System.err.println("Affichage Y3");
+				return name.startsWith("Data");
 			}
-			catch(NoSuchFileException e) {
-				System.err.println("Il n'y a pas plus de fichier : "+DiskManager.getInstance().getPath()+i);
-				System.exit(-1);;
-				//On quitte la boucle car il n y a plus de fichiers
-			}
-			catch(IOException e) {
-				System.err.println("[Attention] Des fichiers viennent d'etre cree "
-						+ "et sont donc en cours d'utilisation par le systeme, "
-						+ "\nil ne peut pas etre supprimer, "
-						+ "pour cela il faut quitter le programme et faire la commande clean apres");
-			}
+		});
+		//suppression des fichiers dans listData
+		for (File file : foundFiles) {
+			System.out.println("Affichage Y2 : suppression de fichier Data ");
+			file.delete();
+			cptDataFile ++;
 		}
+		
+		
+		//ancienne version
+//		
+//		
+//		
+//		for(int i = 0; i<compteurRelation; i++) {
+//			try {
+//				Files.deleteIfExists(Paths.get(path+"Data_"+i+".rf"));
+//				System.out.println("Affichage X22 : Suppression des fichiers : "+ path+"Data_"+i+".rf");
+//			}
+//			catch(NoSuchFileException e) {
+//				System.err.println("Il n'y a pas plus de fichier : "+DiskManager.getInstance().getPath()+i);
+//				System.exit(-1);;
+//				//On quitte la boucle car il n y a plus de fichiers
+//			}
+//			catch(IOException e) {
+//				System.err.println("[Attention] Des fichiers viennent d'etre cree "
+//						+ "et sont donc en cours d'utilisation par le systeme, "
+//						+ "\nil ne peut pas etre supprimer, "
+//						+ "pour cela il faut quitter le programme et faire la commande clean apres");
+//			}
+//		}
+		
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
 		
@@ -230,6 +254,7 @@ public class DBManager {
 		 * 
 		 * S'occuper de BufferManager
 		 */
+		
 	}
 	/**
 	 * Cette commande demande l'inserttion d'un record dans une

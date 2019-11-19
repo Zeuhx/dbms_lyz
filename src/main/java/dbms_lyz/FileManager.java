@@ -31,7 +31,6 @@ public class FileManager {
 				heapFiles.add(hf);
 			}
 		}
-		
 	}
 	
 	/**
