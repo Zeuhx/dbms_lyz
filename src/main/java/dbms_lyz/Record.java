@@ -31,9 +31,10 @@ public class Record {
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		System.out.println("Affichage X23 - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
 		System.out.println("Affichage X29 : Affichage Buff depuis writeToBuffer - " + buff);
-		buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
+		//buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		System.out.println("Affichage X34 - Affichage de la postion : " + position);
 		buff.position(position);
+		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
 		int i = 0;
 		List<String> list = relDef.getTypeCol();
 		for(i=0 ; i<list.size() ; i++) {
@@ -74,7 +75,6 @@ public class Record {
 			else if(isFloat)
 				buff.putFloat(Float.parseFloat(values.get(i)));
 		}
-		
 	}
 
 	/**

@@ -64,9 +64,9 @@ public class DBManager {
 		break ;
 		case "insert" : insertCommande(stCommandaCouper) ;
 		break ;
-		case "insertall" : insertAllCommande(stCommandaCouper) ;
+		case "insertAll" : case "insertall" : insertAllCommande(stCommandaCouper) ;
 		break ;
-		case "selectall" : selectAllCommande(stCommandaCouper);
+		case "selectAll" : case "selectall" : selectAllCommande(stCommandaCouper);
 		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
@@ -326,7 +326,7 @@ public class DBManager {
 		}
 	}
 	
-	public void selectAllCommande(StringTokenizer commande ) {
+	public void selectAllCommande(StringTokenizer commande) {
 		String nomRelation = "";
 		int compteurRecord = 0;
 		
