@@ -18,10 +18,10 @@ public class DiskManager {
 	private DiskManager() {
 	}
 
-	/** Instance unique non préinitialisée */
+	/** Instance unique non preinitialisee */
 	private static DiskManager INSTANCE = null;
 
-	/** Point d'accès pour l'instance unique du singleton */
+	/** Point d'acces pour l'instance unique du singleton */
 	public static DiskManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new DiskManager();
@@ -30,7 +30,7 @@ public class DiskManager {
 	}
 
 	/**
-	 * @param fileIdx Cette méthode crée (dans le sous-dossier DB) un fichier
+	 * @param fileIdx Cette methode cree (dans le sous-dossier DB) un fichier
 	 *                Data_fileIdx.rf initialement vide.
 	 */
 	public void createFile(int fileIdx) {
@@ -52,9 +52,9 @@ public class DiskManager {
 	}
 
 	/**
-	 * Cette méthode rajoute une page au fichier spécifié par fileIdx (c’est à dire,
-	 * elle rajoute pageSize octets à la fin du fichier) et retourne un PageId
-	 * correspondant à la page nouvellement rajoutée !
+	 * Cette methode rajoute une page au fichier specifie par fileIdx (c est a� dire,
+	 * elle rajoute pageSize octets a� la fin du fichier) et retourne un PageId
+	 * correspondant a la page nouvellement rajoutee !
 	 * 
 	 * @throws FileNotFoundException
 	 */
@@ -82,8 +82,8 @@ public class DiskManager {
 	 * 
 	 * @param pageId    un identifiant de page
 	 * @param buff un buffer
-	 * @return Remplir l’argument buff avec le contenu disque de la page identifiée
-	 *         par l’argument pageId. c’est l’appelant de cette méthode qui crée et
+	 * @return Remplir l argument buff avec le contenu disque de la page identifiée
+	 *         par l argument pageId. c est l appelant de cette mehode qui cree et
 	 *         fournit le buffer à remplir!
 	 * @throws IOException
 	 */

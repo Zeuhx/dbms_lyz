@@ -284,11 +284,11 @@ public class DBManager {
 	}
 	
 	/**
-	 * Cette commande demande l�insertion de plusieurs records dans une relation.
+	 * Cette commande demande l insertion de plusieurs records dans une relation.
 	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
 	 * s�parateur.
 	 * On suppose que le fichier se trouve � la racine de votre dossier projet (au meme niveau donc que
-	 * les sous-r�pertoires Code et DB).
+	 * les sous-repertoires Code et DB).
 	 * @param commande
 	 */
 	public void insertAllCommande(StringTokenizer commande) {
