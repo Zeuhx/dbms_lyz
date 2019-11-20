@@ -66,6 +66,8 @@ public class DBManager {
 		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
+		default : System.out.println("commande incorrect");
+		break ;
 		}
 	}
 

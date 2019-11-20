@@ -68,7 +68,7 @@ public class HeapFile {
 		System.out.println();
 		int i;
 		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
-		for (i = 1; i < bufferPage.getInt(0); i++) ;
+		for (i = 1; i < bufferPage.getInt(0); i++) ; //juste pour parcourir //test//
 		System.out.println("Affichage X47 : Affichage du i " +"("+i+ ") "+ "et du slotCount " + "(" +relDef.getSlotCount()+ ")" );
 		bufferPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
 		// DiskManager.writePage(pageId, bufferPage);
