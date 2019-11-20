@@ -3,6 +3,7 @@ package main.java.dbms_lyz;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +82,18 @@ public class FileManager {
 			RelDef relDef = new RelDef(relName, record.getValues());
 			HeapFile heap = new HeapFile(relDef);
 			rid = heap.insertRecord(record);
+			/**
+			 * TODO Verifier si c'est bon pour actualiser la headerPage
+			 */
+			PageId pageId = new PageId(0, relDef.getFileIdx());
+			System.out.println("Affichage X55 - Traverse InsertRecordInRelation - " + pageId);
+			ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId); // get
+			System.out.println("Affichage X56 - Affichage du buffer " + bufferPage);
+			bufferPage.putInt(0, 1);
+			System.out.println("Affichage X57 - Affichage du buffer " + bufferPage);
+			BufferManager.getInstance().freePage(pageId, true); // free
+			// Ecriture dans le fichier
+			DiskManager.getInstance().writePage(pageId, bufferPage);
 		}
 		return rid ;
 	}

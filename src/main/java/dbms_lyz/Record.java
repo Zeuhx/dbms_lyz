@@ -113,7 +113,7 @@ public class Record {
 	@Override
 	public String toString() {
 		StringBuilder build = new StringBuilder();
-		build.append("[Record] de " + relDef.getNomRelation() + " ");
+		build.append("[Record de " + relDef.getNomRelation() + "]" + " ");
 		System.out.println("Affichage X28 : Affichage values : " + values);
 		
 		for(String s : values) {

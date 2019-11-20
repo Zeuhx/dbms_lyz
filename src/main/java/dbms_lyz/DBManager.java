@@ -274,7 +274,9 @@ public class DBManager {
 				System.out.println("Affichage X25 : Affichage des valeurs 2 : " + valeurs);
 				Record r = new Record(reldef, valeurs);
 				System.out.println("Affichage X26 : Affichage du record depuis Insert : " + r.toString());
-				heapFiles.get(i).insertRecord(r);
+				System.out.println("Affichage X58 - insertion record dans la relation dans la relation " + reldef.getNomRelation() );
+				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
+				// heapFiles.get(i).insertRecord(r);
 			}
 		}
 	}

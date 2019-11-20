@@ -36,12 +36,12 @@ public class HeapFile {
 		DiskManager.getInstance().createFile(fileIdx);
 		DiskManager.getInstance().addPage(fileIdx);
 		PageId headerPage = new PageId(0, fileIdx);
-		ByteBuffer bufferDeHeaderPage = BufferManager.getInstance().getPage(headerPage);
+		ByteBuffer bufferDeHeaderPage = BufferManager.getInstance().getPage(headerPage); // get
 		for (int i = 0 ; i < Constants.PAGE_SIZE ; i += Integer.BYTES) {
 			bufferDeHeaderPage.putInt(0);
 		}
 		DiskManager.getInstance().writePage(headerPage, bufferDeHeaderPage);
-		BufferManager.getInstance().freePage(headerPage, true);
+		BufferManager.getInstance().freePage(headerPage, true);	// free
 	}
 
 	/**
@@ -55,16 +55,24 @@ public class HeapFile {
 	public PageId addDataPage() {
 		PageId headerPage = new PageId(0, relDef.getFileIdx());
 		System.out.println("Affichage X45 - " + headerPage);
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage);
-		bufferPage.putInt(0, bufferPage.getInt(0) + 1); // A l'indice 0, on ajoute 1
-		System.out.println("Affichage X46 - Affichage buffer" + Arrays.toString(bufferPage.array()));
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage); // get
+		System.out.println("Affichage X48 - Affichage buffer de la headerPage (AVANT) " + Arrays.toString(bufferPage.array()));
+		bufferPage.putInt(0, bufferPage.getInt(0)+1); // A l'indice 0, on ajoute 1
+		System.out.println("Affichage X46 - Affichage buffer de la headerPage (APRES) " + Arrays.toString(bufferPage.array()));
 		// On parcours jusqu'au dernier et on ajoute le slotCount
+		System.out.println("Affichage X49 : Affichage de la headerPage");
+		
+		for(int i=0 ; i<Constants.PAGE_SIZE ; i+=4) {
+			System.out.print(bufferPage.getInt(i)+ " ");
+		}
+		System.out.println();
 		int i;
 		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
 		for (i = 1; i < bufferPage.getInt(0); i++) ;
+		System.out.println("Affichage X47 : Affichage du i " +"("+i+ ") "+ "et du slotCount " + "(" +relDef.getSlotCount()+ ")" );
 		bufferPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
 		// DiskManager.writePage(pageId, bufferPage);
-		BufferManager.getInstance().freePage(headerPage, true);
+		BufferManager.getInstance().freePage(headerPage, true); // free
 		return DiskManager.getInstance().addPage(relDef.getFileIdx());
 	}
 
@@ -79,20 +87,26 @@ public class HeapFile {
 		 */
 		int pageIdx = 0, fileIdx = relDef.getFileIdx();
 		PageId page = new PageId(pageIdx, fileIdx);
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
+		System.err.println("Erreur X53 - Affichage de la page cree [" + page + "] avec pageIdx et fileIdx " + page.getPageIdx() + ", " + page.getFileIdx());
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page); // get
+		System.out.println("Erreur X54 - Affichage du buffer - " + bufferPage);
+		System.out.println("Erreur X54bis - Affichage du buffer - " + Arrays.toString(bufferPage.array()));
 		// On parcours tant que il n'y a pas de place
 		int i = 4;
 		boolean deLaPlace = false;
-		while (!deLaPlace && i < bufferPage.get(0)) {
+		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.get(0) );
+		while (!deLaPlace && i < bufferPage.get(0)*4) {	// TODO a verifier si c'est bien *4
 			if (bufferPage.getInt(i) != 0) {
 				deLaPlace = true;
+			} else {
+				i += Integer.BYTES;
 			}
-			i += Integer.BYTES;
 		}
-		BufferManager.getInstance().freePage(page, false);
+		BufferManager.getInstance().freePage(page, false); // free
 		if (deLaPlace == false) {
 			return null;
 		}
+		System.out.println("Affichage 50 - Affichage de la page a retourne : " + new PageId(i/4,fileIdx));
 		return new PageId(i/4,fileIdx);
 	}
 
@@ -116,7 +130,7 @@ public class HeapFile {
 			
 		}
 		
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
 		int positionByteMap = 0;
 		boolean caseLibre = false;
 		while (!caseLibre && positionByteMap < bufferPage.getInt(0)) {
@@ -141,7 +155,7 @@ public class HeapFile {
 		System.out.println("Affichage X38 : Affichage du bufferPage " + bufferPage);
 		DiskManager.getInstance().writePage(pageId, bufferPage);
 		
-		BufferManager.getInstance().freePage(pageId, true);
+		BufferManager.getInstance().freePage(pageId, true);	// free
 		/**
 		 * On retourne a la headerPage et on arrive jusqu'a la pageIdx et on enleve 1
 		 */
@@ -158,7 +172,7 @@ public class HeapFile {
 	 * @return
 	 */
 	public List<Record> getRecordInDataPage(PageId pageId) {
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
 		List<Record> listRecord = new ArrayList<Record>();
 		/**
 		 * A partir du slotCount on lit les records que l'on va stocker dans une liste
@@ -204,12 +218,14 @@ public class HeapFile {
 				listRecord.add(new Record(relDef, listElementRecord));
 			}
 		}
+		BufferManager.getInstance().freePage(pageId, false);	// free
 		return listRecord;
 	}
 	
 	public Rid insertRecord(Record record) {
-		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record);
+		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record.toString());
 		PageId pageLibre = getFreeDataPageId();
+		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
 		if(pageLibre == null) {
 			pageLibre = addDataPage();
 		}
@@ -230,18 +246,18 @@ public class HeapFile {
 		int fileIdx = this.relDef.getFileIdx(); //nom du fichier � recuperer les records
 		PageId page =  new PageId(pageIdx, fileIdx);
 		List<Record> listRecordOfHeapFile = new ArrayList<>(); //variable pour stocker la liste des records d'un heapfile
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);	// get
 		int nbPage = bufferPage.getInt(0) ;
 		// Tant qu'on atteint pas le nombre de page (premiere case du headerPage)
 		
 		for(int i=1 ; i<nbPage ; i++) {
 			page =  new PageId(i, fileIdx);
-			//bufferPage = BufferManager.getInstance().getPage(page)
 			List <Record> listRecordOfPage = this.getRecordInDataPage(page);
 			for(Record r : listRecordOfPage) {
 				listRecordOfHeapFile.add(r);
 			}
 		}
+		BufferManager.getInstance().freePage(page, false);	// free
 		return listRecordOfHeapFile ;
 	}
 	
