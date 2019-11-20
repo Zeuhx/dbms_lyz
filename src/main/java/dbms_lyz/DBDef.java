@@ -142,16 +142,14 @@ public class DBDef implements Serializable{
 		} catch(FileSystemException e) {
 			System.out.println("C'est fait, meme si il n'y avait rien a supprimer");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre supprimer");
 		}
 		
 		File f = new File(Constants.PATH+"catalogue.def");
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre cree");
 		}
 	}
 	

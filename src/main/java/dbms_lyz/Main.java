@@ -100,9 +100,7 @@ public class Main {
 	}
 	
 	public static void testDiskManagerWriteAndReadPage() {
-		String chemin = new String("src" + File.separator + "main" + 
-				File.separator + "resources" + File.separator + "DB" + File.separator + "Data_");
-		File f = new File(chemin +"10.rf");
+		File f = new File(Constants.PATH + "Data_" +"10.rf");
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
