@@ -52,7 +52,7 @@ public class Record {
 				int tailleString = list.get(i).length();
 				int taille = Integer.parseInt(list.get(i).substring(6));
 				/**
-				 * Si le string saisie est inferieur a la taille demandé du stringx
+				 * Si le string saisie est inferieur a la taille demande du stringx
 				 * On rajoute des espaces a la fin pour avoir la taille x
 				 */
 				for(int j=0; j<taille; j++) {

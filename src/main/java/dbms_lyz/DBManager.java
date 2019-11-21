@@ -62,7 +62,11 @@ public class DBManager {
 		break ;
 		case "insertAll" : case "insertall" : insertAllCommande(stCommandaCouper) ;
 		break ;
+		case "select" : selectCommande(stCommandaCouper);
+		break ;
 		case "selectAll" : case "selectall" : selectAllCommande(stCommandaCouper);
+		break ;
+		case "delete" : deleteCommande(stCommandaCouper);
 		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
@@ -399,4 +403,30 @@ public class DBManager {
 	public void exitCommande(StringTokenizer commande) {
 		DBManager.finish();
 	}
+	public void deleteCommande(StringTokenizer commande){
+		String relName = commande.nextToken();
+		String indiceColonne = commande.nextToken();
+		String valeur = commande.nextToken();
+	
+		//accede au Heapfiles pour avoir la liste
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
+
+		//parcourir Heapfiles pour comparer les relName
+		for(int i=0; i<heapFiles.size(); i++) {
+			RelDef reldef = heapFiles.get(i).getRelDef() ; 
+			if(reldef.getNomRelation().equals(relName)) {
+			//comparer sur le record a "indiceColonne" si la "valeur" correspond
+//				if(heapFiles.get(i).get
+					//TODO by willy for willy
+//				}
+//			
+//				
+//				
+//				Record r = new Record(reldef, valeur);
+//				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
+				
+			}
+		}
+	}
+	
 }
