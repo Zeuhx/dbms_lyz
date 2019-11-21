@@ -221,6 +221,20 @@ public class DBManager {
 		}
 		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
 		
+		File fichierCatalogue = new File(Constants.PATH + "catalogue.def");
+		if(fichierCatalogue.exists()) {
+			if(fichierCatalogue.delete()) {
+				System.out.println("Catalogue.def supprime");
+			}
+		}
+		
+		try {
+			fichierCatalogue.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		//ancienne version
 //		for(int i = 0; i<compteurRelation; i++) {
