@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -222,6 +224,21 @@ public class DBManager {
 			cptDataFile ++;
 		}
 		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
+		
+		File fichierCatalogue = new File(Constants.PATH + "catalogue.def");
+		if(fichierCatalogue.exists()) {
+			if(fichierCatalogue.delete()) {
+				System.out.println("Catalogue.def supprime");
+			}
+		}
+		
+		try {
+			fichierCatalogue.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		//ancienne version
 //		for(int i = 0; i<compteurRelation; i++) {

@@ -74,7 +74,7 @@ public class DBDef implements Serializable{
 				
 				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 				relDefTab.add(relation);
-				
+				FileManager.getInstance().createHeapFileWithRelation(relation);
 				//TODO créer heapfile avec
 			}
  		} catch (FileNotFoundException e) {
