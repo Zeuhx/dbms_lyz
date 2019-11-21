@@ -122,7 +122,7 @@ public class FileManager {
 					int nbPage = rf.readInt();
 					System.err.println("Affichage X39 - Affichage du nombre de page dans le heapFile : " + nbPage + " page(s)");
 					rf.seek(Constants.PAGE_SIZE);
-					System.err.println("Affichage X40 - Affichage du pointeur " + rf);
+					System.err.println("Affichage X40 - Affichage du pointeur " + rf); 
 					for(int numeroPage = 1; numeroPage<=nbPage ; numeroPage++) {
 						PageId pageId = new PageId(numeroPage, hf.getRelDef().getFileIdx());
 						for (Record record : hf.getRecordInDataPage(pageId)) {
