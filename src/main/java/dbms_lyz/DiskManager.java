@@ -71,7 +71,7 @@ public class DiskManager {
 		try {
 			rf.write(bt);
 		} catch (IOException e) {
-			System.err.println("Il y a une erreur d'I/O");
+			System.err.println("Il y a une erreur d'I/O pour addPage");
 		}
 
 		PageId p = new PageId("Data_" + fileIdx + ".rf");
@@ -90,12 +90,13 @@ public class DiskManager {
 	public void readPage(PageId pageId, ByteBuffer buff) {
 		RandomAccessFile rf = null;
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
+		int numeroPage = pageId.getPageIdx(); 
 		// Verif : System.out.println(f.getAbsolutePath());
 			
 		try {
 			rf = new RandomAccessFile(f, "r");
-			rf.seek(0);
-			rf.read(buff.array());
+			rf.seek(numeroPage * Constants.PAGE_SIZE);
+			System.out.println(rf.read(buff.array()));
 		} catch (FileNotFoundException e1) {
 			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
@@ -127,6 +128,7 @@ public class DiskManager {
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 
 			rf.write(buff.array());
+			
 		} catch (FileNotFoundException e1) {
 			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {

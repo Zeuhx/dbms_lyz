@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -218,6 +220,7 @@ public class DBManager {
 			cptDataFile ++;
 		}
 		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
+		
 		
 		//ancienne version
 //		for(int i = 0; i<compteurRelation; i++) {
