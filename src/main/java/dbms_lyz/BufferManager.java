@@ -56,7 +56,7 @@ public class BufferManager {
 		if(f==null) {
 			int i = indexLibre();
 			if(i==-1) {
-				i = calcul_LRU();
+				i = calcul_LRU(); 
 				System.out.println("On active la methode de remplacement LRU, on doit remplace la frame " + i);
 				framePool[i].enregistrerPage();
 			}
