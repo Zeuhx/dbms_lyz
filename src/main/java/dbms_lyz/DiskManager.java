@@ -90,9 +90,9 @@ public class DiskManager {
 	/**
 	 * @param pageId un identifiant de page
 	 * @param buff un buffer : byte[], ByteBuffer...
-	 * @return Remplir l argument buff avec le contenu disque de la page identifiÃ©e
+	 * @return Remplir l argument buff avec le contenu disque de la page identifiee
 	 *         par l argument pageId. c est l appelant de cette mehode qui cree et
-	 *         fournit le buffer Ã  remplir!
+	 *         fournit le buffer a remplir!
 	 *         
 	 * @Attention : c’est l’appelant de cette méthode qui crée et fournit 
 	 * 					le buffer à remplir!        
