@@ -104,7 +104,7 @@ public class DBManager {
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
-//		System.err.println("Erreur X6 : " + reldef.getTypeCol());
+		// System.err.println("Erreur X6 : " + reldef.getTypeCol());
 		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
@@ -170,7 +170,6 @@ public class DBManager {
 				if(i > 2) {
 					for(int j=0 ; j<nbCol ; j++) {
 						typeCol.add(commande.nextToken());
-						// TODO Pas placer comme il faut
 						if(j>nbCol) {
 							System.err.println("[Attention] Vous avez saisie plus d'element qu'il ne faut, "
 									+ "les elements en trop n'ont pas ete prise en compte");
@@ -430,7 +429,7 @@ public class DBManager {
 				
 				//boucle pour acceder aux pagex selon le nb page
 				while(j<=nbPage){
-					pageToRead = new PageId("Data_"+j+".rf");//accès à j-ieme page
+					pageToRead = new PageId("Data_"+j+".rf");//accï¿½s ï¿½ j-ieme page
 					pageToSave = new PageId("Data_to_save.fr");
 					
 //bfPageToRead not used ??					
@@ -440,7 +439,7 @@ public class DBManager {
 					bfPageToSave = BufferManager.getInstance().getPage(pageToSave);
 					
 					for(Record r : listRecords) {
-						//parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave
+						//parcou la liste de valeur dans un record si elle n'est pas ï¿½qual j'ecrit sur la pageToSave
 						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
 							
 							//recupere le record sous forme de StringBuilder
