@@ -362,6 +362,7 @@ public class DBManager {
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 
 		for(Record r : listRecords) {
+			System.out.println("Affichage X66 - Affichage des records - " + r);
 			StringBuffer stringBuffRecord = new StringBuffer("");
 			for(String s : r.getValues()) {
 				stringBuffRecord.append(s);
