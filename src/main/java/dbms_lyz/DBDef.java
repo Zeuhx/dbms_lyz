@@ -123,9 +123,9 @@ public class DBDef implements Serializable{
 		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
-			System.out.println("Affichage du nombre de relation : " + compteurRelation);
+			System.out.println("Affichage : nombre de relation : " + compteurRelation);
 		} else 
-			System.err.println("Erreur, le contenu du relDef saisie est vide");
+			System.err.println("Erreur : le contenu du relDef saisie est vide");
 	}
 	
 	/**
@@ -156,10 +156,10 @@ public class DBDef implements Serializable{
 	}
 	
 	// Getters et Setters 
-	public static int getListSize() { return relDefTab.size(); }
-	public static List<RelDef> getRelDefTab(){ return relDefTab; }
-	public static int getCompteurRelation(){ return compteurRelation; }
+	public static int getListSize() 			{ return relDefTab.size(); }
+	public static List<RelDef> getRelDefTab()	{ return relDefTab; }
+	public static int getCompteurRelation()		{ return compteurRelation; }
 	
-	public void setList(List <RelDef> l) { relDefTab = l; }
+	public void setList(List <RelDef> l) 		{ relDefTab = l; }
 	
 }

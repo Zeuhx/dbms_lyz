@@ -53,24 +53,24 @@ public class Frame {
 	
 	public boolean equals(PageId autrePageId) { return this.pageId.equals(autrePageId); }
 
-	// Pas un getter
-	public void incrementePinCount() { pin_count++; }
+	// Pas un getter maj de pin_count
+	public void incrementePinCount() 		{ pin_count++; }
 	
-	// Pas un setter 
-	public void setDirty() { this.flag_dirty = true ; }
+	// Pas un setter maj de dirty
+	public void setDirty() 					{ this.flag_dirty = true ; }
 
 	// Getters
-	public PageId getPageId() { return pageId; }
-	public int getPageIdx() { return pageId.getPageIdx(); }
-	public ByteBuffer getBuffer() { return buff; }
-	public int getPin_count() { return pin_count ;}
-	public boolean getFlag_dirty() { return flag_dirty; }
-	public ByteBuffer getByteBuffer() { return buff; }
-	public int getCompteurPersoLRU() { return compteurPersoLRU; }
+	public PageId getPageId() 				{ return pageId; }
+	public int getPageIdx() 				{ return pageId.getPageIdx(); }
+	public ByteBuffer getBuffer() 			{ return buff; }
+	public int getPin_count() 				{ return pin_count ;}
+	public boolean getFlag_dirty() 			{ return flag_dirty; }
+	public ByteBuffer getByteBuffer() 		{ return buff; }
+	public int getCompteurPersoLRU()		{ return compteurPersoLRU; }
 
 	// Setters
-	public void setBuff(ByteBuffer buff) { this.buff = buff; }
-	public void setPageId(PageId pageId) { this.pageId = pageId; }
+	public void setBuff(ByteBuffer buff) 	{ this.buff = buff; }
+	public void setPageId(PageId pageId) 	{ this.pageId = pageId; }
 	public static void setCompteurGeneralLRU(int compteurGeneralLRU) { Frame.compteurGeneralLRU = compteurGeneralLRU; }
 
 	@Override

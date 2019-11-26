@@ -10,7 +10,7 @@ import java.util.List;
 public class FileManager {
 	private List <HeapFile> heapFiles;
 	
-	/** Singleton */
+	/* Singleton */
 	private static FileManager INSTANCE = null;
 	private FileManager() { heapFiles = new ArrayList<>(); }
 	public static FileManager getInstance() {

@@ -26,7 +26,6 @@ public class RelDef {
 	}
 
 	/**
-	 * 
 	 * @param nomRelation
 	 * @param typeCol
 	 * @param fileIdx
@@ -37,9 +36,9 @@ public class RelDef {
 		this.relName = nomRelation;
 		this.typeCol = typeCol ;
 		this.nbCol = typeCol.size();
-		this.fileIdx = fileIdx;		// le fichier
-		this.recordSize = recordSize; // Attention : il faut directement initialiser selon la taille du record
-		this.slotCount = slotCount;	// Attention : calculer en fonction de pageSize et de recordSize
+		this.fileIdx = fileIdx;			// id de fichier
+		this.recordSize = recordSize;	// Attention : initialiser selon la taille du record
+		this.slotCount = slotCount;		// Attention : calculer en fonction de pageSize et de recordSize
 	}
 
 	public void affiche() {
@@ -64,16 +63,14 @@ public class RelDef {
 		String ligneRecord = ligneRecord2.substring(0, ligneRecord2.length()-1);
 		
 		StringTokenizer recordASeparer = new StringTokenizer(ligneRecord);
-		int compteurCol = 0; //Compteur pour savoir a quelle colonne on est
+		int compteurCol = 0; //compteur pour savoir sur quel colonne on se situe
 		int compteurRecord = recordASeparer.countTokens();
-		boolean verifyTypeOfCols = false; //Si les elements ne correspondent pas aux types des cols
+		boolean verifyTypeOfCols = false; //si les elements ne correspondent pas aux types des cols
 
 		if(nbCol == compteurRecord) {
 			while(recordASeparer.hasMoreElements()) {
 
-				/**
-				 * 	On verifie que chaque element correspond aux types de la relation
-				 */
+				/* On verifie que chaque element correspond aux types de la relation */
 
 				boolean hasDigit = false;
 				boolean hasPoint = false;
@@ -81,10 +78,7 @@ public class RelDef {
 
 				String s = recordASeparer.nextToken();
 
-				/**
-				 * Pour verifier le type de l'element
-				 */
-
+				/* Pour verifier le type de l'element */
 				for(int i = 0; i<s.length(); i++) {
 
 					if(Character.isDigit(s.charAt(i)))

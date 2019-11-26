@@ -20,12 +20,12 @@ public class Record {
 	}
 	
 	/**
-	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres
+	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres dans le buffer
 	 * Ajoute dans le bytebuffer en fonction des types de col
 	 * La boucle permet d'ajouter en fonction des types
 	 * 
-	 * @param buff
-	 * @param position
+	 * @param buff un buffer
+	 * @param position un entier correspondant à une position dans le buffer
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		System.out.println("Affichage X23bis - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
@@ -35,7 +35,8 @@ public class Record {
 		buff.position(position);
 		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
 		int i = 0;
-		List<String> list = relDef.getTypeCol();
+		List<String> list = relDef.getTypeCol(); //recupere la liste
+		
 		for(i=0 ; i<list.size() ; i++) {
 			boolean isFloat = false;
 			boolean isString = false;
@@ -81,8 +82,8 @@ public class Record {
 	 * Le record est lie a un relDef donc on connait deja les types des cols
 	 * La boucle permet de lire le bytebuffer en fonction des types
 	 * et les affiche avec println
-	 * @param buff
-	 * @param position
+	 * @param buffun buffer
+	 * @param position un entier correspondant à une position dans le buffer
 	 * 
 	 */
 	public void readFromBuffer(ByteBuffer buff, int position) {
