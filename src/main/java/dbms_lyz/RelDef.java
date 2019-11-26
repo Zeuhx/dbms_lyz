@@ -103,7 +103,7 @@ public class RelDef {
 						verifyTypeOfCols = true;
 				}
 				else if(hasDigit && !hasPoint) {
-					//si on met 3.3 c'est compt� comme int et aussi String?
+					//si on met 3.3 c'est compte comme int et aussi String?
 					if(!typeCol.get(compteurCol).equals("int"))
 						verifyTypeOfCols = true;
 				}

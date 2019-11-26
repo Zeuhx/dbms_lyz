@@ -96,14 +96,16 @@ public class HeapFile {
 		boolean deLaPlace = false;
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.getInt(0));
 		// Si il n'y a pas de page, on doit creer une page et on actualise la headePage
-		if(bufferPage.get(0)==0) {
+		
+		
+		if(bufferPage.getInt(0)==0) {
 			DiskManager.getInstance().addPage(0);
-			bufferPage.putInt(0,1);
-			bufferPage.putInt(1, relDef.getSlotCount());
+			bufferPage.putInt(0, 1);
+			bufferPage.putInt(Integer.BYTES, relDef.getSlotCount());
 		}
 		System.out.println("Affichage X70 : Affichage get(0) de getFreeDataPageId & le nombre de slot dispo " +bufferPage.getInt(0) + ", " + bufferPage.getInt(1));
 		// On parcours les pages
-		while (!deLaPlace && i < bufferPage.getInt(0)) {	// TODO a verifier si c'est bien *4
+		while (!deLaPlace && i < bufferPage.getInt(0)) {
 			// Il parcours les slots count, si il a plus de 0 places, on peut sortir de la boucle, sinon on continue
 			if (bufferPage.getInt(i) != 0) {
 				deLaPlace = true;
@@ -258,7 +260,7 @@ public class HeapFile {
 	 */
 	public List<Record> getAllRecords(){
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
-		int fileIdx = this.relDef.getFileIdx(); //nom du fichier � recuperer les records
+		int fileIdx = this.relDef.getFileIdx(); //nom du fichier a recuperer les records
 		PageId page =  new PageId(pageIdx, fileIdx);
 		List<Record> listRecordOfHeapFile = new ArrayList<>(); //variable pour stocker la liste des records d'un heapfile
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);	// get

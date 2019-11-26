@@ -104,7 +104,7 @@ public class DBManager {
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
-//		System.err.println("Erreur X6 : " + reldef.getTypeCol());
+		// System.err.println("Erreur X6 : " + reldef.getTypeCol());
 		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
@@ -169,7 +169,6 @@ public class DBManager {
 				if(i > 2) {
 					for(int j=0 ; j<nbCol ; j++) {
 						typeCol.add(commande.nextToken());
-						// TODO Pas placer comme il faut
 						if(j>nbCol) {
 							System.err.println("[Attention] Vous avez saisie plus d'element qu'il ne faut, "
 									+ "les elements en trop n'ont pas ete prise en compte");
@@ -270,8 +269,8 @@ public class DBManager {
 	/**
 	 * Cette commande demande l insertion de plusieurs records dans une relation.
 	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
-	 * sï¿½parateur.
-	 * On suppose que le fichier se trouve ï¿½ la racine de votre dossier projet (au meme niveau donc que
+	 * separateur.
+	 * On suppose que le fichier se trouve a la racine de votre dossier projet (au meme niveau donc que
 	 * les sous-repertoires Code et DB).
 	 * @param commande
 	 */
@@ -420,8 +419,9 @@ public class DBManager {
 			/*comparer sur le record a "indiceColonne" si la "valeur" correspond*/
 				/*boucle pour acceder aux pagex selon le nb page*/
 				while(j<=nbPage){
-					pageToRead = new PageId("Data_"+j+".rf");//accès à j-ieme page
-					pageToSave = new PageId("Data_to_save.rf");
+
+					pageToRead = new PageId("Data_"+j+".rf");//acces a j-ieme page
+					pageToSave = new PageId("Data_to_save.fr");
 					
 					//lire le indiceColonne pour comparer la valeur
 					listRecords = heapFiles.get(i).getRecordInDataPage(pageToRead); //return la liste de records de la page -j pour heapfile -i
