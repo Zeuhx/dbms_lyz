@@ -386,22 +386,27 @@ public class DBManager {
 	
 	public void deleteCommande(StringTokenizer commande){
 		String relName = commande.nextToken();
+		System.out.println("relName : " + relName);
 		String indiceColonne = commande.nextToken();
+		System.out.println("indice colonne : " + indiceColonne);
 		int indiceColonneInt = Integer.parseInt(indiceColonne);
 		String valeur = commande.nextToken();
-		
-		//accede au Heapfiles pour avoir la liste
-		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();		
-		int j=1; 	//boucle pour parcourrir heapfile selon le nb page
-		
-		PageId headerPage = new PageId("Data_0.rf"); 
+		System.out.println("valeur : " + valeur);
+		int totalRecord = 0;
+		int recordWrited = 0;
+		int deletedRecord = 0;
 		/*chaque iteration va attribuer la page*/
 		PageId pageToRead;
 		PageId pageToSave;
 		
+		//pour accede au Heapfiles pour avoir la liste
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();		
+		int j=1; 	//boucle pour parcourrir heapfile selon le nb page
+		
+		PageId headerPage = new PageId("Data_0.rf"); 
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);	//taille de page inportant
 		bf = BufferManager.getInstance().getPage(headerPage);		//recup le contenu de page 
-		int nbPage = bf.getInt(); 									//attention position change
+		int nbPage = bf.getInt(); 									//attention la position change
 		BufferManager.getInstance().freePage(headerPage, false);
 		
 		File file;
@@ -412,39 +417,44 @@ public class DBManager {
 		/*parcourir Heapfiles pour comparer les relName*/
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef();
-			
 			//comparer les relName avec get(i)
 			if(reldef.getNomRelation().equals(relName)) {
-			
-			/*comparer sur le record a "indiceColonne" si la "valeur" correspond*/
 				/*boucle pour acceder aux pagex selon le nb page*/
 				while(j<=nbPage){
 
-					pageToRead = new PageId("Data_"+j+".rf");//acces a j-ieme page
+					pageToRead = new PageId("Data_"+j+".rf");	//acces a j-ieme page
 					pageToSave = new PageId("Data_to_save.fr");
-					
-					//lire le indiceColonne pour comparer la valeur
+
+					/*comparer sur le record a "indiceColonne" si la "valeur" correspond*/
 					listRecords = heapFiles.get(i).getRecordInDataPage(pageToRead); //return la liste de records de la page -j pour heapfile -i
-					
+
 					for(Record r : listRecords) {
+						totalRecord++; //incremente a chaque record
 						/*parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave*/
 						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
 							//ecrit le record sur la page à sauvegarder
 							heapFiles.get(i).writeRecordToDataPage(r, pageToSave);
+							recordWrited++;
 						}
 					}
-					/*remplacer pageToRead par pageToSave*/
+					/**
+					 * remplacer pageToRead par pageToSave,
+					 * suppression du fichier pour pouvoir le remplacer par pageToSave 
+					 * qui contient les records qui ne sont pas a supprimer
+					 */
+					File fichier = new File (Constants.PATH+"Data_"+j+".rf");
+					fichier.delete();
 					file = new File("Data_to_save.rf");
 					file2 = new File("Data_"+j+".rf");
-					//renommer le fichier file par file2
-					boolean success = file.renameTo(file2);
+					boolean success = file.renameTo(file2);	//renommer le fichier file par file2
+					
 					if (!success) {
-					   System.err.println("Y8 : le fichier n'a pas ete renomme");
+						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas été renommé");
 					}
 				}
 			}
 		}
+		deletedRecord = totalRecord-recordWrited;
+		System.out.println("Total deleted records = " + deletedRecord); //Consigne d'affihage TD6
 	}
-	
-	
 }
