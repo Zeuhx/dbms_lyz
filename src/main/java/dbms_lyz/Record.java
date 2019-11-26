@@ -28,7 +28,7 @@ public class Record {
 	 * @param position
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
-		System.out.println("Affichage X23 - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
+		System.out.println("Affichage X23bis - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
 		System.out.println("Affichage X29 : Affichage Buff depuis writeToBuffer - " + buff);
 		//buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		System.out.println("Affichage X34 - Affichage de la postion : " + position);

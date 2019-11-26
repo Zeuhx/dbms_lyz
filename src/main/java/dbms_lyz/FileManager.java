@@ -71,13 +71,16 @@ public class FileManager {
 		 * Parcour du heapFiles pour inserer le bon record avec 
 		 * le relName du record
 		 */
+		System.out.println("Affichage X69 - Test");
 		System.out.println("Affichage X63 - Affichage de si heapFiles vide ou non :  " + heapFiles.isEmpty());
+		boolean continu = true ;
 		for(HeapFile hf : heapFiles) {
-			System.out.println("Affichage X64 - Affichage du relDef d'un heapFiles - " + hf);
-			System.out.println("Affichage X65 - Verification si la condition est respecte : " + hf.getRelDef().getNomRelation().equals(relName));
-			if(hf.getRelDef().getNomRelation().equals(relName)) {
+			System.err.println("Affichage X64 - Affichage du relDef d'un heapFiles - " + hf);
+			System.err.println("Affichage X65 - Verification si la condition est respecte : " + hf.getRelDef().getNomRelation().equals(relName));
+			if(hf.getRelDef().getNomRelation().equals(relName) && continu) {
 				rid = hf.insertRecord(record);
 				System.out.println("Affichage X62 - Affichage du rid - Rid(" + rid.getSlotIdx() + "," + rid.getPageId()+")");
+				continu = false ;
 			}
 			/**
 			 * Si le relName n'existe pas, on creer un HeapFile a l'aide
