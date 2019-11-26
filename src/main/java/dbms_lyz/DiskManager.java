@@ -88,17 +88,15 @@ public class DiskManager {
 	 * @throws IOException
 	 */
 	public void readPage(PageId pageId, ByteBuffer buff) {
-		RandomAccessFile rf = null;
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		int numeroPage = pageId.getPageIdx(); 
 		// Verif : System.out.println(f.getAbsolutePath());
 			
-		try {
-			rf = new RandomAccessFile(f, "r");
+		try (RandomAccessFile rf = new RandomAccessFile(f, "r")){
 			rf.seek(numeroPage * Constants.PAGE_SIZE);
 			System.out.println(rf.read(buff.array()));
 		} catch (FileNotFoundException e1) {
-			System.out.println("Le fichier " + rf + " n'a pas ete trouve !");
+			System.out.println("Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
