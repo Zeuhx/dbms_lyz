@@ -6,10 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -211,7 +208,6 @@ public class DBManager {
 //		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		
-		//npouvelle version
 		//recuperer les fichier commencant par "Data_" dans une listData
 		File dir = new File(Constants.PATH);
 		File [] foundFiles = dir.listFiles(new FilenameFilter() {
@@ -226,36 +222,16 @@ public class DBManager {
 			cptDataFile ++;
 		}
 		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
-			
-		
-		//ancienne version
-//		for(int i = 0; i<compteurRelation; i++) {
-//			try {
-//				Files.deleteIfExists(Paths.get(Constants.PATH+"Data_"+i+".rf"));
-//				System.out.println("Affichage X22 : Suppression des fichiers : "+ Constants.PATH+"Data_"+i+".rf");
-//			}
-//			catch(NoSuchFileException e) {
-//				System.err.println("Il n'y a pas plus de fichier : "+DiskManager.getInstance().Constants.PATH()+i);
-//				System.exit(-1);;
-//				//On quitte la boucle car il n y a plus de fichiers
-//			}
-//			catch(IOException e) {
-//				System.err.println("[Attention] Des fichiers viennent d'etre cree "
-//						+ "et sont donc en cours d'utilisation par le systeme, "
-//						+ "\nil ne peut pas etre supprimer, "
-//						+ "pour cela il faut quitter le programme et faire la commande clean apres");
-//			}
-//		}
+
 		
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
-		
 		/**
 		 * 
 		 * S'occuper de BufferManager
 		 */
-		
 	}
+	
 	/**
 	 * Cette commande demande l'inserttion d'un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
@@ -432,8 +408,8 @@ public class DBManager {
 		
 		ByteBuffer bfPageToRead = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
 		ByteBuffer bfPageToSave = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
-		
-		String contenuRecordToSave = null;
+	
+//		String contenuRecordToSave = null;
 		StringBuffer sb= new StringBuffer();
 		int slotCount; //nb de record sur page j-ieme
 		int recordSize; //taille d'un record
@@ -476,14 +452,6 @@ public class DBManager {
 						}
 					}
 				}
-//				if(heapFiles.get(i).get
-					//TODO by willy for willy
-//				}
-//			
-//				
-//				
-//				Record r = new Record(reldef, valeur);
-//				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
 				
 			}
 		}

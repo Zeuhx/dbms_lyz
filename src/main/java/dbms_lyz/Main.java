@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
 
+
 /**
  * CECI EST UN MAIN <BROUILLON>, pour tester les fonctions 
  * @author cedzh
@@ -26,8 +27,8 @@ public class Main {
 		//testEcrireFichierAvecLeurPage();
 		//testRelDefEtRecord();
 		//testClean();
-		
-		
+//		testDiskManagerWriteAndReadPage();
+//		testFrame();
 	}
 	
 	public static void testClean() {
@@ -101,7 +102,7 @@ public class Main {
 	
 	public static void testDiskManagerWriteAndReadPage() {
 		
-		File f = new File(Constants.PATH + "Data_" +"10.rf");
+		File f = new File(Constants.PATH + "Data_10.rf");
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
@@ -119,6 +120,34 @@ public class Main {
 	
 	public static void testRelDefEtRecord() {
 		testCommandeDBDefPourCreer();
+	}
+	
+	public static void testFrame() {
+		BufferManager bfm = BufferManager.getInstance();
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+		DiskManager.getInstance().createFile(5);
+		PageId pageId5 = new PageId("Data_5.rf");
+		
+		File file = new File("C:\\Users\\willy\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_5.rf");
+		RandomAccessFile f = null;
+		System.out.println("ok");
+		
+		try {
+			f = new RandomAccessFile(file,"rw");
+			//fc = f.getChannel();
+			bf.putInt(1);
+			bf.putInt(5);
+			//DiskManager.writePage(pageId5, bf);
+			f.write(bf.array());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("# GET PAGE #");
+		bfm.getPage(pageId5);
+		System.out.println("# FREE PAGE #");
+		bfm.freePage(pageId5, true);
 	}
 
 }
