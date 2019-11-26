@@ -92,7 +92,7 @@ public class HeapFile {
 		System.out.println("Erreur X54 - Affichage du buffer - " + bufferPage);
 		System.out.println("Erreur X54bis - Affichage du buffer - " + Arrays.toString(bufferPage.array()));
 		// On parcours tant que il n'y a pas de place
-		int i = 4;
+		int i = 4; 
 		boolean deLaPlace = false;
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.getInt(0));
 		// Si il n'y a pas de page, on doit creer une page et on actualise la headePage
