@@ -65,6 +65,7 @@ public class FileManager {
 	 * @return le Rid du record
 	 */
 	public Rid insertRecordInRelation(Record record, String relName) {
+		System.out.println("----------------- INSERT IN RELATION --------------------");
 		//TODO : ACTUALISER LE HeaderPage !!!!
 		Rid rid = null ;
 		/**
@@ -86,21 +87,30 @@ public class FileManager {
 			 * Si le relName n'existe pas, on creer un HeapFile a l'aide
 			 * de ce relDef, et on l'insere dedans
 			 */
-			RelDef relDef = new RelDef(relName, record.getValues());
-			HeapFile heap = new HeapFile(relDef);
-			rid = heap.insertRecord(record);
-			/**
-			 * TODO Verifier si c'est bon pour actualiser la headerPage
-			 */
-			PageId pageId = new PageId(0, relDef.getFileIdx());
-			System.out.println("Affichage X55 - Traverse InsertRecordInRelation - " + pageId);
-			ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId); // get
-			System.out.println("Affichage X56 - Affichage du buffer " + bufferPage);
-			bufferPage.putInt(0, 1);
-			System.out.println("Affichage X57 - Affichage du buffer " + bufferPage);
-			BufferManager.getInstance().freePage(pageId, true); // free
-			// Ecriture dans le fichier
-			DiskManager.getInstance().writePage(pageId, bufferPage);
+			else {
+				throw new RuntimeException("La relation n'existe pas ");
+				/**
+				 * TODO A traiter plus tard car une excpetion
+				 */
+//				RelDef relDef = new RelDef(relName, record.getValues());
+//				HeapFile heap = new HeapFile(relDef);
+//				rid = heap.insertRecord(record); 
+//				/**
+//				 * TODO Verifier si c'est bon pour actualiser la headerPage
+//				 */
+//				
+//				PageId pageId = new PageId(0, relDef.getFileIdx());
+//				System.out.println("Affichage X55 - Traverse InsertRecordInRelation - " + pageId);
+//				ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId); // get
+//				System.out.println("Affichage X56 - Affichage du buffer " + bufferPage);
+//				bufferPage.putInt(0, 1);
+//				System.out.println("Affichage X57 - Affichage du buffer " + bufferPage);
+//				BufferManager.getInstance().freePage(pageId, true); // free
+//				// Ecriture dans le fichier
+//				DiskManager.getInstance().writePage(pageId, bufferPage);
+			 }
+			
+			
 		}
 		return rid ;
 	}

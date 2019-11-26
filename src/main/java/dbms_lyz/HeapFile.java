@@ -56,9 +56,7 @@ public class HeapFile {
 		PageId headerPage = new PageId(0, relDef.getFileIdx());
 		System.out.println("Affichage X45 - " + headerPage);
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage); // get
-		System.out.println("Affichage X48 - Affichage buffer de la headerPage (AVANT) " + Arrays.toString(bufferPage.array()));
-		bufferPage.putInt(0, bufferPage.getInt(0)+1); // A l'indice 0, on ajoute 1
-		System.out.println("Affichage X46 - Affichage buffer de la headerPage (APRES) " + Arrays.toString(bufferPage.array()));
+		System.out.println("Affichage X48 - Affichage buffer de la headerPage " + Arrays.toString(bufferPage.array()));
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		System.out.println("Affichage X49 : Affichage de la headerPage");
 		
@@ -90,7 +88,7 @@ public class HeapFile {
 		System.err.println("Affichage X53 - Affichage de la page cree [" + page + "] avec pageIdx et fileIdx " + page.getPageIdx() + ", " + page.getFileIdx());
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page); // get
 		System.out.println("Erreur X54 - Affichage du buffer - " + bufferPage);
-		System.out.println("Erreur X54bis - Affichage du buffer - " + Arrays.toString(bufferPage.array()));
+		System.out.println("Erreur X46 - Affichage du buffer - " + Arrays.toString(bufferPage.array()));
 		// On parcours tant que il n'y a pas de place
 		int i = 4; 
 		boolean deLaPlace = false;
@@ -166,7 +164,7 @@ public class HeapFile {
 		System.out.println("Affichage X35 - Affichage positionbyteMap depuis depuis le writeToDataPage de Heap : " + positionByteMap);
 		System.out.println("Affichage X68 - Affichage du slotCount et du recordSize : " + relDef.getSlotCount() + ", " + relDef.getRecordSize());
 		int positionSlot = relDef.getSlotCount() + relDef.getRecordSize() * positionByteMap;
-		System.out.println("Affichage X36 - Affichage positionSlot byteMap depuis depuis le writeToDataPage de Heap : " + positionSlot);
+		System.err.println("Affichage X36 - Affichage positionSlot byteMap depuis depuis le writeToDataPage de Heap : " + positionSlot);
 		record.writeToBuffer(bufferPage, positionSlot);
 		
 		System.out.println("Affichage X37 : Affichage du PageId " + pageId.toString());
@@ -240,12 +238,19 @@ public class HeapFile {
 	}
 	
 	public Rid insertRecord(Record record) {
+		System.out.println("----------------- METHODE INSERT --------------------");
 		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record.toString());
 		PageId pageLibre = getFreeDataPageId();
-		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
 		if(pageLibre == null) {
 			pageLibre = addDataPage();
 		}
+		/**
+		 * TODO Code temporaire
+		 */
+		if(pageLibre.getPageIdx() == 0) {
+			pageLibre.setPageIdx(1);
+		}
+		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
 		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
 		return writeRecordToDataPage(record, pageLibre);
 						
