@@ -95,8 +95,13 @@ public class HeapFile {
 		int i = 4;
 		boolean deLaPlace = false;
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.get(0) );
+<<<<<<< HEAD
 		while (!deLaPlace && i < bufferPage.get(0)*4) {	// 4 octets pour un int
 			if (bufferPage.get(i) != 0) {
+=======
+		while (!deLaPlace && i < bufferPage.getInt(0)) {	// TODO a verifier si c'est bien *4
+			if (bufferPage.getInt(i) != 0) {
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 				deLaPlace = true;
 			} else {
 				i += Integer.BYTES;
@@ -174,29 +179,28 @@ public class HeapFile {
 	 * @return
 	 */
 	public List<Record> getRecordInDataPage(PageId pageId) {
+		/**
+		 * TODO Reverifier la position des info
+		 */
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
 		List<Record> listRecord = new ArrayList<Record>();
+
 		/**
+		 * Boucle pour lire la bytemap
+		 * Si c est egal a 1, la position du ByteBuffer est actualise
+		 * au record concerne et on recupere les valeurs
+		 * Quand cette operation est terminee, on remet la position du 
+		 * ByteBuffer au bytemap
+		 * 
 		 * A partir du slotCount on lit les records que l'on va stocker dans une liste
 		 */
-
 		for (int positionByteMap = 0; positionByteMap < relDef.getSlotCount(); positionByteMap++) {
-			/**
-			 * Boucle pour lire la bytemap
-			 * Si c est egal a 1, la position du ByteBuffer est actualise
-			 * au record concerne et on recupere les valeurs
-			 * Quand cette operation est terminee, on remet la position du 
-			 * ByteBuffer au bytemap
-			 * 
-			 */
 			int positionRecord = relDef.getSlotCount() + positionByteMap;
+			System.out.println("Affichage X67 - Position du record : " + positionRecord);
 			bufferPage.position(positionByteMap);
 			if (bufferPage.get(positionByteMap) == 1) {
-				bufferPage.position(positionRecord);
+				bufferPage.position(positionByteMap);
 				List<String> listElementRecord = new ArrayList<String>();
-				/**
-				 * 
-				 */
 				for (int i = 0; i < relDef.getTypeCol().size(); i++) {
 					if (relDef.getTypeCol().get(i).equals("int")) {
 						String s = Integer.toString(bufferPage.getInt());
@@ -267,4 +271,10 @@ public class HeapFile {
 		return relDef;
 	}
 
+	@Override
+	public String toString() {
+		return "HeapFile [relDef=" + relDef + "]";
+	}
+	
+	
 }

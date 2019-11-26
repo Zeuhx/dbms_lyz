@@ -71,11 +71,21 @@ public class FileManager {
 		 * Parcour du heapFiles pour inserer le bon record avec 
 		 * le relName du record
 		 */
+<<<<<<< HEAD
 		
+=======
+		System.out.println("Affichage X63 - Affichage de si heapFiles vide ou non :  " + heapFiles.isEmpty());
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 		for(HeapFile hf : heapFiles) {
+			System.out.println("Affichage X64 - Affichage du relDef d'un heapFiles - " + hf);
+			System.out.println("Affichage X65 - Verification si la condition est respecte : " + hf.getRelDef().getNomRelation().equals(relName));
 			if(hf.getRelDef().getNomRelation().equals(relName)) {
 				rid = hf.insertRecord(record);
+<<<<<<< HEAD
 				return rid;
+=======
+				System.out.println("Affichage X62 - Affichage du rid - Rid(" + rid.getSlotIdx() + "," + rid.getPageId()+")");
+>>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 			}
 		}
 		return rid;
@@ -119,13 +129,14 @@ public class FileManager {
 				int fileIdx = hf.getRelDef().getFileIdx();
 				try {
 					rf = new RandomAccessFile(Constants.PATH + "Data_" + fileIdx + ".rf" , "r" );
-					int nbPage = rf.read();
-					System.err.println("Affichage X39 - Affichage du nombre de page dans le heapFile : " + nbPage + "pages");
+					int nbPage = rf.readInt();
+					System.err.println("Affichage X39 - Affichage du nombre de page dans le heapFile : " + nbPage + " page(s)");
 					rf.seek(Constants.PAGE_SIZE);
-					System.err.println("Affichage X40 - Affichage du pointeur " + rf);
+					System.err.println("Affichage X40 - Affichage du pointeur " + rf); 
 					for(int numeroPage = 1; numeroPage<=nbPage ; numeroPage++) {
 						PageId pageId = new PageId(numeroPage, hf.getRelDef().getFileIdx());
 						for (Record record : hf.getRecordInDataPage(pageId)) {
+							System.out.println("Affichage X66 - Affichage record : " + record);
 							listRecord.add(record);
 							System.err.println("Affichage X43 : " + record);
 						}

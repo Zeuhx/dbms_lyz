@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class DBManager {
 		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
-		default : System.out.println("commande incorrect");
+		default : System.err.println("commande incorrect");
 		break ;
 		}
 	}
@@ -224,21 +226,7 @@ public class DBManager {
 			cptDataFile ++;
 		}
 		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
-		
-		File fichierCatalogue = new File(Constants.PATH + "catalogue.def");
-		if(fichierCatalogue.exists()) {
-			if(fichierCatalogue.delete()) {
-				System.out.println("Catalogue.def supprime");
-			}
-		}
-		
-		try {
-			fichierCatalogue.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			
 		
 		//ancienne version
 //		for(int i = 0; i<compteurRelation; i++) {
@@ -374,6 +362,7 @@ public class DBManager {
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 
 		for(Record r : listRecords) {
+			System.out.println("Affichage X66 - Affichage des records - " + r);
 			StringBuffer stringBuffRecord = new StringBuffer("");
 			for(String s : r.getValues()) {
 				stringBuffRecord.append(s);
@@ -423,16 +412,70 @@ public class DBManager {
 	public void deleteCommande(StringTokenizer commande){
 		String relName = commande.nextToken();
 		String indiceColonne = commande.nextToken();
+		int indiceColonneInt = Integer.parseInt(indiceColonne);
 		String valeur = commande.nextToken();
 	
 		//accede au Heapfiles pour avoir la liste
 		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
-
+		List<Record> listRecordFromPageId;
+		
+		int j=1;
+		
+		PageId headerPage = new PageId("Data_0.rf"); 
+		PageId pageToRead; //on va cree a chaque iteration pour lire chaque page
+		PageId pageToSave; //on va cree a chaque iteration pour save chaque page
+		
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);//taille de page inportant
+		bf = BufferManager.getInstance().getPage(headerPage);//recup le contenu de page 
+		int nbPage = bf.getInt(); //attention position change
+		BufferManager.getInstance().freePage(headerPage, false);
+		
+		ByteBuffer bfPageToRead = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
+		ByteBuffer bfPageToSave = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
+		
+		String contenuRecordToSave = null;
+		StringBuffer sb= new StringBuffer();
+		int slotCount; //nb de record sur page j-ieme
+		int recordSize; //taille d'un record
+		List<Record> listRecords;
+		
 		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
-			RelDef reldef = heapFiles.get(i).getRelDef() ; 
+			RelDef reldef = heapFiles.get(i).getRelDef();
+			
+			//comparer les relName avec get(i)
 			if(reldef.getNomRelation().equals(relName)) {
+				slotCount = reldef.getSlotCount();
+				recordSize = reldef.getRecordSize();
+				byte[] bytes = new byte[recordSize];
+				ByteBuffer bff = ByteBuffer.wrap(bytes);
+				
 			//comparer sur le record a "indiceColonne" si la "valeur" correspond
+				
+				//boucle pour acceder aux pagex selon le nb page
+				while(j<=nbPage){
+					pageToRead = new PageId("Data_"+j+".rf");//accès à j-ieme page
+					pageToSave = new PageId("Data_to_save.fr");
+					
+//bfPageToRead not used ??					
+					bfPageToRead = BufferManager.getInstance().getPage(pageToRead); //byteBuffer du j-ieme page
+					//lire le indiceColonne pour comparer la valeur
+					listRecords = heapFiles.get(i).getRecordInDataPage(pageToRead); //return la liste de records de la page -j pour heapfile -i
+					bfPageToSave = BufferManager.getInstance().getPage(pageToSave);
+					
+					for(Record r : listRecords) {
+						//parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave
+						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
+							
+							//recupere le record sous forme de StringBuilder
+							for(String s : r.getValues()) {
+								sb.append(r.getValues());
+								//TODO :convertir sb en bytebuffer apres la boucle
+							}
+//							DiskManager.getInstance().writePage(pageToSave, recordToSave); recordToSave n'a pas encore recup
+						}
+					}
+				}
 //				if(heapFiles.get(i).get
 					//TODO by willy for willy
 //				}

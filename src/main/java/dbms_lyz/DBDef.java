@@ -136,20 +136,22 @@ public class DBDef implements Serializable{
 	public void reset() {
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
-		
+		File f = new File(Constants.PATH+"catalogue.def");
+
 		try {
+			f.delete();
 			Files.delete(Paths.get(Constants.PATH+"catalogue.def"));
+			try {
+				f.createNewFile();
+				System.out.println("Affichage Y11 : creation de fichier catalogue.def ");
+			} catch (IOException e) {
+				System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre cree");
+			}
 		} catch(FileSystemException e) {
-			System.out.println("C'est fait, meme si il n'y avait rien a supprimer");
+			System.err.println("Erreur le fichier catalogue.def est en cours d'utilisation il ne peux être supprimé");
+			System.out.println("Solution finale : veuillez supprimer manuellement");
 		} catch (IOException e) {
 			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre supprimer");
-		}
-		
-		File f = new File(Constants.PATH+"catalogue.def");
-		try {
-			f.createNewFile();
-		} catch (IOException e) {
-			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre cree");
 		}
 	}
 	

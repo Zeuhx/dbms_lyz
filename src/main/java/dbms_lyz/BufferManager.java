@@ -1,6 +1,7 @@
 package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 /**
  * 
@@ -61,12 +62,18 @@ public class BufferManager {
 			}
 			framePool[i] = new Frame(pageId);
 			framePool[i].chargerPage();
-//			System.out.println("Chargement de " + pageId + " dans "+ i + " " +Arrays.toString(framePool));
+			System.out.print("Affichage X59 - Affichage du pool - [ ");
+			for(int j=0 ; j<framePool.length ; j++) {
+				System.out.print(framePool[j] + ",");
+			}
+			System.out.println(" ]");
 			f = framePool[i];
 		}
 		
 		bytebuff = f.getBuffer();
+		System.out.println("Affichage X60 - Affichage du buffer du fichier qui vient d'etre cree : " + Arrays.toString(bytebuff.array()));
 		f.incrementePinCount(); 
+		System.out.println("Affichage X61 - Affichage de la frame qui contient la page - " + f);
 		return bytebuff ;
 	}
 
