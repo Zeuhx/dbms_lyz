@@ -66,7 +66,7 @@ public class DiskManager {
 		} catch (FileNotFoundException e1) {
 			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
-			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
+			System.err.println("Le mode choisi n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		}
 		try {
 			rf.write(bt);

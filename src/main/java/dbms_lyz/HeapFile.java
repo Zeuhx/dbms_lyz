@@ -95,8 +95,8 @@ public class HeapFile {
 		int i = 4;
 		boolean deLaPlace = false;
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.get(0) );
-		while (!deLaPlace && i < bufferPage.get(0)*2) {	// TODO a verifier si c'est bien *4
-			if (bufferPage.getInt(i) != 0) {
+		while (!deLaPlace && i < bufferPage.get(0)*4) {	// 4 octets pour un int
+			if (bufferPage.get(i) != 0) {
 				deLaPlace = true;
 			} else {
 				i += Integer.BYTES;
