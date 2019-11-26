@@ -265,7 +265,7 @@ public class HeapFile {
 	 */
 	public List<Record> getAllRecords(){
 		int pageIdx = 0 ;	// On incremetera au fur et a mesure des pages 
-		int fileIdx = this.relDef.getFileIdx(); //nom du fichier � recuperer les records
+		int fileIdx = this.relDef.getFileIdx(); //nom du fichier a recuperer les records
 		PageId page =  new PageId(pageIdx, fileIdx);
 		List<Record> listRecordOfHeapFile = new ArrayList<>(); //variable pour stocker la liste des records d'un heapfile
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(page);	// get

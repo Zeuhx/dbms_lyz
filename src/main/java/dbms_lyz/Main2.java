@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main2 {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 //		test();
 //		testGetPagee();
-		testCommandeDBDefPourCreer();
+//		testCommandeDBDefPourCreer();
 //		testC();
 //		creetest();
 //		testCommandeDBDefPourCreere();
@@ -31,6 +32,24 @@ public class Main2 {
 		//create S 8 string2 int string4 float string5 int int int
 		//insert S1 MO 97 Conc 180 Prod3 25 23 0
 		//insert S1 PO 29 Conc 535.8 Prod6 6 32 1
+		
+		testDelete();
+		String commande = "R 3 2";
+		StringTokenizer stCommandaCouper;
+		stCommandaCouper = new StringTokenizer(commande, " ");
+		DBManager.getInstance().deleteCommande(stCommandaCouper);
+	}
+	public static void testDelete() {
+		 List<String> typeCol = new ArrayList<String>();
+		 typeCol.add("int");typeCol.add("string3");typeCol.add("int");
+		 String relName ="R";
+		 RelDef rd = new RelDef( relName, typeCol);
+		 
+		 List<String> valeurs = new ArrayList<String>();
+		 valeurs.add("1"); valeurs.add("aab"); valeurs.add("2");
+		 Record r = new Record(rd, valeurs);
+		 FileManager.getInstance().insertRecordInRelation(r, rd.getNomRelation());
+		 System.out.println("OKKK");
 	}
 
 	public void testt(){

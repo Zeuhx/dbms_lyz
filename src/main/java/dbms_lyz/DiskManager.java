@@ -30,9 +30,9 @@ public class DiskManager {
 	}
 
 	/**
-	 * Avec fileIdx un entier correspondant � un identifiant / indice de fichier.
-	 * Cette m�thode cr�e (dans le sous-dossier DB) un fichier Data_fileIdx.rf initialement vide.
-	 * @param fileIdx un entier correspondant � un identifiant de fichier
+	 * Avec fileIdx un entier correspondant a un identifiant / indice de fichier.
+	 * Cette methode cree (dans le sous-dossier DB) un fichier Data_fileIdx.rf initialement vide.
+	 * @param fileIdx un entier correspondant a un identifiant de fichier
 	 */
 	public void createFile(int fileIdx) {
 		// Ouvre le fichier si ce dernier existe deja
@@ -53,12 +53,12 @@ public class DiskManager {
 	}
 
 	/**
-	 * Cette methode rajoute une page au fichier specifie par fileIdx (c est a� dire,
-	 * elle rajoute pageSize octets a� la fin du fichier) et retourne un PageId
+	 * Cette methode rajoute une page au fichier specifie par fileIdx (c est a dire,
+	 * elle rajoute pageSize octets a la fin du fichier) et retourne un PageId
 	 * correspondant a la page nouvellement rajoutee !
 	 * 
 	 * @throws FileNotFoundException
-	 * @param fileIdx un entier correspondant � un identifiant de fichier
+	 * @param fileIdx un entier correspondant a un identifiant de fichier
 	 * @return pageid un PageId
 	 * 
 	 */
@@ -82,12 +82,12 @@ public class DiskManager {
 	/**
 	 * @param pageId un identifiant de page
 	 * @param buff un buffer : byte[], ByteBuffer...
-	 * @return Remplir l argument buff avec le contenu disque de la page identifiée
+	 * @return Remplir l argument buff avec le contenu disque de la page identifiee
 	 *         par l argument pageId. c est l appelant de cette mehode qui cree et
-	 *         fournit le buffer à remplir!
+	 *         fournit le buffer a remplir!
 	 *         
-	 * @Attention : c�est l�appelant de cette m�thode qui cr�e et fournit 
-	 * 					le buffer � remplir!        
+	 * @Attention : c est l appelant de cette methode qui cree et fournit 
+	 * 					le buffer a remplir!        
 	 * @throws IOException
 	 */
 	public void readPage(PageId pageId, ByteBuffer buff) {
@@ -112,7 +112,7 @@ public class DiskManager {
 	
 	/**
 	 * Ecrire le contenu de l'argument du ByteBuffer dans le fichier et a la
-	 * position indiques par l�argument pageId.
+	 * position indiques par l argument pageId.
 	 * @param pageId
 	 * @param buff
 	 */

@@ -154,7 +154,6 @@ public class DBManager {
 	 * @param commande la commande qui va creer la relation
 	 */
 	public void createCommande(StringTokenizer commande) {
-		System.out.println("----- COMMANDE CREATE -----");
 		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
@@ -270,8 +269,8 @@ public class DBManager {
 	/**
 	 * Cette commande demande l insertion de plusieurs records dans une relation.
 	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
-	 * sï¿½parateur.
-	 * On suppose que le fichier se trouve ï¿½ la racine de votre dossier projet (au meme niveau donc que
+	 * separateur.
+	 * On suppose que le fichier se trouve a la racine de votre dossier projet (au meme niveau donc que
 	 * les sous-repertoires Code et DB).
 	 * @param commande
 	 */
@@ -384,76 +383,78 @@ public class DBManager {
 	public void exitCommande(StringTokenizer commande) {
 		DBManager.finish();
 	}
+	
 	public void deleteCommande(StringTokenizer commande){
 		String relName = commande.nextToken();
+		System.out.println("relName : " + relName);
 		String indiceColonne = commande.nextToken();
+		System.out.println("indice colonne : " + indiceColonne);
 		int indiceColonneInt = Integer.parseInt(indiceColonne);
 		String valeur = commande.nextToken();
-	
-		//accede au Heapfiles pour avoir la liste
-		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
-		List<Record> listRecordFromPageId;
+		System.out.println("valeur : " + valeur);
+		int totalRecord = 0;
+		int recordWrited = 0;
+		int deletedRecord = 0;
+		/*chaque iteration va attribuer la page*/
+		PageId pageToRead;
+		PageId pageToSave;
 		
-		int j=1;
+		//pour accede au Heapfiles pour avoir la liste
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();		
+		int j=1; 	//boucle pour parcourrir heapfile selon le nb page
 		
 		PageId headerPage = new PageId("Data_0.rf"); 
-		PageId pageToRead; //on va cree a chaque iteration pour lire chaque page
-		PageId pageToSave; //on va cree a chaque iteration pour save chaque page
-		
-		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);//taille de page inportant
-		bf = BufferManager.getInstance().getPage(headerPage);//recup le contenu de page 
-		int nbPage = bf.getInt(); //attention position change
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);	//taille de page inportant
+		bf = BufferManager.getInstance().getPage(headerPage);		//recup le contenu de page 
+		int nbPage = bf.getInt(); 									//attention la position change
 		BufferManager.getInstance().freePage(headerPage, false);
 		
-		ByteBuffer bfPageToRead = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
-		ByteBuffer bfPageToSave = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
-	
-//		String contenuRecordToSave = null;
-		StringBuffer sb= new StringBuffer();
-		int slotCount; //nb de record sur page j-ieme
-		int recordSize; //taille d'un record
+		File file;
+		File file2;
+		
 		List<Record> listRecords;
 		
-		//parcourir Heapfiles pour comparer les relName
+		/*parcourir Heapfiles pour comparer les relName*/
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef();
-			
 			//comparer les relName avec get(i)
 			if(reldef.getNomRelation().equals(relName)) {
-				slotCount = reldef.getSlotCount();
-				recordSize = reldef.getRecordSize();
-				byte[] bytes = new byte[recordSize];
-				ByteBuffer bff = ByteBuffer.wrap(bytes);
-				
-			//comparer sur le record a "indiceColonne" si la "valeur" correspond
-				
-				//boucle pour acceder aux pagex selon le nb page
+				/*boucle pour acceder aux pagex selon le nb page*/
 				while(j<=nbPage){
-					pageToRead = new PageId("Data_"+j+".rf");//accï¿½s ï¿½ j-ieme page
+
+					pageToRead = new PageId("Data_"+j+".rf");	//acces a j-ieme page
 					pageToSave = new PageId("Data_to_save.fr");
-					
-//bfPageToRead not used ??					
-					bfPageToRead = BufferManager.getInstance().getPage(pageToRead); //byteBuffer du j-ieme page
-					//lire le indiceColonne pour comparer la valeur
+
+					/*comparer sur le record a "indiceColonne" si la "valeur" correspond*/
 					listRecords = heapFiles.get(i).getRecordInDataPage(pageToRead); //return la liste de records de la page -j pour heapfile -i
-					bfPageToSave = BufferManager.getInstance().getPage(pageToSave);
-					
+
 					for(Record r : listRecords) {
-						//parcou la liste de valeur dans un record si elle n'est pas ï¿½qual j'ecrit sur la pageToSave
+						totalRecord++; //incremente a chaque record
+						/*parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave*/
 						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
-							
-							//recupere le record sous forme de StringBuilder
-							for(String s : r.getValues()) {
-								sb.append(r.getValues());
-								//TODO :convertir sb en bytebuffer apres la boucle
-							}
-//							DiskManager.getInstance().writePage(pageToSave, recordToSave); recordToSave n'a pas encore recup
+							//ecrit le record sur la page à sauvegarder
+							heapFiles.get(i).writeRecordToDataPage(r, pageToSave);
+							recordWrited++;
 						}
 					}
+					/**
+					 * remplacer pageToRead par pageToSave,
+					 * suppression du fichier pour pouvoir le remplacer par pageToSave 
+					 * qui contient les records qui ne sont pas a supprimer
+					 */
+					File fichier = new File (Constants.PATH+"Data_"+j+".rf");
+					fichier.delete();
+					file = new File("Data_to_save.rf");
+					file2 = new File("Data_"+j+".rf");
+					boolean success = file.renameTo(file2);	//renommer le fichier file par file2
+					
+					if (!success) {
+						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas été renommé");
+					}
 				}
-				
 			}
 		}
+		deletedRecord = totalRecord-recordWrited;
+		System.out.println("Total deleted records = " + deletedRecord); //Consigne d'affihage TD6
 	}
-	
 }

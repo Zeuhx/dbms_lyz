@@ -45,6 +45,10 @@ public class DBDef implements Serializable{
 	public void init() {
 		// src/main/ressources/DB/catalogue.def
 		//condition si le fichier n'exist pas on le cree
+		
+		File file = new File(Constants.PATH+"catalogue.def"); 
+		file.delete();
+		
 		if(!(new File (Constants.PATH + "catalogue.def").isFile())) {
 			System.out.println("Affichage Y1 - Verification du fichier s'il dois etre cree : Fichier est cree");
 			File creatingCatalogue = new File (Constants.PATH + "catalogue.def");
@@ -60,7 +64,7 @@ public class DBDef implements Serializable{
 			/**
 			 * Pour chaque relDef : on va creer un relDef
 			 */
-			System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def à " + compteurRelation);
+			System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def a " + compteurRelation);
 			for(int i = 0; i<compteurRelation ; i++) {
 				String relname = (String) ois.readObject();
 				int nbCol = ois.readInt();
@@ -83,7 +87,7 @@ public class DBDef implements Serializable{
 			System.out.println("Bienvenue sur une nouvelle session du SGBD LYZ");
 		} catch (ClassNotFoundException e) {
 			System.err.println("La classe n'a pas ete trouver pour le fichier");
-		} 
+		}
 	}
 	
 	/**
