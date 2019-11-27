@@ -100,14 +100,14 @@ public class Record {
 			else {
 				String taille = list.get(i).substring("string".length());
 				int t = Integer.parseInt(taille);
+				StringBuilder sb = new StringBuilder();
 				for(int j = 0; j<t; j++) {
-					StringBuilder sb = new StringBuilder();
 					sb.append(buff.getChar());
-					values.add(sb.toString());
 				}
+				values.add(sb.toString());
+
 			}
 		}
-				
 	}
 
 	@Override

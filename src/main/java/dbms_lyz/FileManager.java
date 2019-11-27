@@ -70,22 +70,16 @@ public class FileManager {
 		/**
 		 * Parcour du heapFiles pour inserer le bon record avec 
 		 * le relName du record
-		 */
-<<<<<<< HEAD
+		 **/
 		
-=======
 		System.out.println("Affichage X63 - Affichage de si heapFiles vide ou non :  " + heapFiles.isEmpty());
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 		for(HeapFile hf : heapFiles) {
 			System.out.println("Affichage X64 - Affichage du relDef d'un heapFiles - " + hf);
 			System.out.println("Affichage X65 - Verification si la condition est respecte : " + hf.getRelDef().getNomRelation().equals(relName));
 			if(hf.getRelDef().getNomRelation().equals(relName)) {
 				rid = hf.insertRecord(record);
-<<<<<<< HEAD
-				return rid;
-=======
 				System.out.println("Affichage X62 - Affichage du rid - Rid(" + rid.getSlotIdx() + "," + rid.getPageId()+")");
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
+				return rid;
 			}
 		}
 		return rid;

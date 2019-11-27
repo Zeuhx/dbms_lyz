@@ -95,13 +95,8 @@ public class HeapFile {
 		int i = 4;
 		boolean deLaPlace = false;
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.get(0) );
-<<<<<<< HEAD
-		while (!deLaPlace && i < bufferPage.get(0)*4) {	// 4 octets pour un int
-			if (bufferPage.get(i) != 0) {
-=======
 		while (!deLaPlace && i < bufferPage.getInt(0)) {	// TODO a verifier si c'est bien *4
 			if (bufferPage.getInt(i) != 0) {
->>>>>>> branch 'master' of https://github.com/Zeuhx/dbms_lyz
 				deLaPlace = true;
 			} else {
 				i += Integer.BYTES;
@@ -114,7 +109,6 @@ public class HeapFile {
 		System.out.println("Affichage 50 - Affichage de la page a retourne : " + new PageId(i/4,fileIdx));
 		return new PageId(i/4,fileIdx);
 	}
-	
 	
 
 	/**
