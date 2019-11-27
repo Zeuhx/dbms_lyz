@@ -120,7 +120,7 @@ public class HeapFile {
 		BufferManager.getInstance().freePage(page, flagDirty); // free
 		// TODO voir quel methode utilsie le cas du null
 		if (deLaPlace == false) {
-			System.out.println("Affichage X75 - Il n'y a pas de place");
+			System.out.println("Affichage X75 - Il n'y a pas de place"); 
 			return null;
 		}
 		System.err.println("Affichage X71 - Affichage du numero de page retourne : " + i);
