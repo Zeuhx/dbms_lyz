@@ -210,7 +210,7 @@ public class DBManager {
 		File dir = new File(Constants.PATH);
 		File [] foundFiles = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				return name.startsWith("Data");
+				return name.endsWith(".rf");
 			}
 		});
 		//suppression des fichiers dans listData
