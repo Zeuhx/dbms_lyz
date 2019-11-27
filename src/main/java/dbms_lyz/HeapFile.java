@@ -55,20 +55,21 @@ public class HeapFile {
 	public PageId addDataPage() {
 		PageId headerPage = new PageId(0, relDef.getFileIdx());
 		System.out.println("Affichage X45 - " + headerPage);
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(headerPage); // get
-		System.out.println("Affichage X48 - Affichage buffer de la headerPage " + Arrays.toString(bufferPage.array()));
+		ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(headerPage); // get
+		System.out.println("Affichage X48 - Affichage buffer de la headerPage " + Arrays.toString(bufferHeaderPage.array()));
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		System.out.println("Affichage X49 : Affichage de la headerPage");
 		
 		for(int i=0 ; i<Constants.PAGE_SIZE ; i+=4) {
-			System.out.print(bufferPage.getInt(i)+ " ");
+			System.out.print(bufferHeaderPage.getInt(i)+ " ");
 		}
 		System.out.println();
 		int i;
-		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferPage.getInt(0));
-		for (i = 1; i < bufferPage.getInt(0); i++) ; //juste pour parcourir //test//
+		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferHeaderPage.getInt(0));
+		for (i = 1; i < bufferHeaderPage.getInt(0); i++) ; //juste pour parcourir //test//
 		System.out.println("Affichage X47 : Affichage du i " +"("+i+ ") "+ "et du slotCount " + "(" +relDef.getSlotCount()+ ")" );
-		bufferPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
+		bufferHeaderPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
+		System.out.println("Affichage X76 - Affichage du buffer apres le put : " + Arrays.toString(bufferHeaderPage.array()));
 		// DiskManager.writePage(pageId, bufferPage);
 		BufferManager.getInstance().freePage(headerPage, true); // free
 		return DiskManager.getInstance().addPage(relDef.getFileIdx());
@@ -95,7 +96,6 @@ public class HeapFile {
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.getInt(0));
 		// Si il n'y a pas de page, on doit creer une page et on actualise la headePage
 		
-		
 		if(bufferPage.getInt(0)==0) {
 			DiskManager.getInstance().addPage(0);
 			bufferPage.putInt(0, 1);
@@ -111,16 +111,20 @@ public class HeapFile {
 				i += Integer.BYTES;
 			}
 		}
+		System.err.println("Affichage 71bis - Affichage du numero de page retourne : " + i);
 		boolean flagDirty = false ;
 		// Si on a creer la premiere page, on doit dire qu'on a modifier
 		if(bufferPage.getInt(0)==1) {
 			flagDirty = true ;
 		}
 		BufferManager.getInstance().freePage(page, flagDirty); // free
+		// TODO voir quel methode utilsie le cas du null
 		if (deLaPlace == false) {
+			System.out.println("Affichage X75 - Il n'y a pas de place");
 			return null;
 		}
-		System.out.println("Affichage 50 - Affichage de la page a retourne : " + new PageId(i/4,fileIdx));
+		System.err.println("Affichage X71 - Affichage du numero de page retourne : " + i);
+		System.out.println("Affichage X50 - Affichage de la page a retourne : " + new PageId(i/4,fileIdx));
 		return new PageId(i/4,fileIdx);
 	}
 	
@@ -238,22 +242,38 @@ public class HeapFile {
 	}
 	
 	public Rid insertRecord(Record record) {
-		System.out.println("----------------- METHODE INSERT --------------------");
+		System.out.println("----------------- METHODE INSERT --------------------"); 
 		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record.toString());
 		PageId pageLibre = getFreeDataPageId();
-		if(pageLibre == null) {
-			pageLibre = addDataPage();
-		}
+		System.out.println("Affichage X72 : Affichage de la page libre - " + pageLibre);
+		PageId headerPage = new PageId(0, relDef.getFileIdx()) ;
+		ByteBuffer bufferHeader  = BufferManager.getInstance().getPage(headerPage);
+		System.out.println("Affichage X77 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		/**
 		 * TODO Code temporaire
 		 */
-		if(pageLibre.getPageIdx() == 0) {
-			pageLibre.setPageIdx(1);
+		if(pageLibre == null || pageLibre.getPageIdx() == 0) {
+			System.err.println("Affichage X73 : Entre dans la boucle null ou 0 du insertRecord" );
+			pageLibre = addDataPage();
+			System.out.println("Affichage X80 : Affichage pageLibre : " + pageLibre);
+			int compteur = bufferHeader.getInt(0);
+			bufferHeader.putInt(0, compteur+1);
+			int positionSlotCount = (compteur * Integer.BYTES) + Integer.BYTES;
+			bufferHeader.putInt(positionSlotCount, relDef.getSlotCount()-1);
+			System.out.println("Affichage X79 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		}
+		else {
+			System.err.println("Affichage X74 : entre dans le else" );
+			System.out.println("Affichage X75 - Affichage de la page libre " + pageLibre);
+			int pageIdx = pageLibre.getPageIdx();
+			int slotCount = bufferHeader.getInt(pageIdx * Integer.BYTES);
+			bufferHeader.putInt(pageIdx * Integer.BYTES, slotCount - 1);
+			System.out.println("Affichage X78 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
+		}
+		BufferManager.getInstance().freePage(headerPage , true);
 		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
 		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
 		return writeRecordToDataPage(record, pageLibre);
-						
 	}
 
 	// Getters
