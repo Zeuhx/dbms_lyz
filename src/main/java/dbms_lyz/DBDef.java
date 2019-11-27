@@ -45,13 +45,14 @@ public class DBDef implements Serializable{
 	public void init() {
 		// src/main/ressources/DB/catalogue.def
 		//condition si le fichier n'exist pas on le cree
-		
+		boolean isFilee = false;
 		File file = new File(Constants.PATH+"catalogue.def"); 
-		file.delete();
+//		file.delete();
 		
-		if(!(new File (Constants.PATH + "catalogue.def").isFile())) {
+		if(!(file.isFile())) {
 			System.out.println("Affichage Y1 - Verification du fichier s'il dois etre cree : Fichier est cree");
 			File creatingCatalogue = new File (Constants.PATH + "catalogue.def");
+			isFilee = true;
 			try {
 				creatingCatalogue.createNewFile();
 			} catch (IOException e) {
@@ -59,34 +60,39 @@ public class DBDef implements Serializable{
 			}
 		}
 		
-		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def")))	{
-			compteurRelation = ois.readInt() ;
-			/**
-			 * Pour chaque relDef : on va creer un relDef
-			 */
-			System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def a " + compteurRelation);
-			for(int i = 0; i<compteurRelation ; i++) {
-				String relname = (String) ois.readObject();
-				int nbCol = ois.readInt();
-				List <String> typeCol = new ArrayList<>();
-				for(int j = 0; j<nbCol; j++) {
-					typeCol.add((String) ois.readObject()) ;
+		if(isFilee) {
+			try{
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def"));	
+				compteurRelation = ois.readInt() ;
+				/* Pour chaque relDef : on va creer un relDef */
+				System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def a " + compteurRelation);
+				for(int i = 0; i<compteurRelation ; i++) {
+					String relname = (String) ois.readObject();
+					int nbCol = ois.readInt();
+					List <String> typeCol = new ArrayList<>();
+					for(int j = 0; j<nbCol; j++) {
+						typeCol.add((String) ois.readObject()) ;
+					}
+					int fileIdx = ois.readInt();
+					int recordSize = ois.readInt();
+					int slotCount = ois.readInt();
+
+					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
+					relDefTab.add(relation);
+					FileManager.getInstance().createHeapFileWithRelation(relation);
+					//TODO créer heapfile avec
 				}
-				int fileIdx = ois.readInt();
-				int recordSize = ois.readInt();
-				int slotCount = ois.readInt();
-				
-				RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
-				relDefTab.add(relation);
-				FileManager.getInstance().createHeapFileWithRelation(relation);
-				//TODO créer heapfile avec
+				ois.close();
+			} catch (FileNotFoundException e) {
+				System.err.println("Le fichier catalogue n'existe pas");
+			} catch (IOException e) {
+				System.out.println("Bienvenue sur une nouvelle session du SGBD LYZ");
+			} catch (ClassNotFoundException e) {
+				System.err.println("La classe n'a pas ete trouver pour le fichier");
 			}
- 		} catch (FileNotFoundException e) {
-			System.err.println("Le fichier catalogue n'existe pas");
-		} catch (IOException e) {
-			System.out.println("Bienvenue sur une nouvelle session du SGBD LYZ");
-		} catch (ClassNotFoundException e) {
-			System.err.println("La classe n'a pas ete trouver pour le fichier");
+
+
+
 		}
 	}
 	
@@ -140,19 +146,16 @@ public class DBDef implements Serializable{
 	public void reset() {
 		relDefTab = new ArrayList<>();
 		compteurRelation = 0;
-		File f = new File(Constants.PATH+"catalogue.def");
 
 		try {
-			f.delete();
 			Files.delete(Paths.get(Constants.PATH+"catalogue.def"));
 			try {
-				f.createNewFile();
-				System.out.println("Affichage Y11 : creation de fichier catalogue.def ");
+				new File(Constants.PATH+"catalogue.def").createNewFile();
 			} catch (IOException e) {
 				System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre cree");
 			}
 		} catch(FileSystemException e) {
-			System.err.println("Erreur le fichier catalogue.def est en cours d'utilisation il ne peux être supprimé");
+			System.err.println("Erreur le fichier catalogue.def est ouvert, il ne peux être supprimé");
 			System.out.println("Solution finale : veuillez supprimer manuellement");
 		} catch (IOException e) {
 			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre supprimer");
