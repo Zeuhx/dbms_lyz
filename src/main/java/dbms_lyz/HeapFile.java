@@ -98,7 +98,7 @@ public class HeapFile {
 		
 		if(bufferPage.getInt(0)==0) {
 			DiskManager.getInstance().addPage(0);
-			bufferPage.putInt(0, 1);
+			bufferPage.putInt(0, 1); 
 			bufferPage.putInt(Integer.BYTES, relDef.getSlotCount());
 		}
 		System.out.println("Affichage X70 : Affichage get(0) de getFreeDataPageId & le nombre de slot dispo " +bufferPage.getInt(0) + ", " + bufferPage.getInt(1));
