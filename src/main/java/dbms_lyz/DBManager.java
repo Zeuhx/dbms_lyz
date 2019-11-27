@@ -6,10 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -107,7 +104,7 @@ public class DBManager {
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
-//		System.err.println("Erreur X6 : " + reldef.getTypeCol());
+		// System.err.println("Erreur X6 : " + reldef.getTypeCol());
 		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
 		// On creer le heapFile
@@ -157,7 +154,6 @@ public class DBManager {
 	 * @param commande la commande qui va creer la relation
 	 */
 	public void createCommande(StringTokenizer commande) {
-		System.out.println("----- COMMANDE CREATE -----");
 		String nomRelation = new String();
 		int nbCol = 0;
 		List<String> typeCol = new ArrayList<String>();
@@ -173,7 +169,6 @@ public class DBManager {
 				if(i > 2) {
 					for(int j=0 ; j<nbCol ; j++) {
 						typeCol.add(commande.nextToken());
-						// TODO Pas placer comme il faut
 						if(j>nbCol) {
 							System.err.println("[Attention] Vous avez saisie plus d'element qu'il ne faut, "
 									+ "les elements en trop n'ont pas ete prise en compte");
@@ -211,12 +206,11 @@ public class DBManager {
 //		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		
-		//npouvelle version
 		//recuperer les fichier commencant par "Data_" dans une listData
 		File dir = new File(Constants.PATH);
 		File [] foundFiles = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				return name.startsWith("Data");
+				return name.endsWith(".rf");
 			}
 		});
 		//suppression des fichiers dans listData
@@ -226,36 +220,16 @@ public class DBManager {
 			cptDataFile ++;
 		}
 		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
-			
-		
-		//ancienne version
-//		for(int i = 0; i<compteurRelation; i++) {
-//			try {
-//				Files.deleteIfExists(Paths.get(Constants.PATH+"Data_"+i+".rf"));
-//				System.out.println("Affichage X22 : Suppression des fichiers : "+ Constants.PATH+"Data_"+i+".rf");
-//			}
-//			catch(NoSuchFileException e) {
-//				System.err.println("Il n'y a pas plus de fichier : "+DiskManager.getInstance().Constants.PATH()+i);
-//				System.exit(-1);;
-//				//On quitte la boucle car il n y a plus de fichiers
-//			}
-//			catch(IOException e) {
-//				System.err.println("[Attention] Des fichiers viennent d'etre cree "
-//						+ "et sont donc en cours d'utilisation par le systeme, "
-//						+ "\nil ne peut pas etre supprimer, "
-//						+ "pour cela il faut quitter le programme et faire la commande clean apres");
-//			}
-//		}
+
 		
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
-		
 		/**
 		 * 
 		 * S'occuper de BufferManager
 		 */
-		
 	}
+	
 	/**
 	 * Cette commande demande l'inserttion d'un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
@@ -295,8 +269,8 @@ public class DBManager {
 	/**
 	 * Cette commande demande l insertion de plusieurs records dans une relation.
 	 * Les valeurs des records sont dans un fichier csv : 1 record par ligne, avec la virgule comme
-	 * sï¿½parateur.
-	 * On suppose que le fichier se trouve ï¿½ la racine de votre dossier projet (au meme niveau donc que
+	 * separateur.
+	 * On suppose que le fichier se trouve a la racine de votre dossier projet (au meme niveau donc que
 	 * les sous-repertoires Code et DB).
 	 * @param commande
 	 */
@@ -409,84 +383,78 @@ public class DBManager {
 	public void exitCommande(StringTokenizer commande) {
 		DBManager.finish();
 	}
+	
 	public void deleteCommande(StringTokenizer commande){
 		String relName = commande.nextToken();
+		System.out.println("relName : " + relName);
 		String indiceColonne = commande.nextToken();
+		System.out.println("indice colonne : " + indiceColonne);
 		int indiceColonneInt = Integer.parseInt(indiceColonne);
 		String valeur = commande.nextToken();
-	
-		//accede au Heapfiles pour avoir la liste
-		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
-		List<Record> listRecordFromPageId;
+		System.out.println("valeur : " + valeur);
+		int totalRecord = 0;
+		int recordWrited = 0;
+		int deletedRecord = 0;
+		/*chaque iteration va attribuer la page*/
+		PageId pageToRead;
+		PageId pageToSave;
 		
-		int j=1;
+		//pour accede au Heapfiles pour avoir la liste
+		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();		
+		int j=1; 	//boucle pour parcourrir heapfile selon le nb page
 		
 		PageId headerPage = new PageId("Data_0.rf"); 
-		PageId pageToRead; //on va cree a chaque iteration pour lire chaque page
-		PageId pageToSave; //on va cree a chaque iteration pour save chaque page
-		
-		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);//taille de page inportant
-		bf = BufferManager.getInstance().getPage(headerPage);//recup le contenu de page 
-		int nbPage = bf.getInt(); //attention position change
+		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);	//taille de page inportant
+		bf = BufferManager.getInstance().getPage(headerPage);		//recup le contenu de page 
+		int nbPage = bf.getInt(); 									//attention la position change
 		BufferManager.getInstance().freePage(headerPage, false);
 		
-		ByteBuffer bfPageToRead = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
-		ByteBuffer bfPageToSave = ByteBuffer.allocate(Constants.PAGE_SIZE); //idem que pour pageId
+		File file;
+		File file2;
 		
-		String contenuRecordToSave = null;
-		StringBuffer sb= new StringBuffer();
-		int slotCount; //nb de record sur page j-ieme
-		int recordSize; //taille d'un record
 		List<Record> listRecords;
 		
-		//parcourir Heapfiles pour comparer les relName
+		/*parcourir Heapfiles pour comparer les relName*/
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef();
-			
 			//comparer les relName avec get(i)
 			if(reldef.getNomRelation().equals(relName)) {
-				slotCount = reldef.getSlotCount();
-				recordSize = reldef.getRecordSize();
-				byte[] bytes = new byte[recordSize];
-				ByteBuffer bff = ByteBuffer.wrap(bytes);
-				
-			//comparer sur le record a "indiceColonne" si la "valeur" correspond
-				
-				//boucle pour acceder aux pagex selon le nb page
+				/*boucle pour acceder aux pagex selon le nb page*/
 				while(j<=nbPage){
-					pageToRead = new PageId("Data_"+j+".rf");//accès à j-ieme page
+
+					pageToRead = new PageId("Data_"+j+".rf");	//acces a j-ieme page
 					pageToSave = new PageId("Data_to_save.fr");
-					
-//bfPageToRead not used ??					
-					bfPageToRead = BufferManager.getInstance().getPage(pageToRead); //byteBuffer du j-ieme page
-					//lire le indiceColonne pour comparer la valeur
+
+					/*comparer sur le record a "indiceColonne" si la "valeur" correspond*/
 					listRecords = heapFiles.get(i).getRecordInDataPage(pageToRead); //return la liste de records de la page -j pour heapfile -i
-					bfPageToSave = BufferManager.getInstance().getPage(pageToSave);
-					
+
 					for(Record r : listRecords) {
-						//parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave
+						totalRecord++; //incremente a chaque record
+						/*parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave*/
 						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
-							
-							//recupere le record sous forme de StringBuilder
-							for(String s : r.getValues()) {
-								sb.append(r.getValues());
-								//TODO :convertir sb en bytebuffer apres la boucle
-							}
-//							DiskManager.getInstance().writePage(pageToSave, recordToSave); recordToSave n'a pas encore recup
+							//ecrit le record sur la page à sauvegarder
+							heapFiles.get(i).writeRecordToDataPage(r, pageToSave);
+							recordWrited++;
 						}
 					}
+					/**
+					 * remplacer pageToRead par pageToSave,
+					 * suppression du fichier pour pouvoir le remplacer par pageToSave 
+					 * qui contient les records qui ne sont pas a supprimer
+					 */
+					File fichier = new File (Constants.PATH+"Data_"+j+".rf");
+					fichier.delete();
+					file = new File("Data_to_save.rf");
+					file2 = new File("Data_"+j+".rf");
+					boolean success = file.renameTo(file2);	//renommer le fichier file par file2
+					
+					if (!success) {
+						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas été renommé");
+					}
 				}
-//				if(heapFiles.get(i).get
-					//TODO by willy for willy
-//				}
-//			
-//				
-//				
-//				Record r = new Record(reldef, valeur);
-//				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
-				
 			}
 		}
+		deletedRecord = totalRecord-recordWrited;
+		System.out.println("Total deleted records = " + deletedRecord); //Consigne d'affihage TD6
 	}
-	
 }

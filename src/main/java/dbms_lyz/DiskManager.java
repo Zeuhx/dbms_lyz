@@ -14,14 +14,14 @@ import java.util.Arrays;
 public class DiskManager {
 	// Chemin du fichier src/main/resources/DB/
 
-	/** Constructeur prive */
+	/* Constructeur prive */
 	private DiskManager() {
 	}
 
-	/** Instance unique non preinitialisee */
+	/* Instance unique non preinitialisee */
 	private static DiskManager INSTANCE = null;
 
-	/** Point d'acces pour l'instance unique du singleton */
+	/* Point d'acces pour l'instance unique du singleton */
 	public static DiskManager getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new DiskManager();
@@ -30,8 +30,9 @@ public class DiskManager {
 	}
 
 	/**
-	 * @param fileIdx Cette methode cree (dans le sous-dossier DB) un fichier
-	 *                Data_fileIdx.rf initialement vide.
+	 * Avec fileIdx un entier correspondant a un identifiant / indice de fichier.
+	 * Cette methode cree (dans le sous-dossier DB) un fichier Data_fileIdx.rf initialement vide.
+	 * @param fileIdx un entier correspondant a un identifiant de fichier
 	 */
 	public void createFile(int fileIdx) {
 		// Ouvre le fichier si ce dernier existe deja
@@ -52,39 +53,41 @@ public class DiskManager {
 	}
 
 	/**
-	 * Cette methode rajoute une page au fichier specifie par fileIdx (c est a† dire,
-	 * elle rajoute pageSize octets a† la fin du fichier) et retourne un PageId
+	 * Cette methode rajoute une page au fichier specifie par fileIdx (c est a dire,
+	 * elle rajoute pageSize octets a la fin du fichier) et retourne un PageId
 	 * correspondant a la page nouvellement rajoutee !
 	 * 
 	 * @throws FileNotFoundException
+	 * @param fileIdx un entier correspondant a un identifiant de fichier
+	 * @return pageid un PageId
+	 * 
 	 */
 	public PageId addPage(int fileIdx) {
-		RandomAccessFile rf = null;
+		
 		byte[] bt = new byte[Constants.PAGE_SIZE];
-		try {
-			rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw");
-		} catch (FileNotFoundException e1) {
-			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
-		} catch (IllegalArgumentException e2) {
-			System.err.println("Le mode choisi n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
-		}
-		try {
+		try (RandomAccessFile rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw")){
 			rf.write(bt);
+		} catch (FileNotFoundException e1) {
+			System.err.println("Le fichier saisie n'a pas ete trouve !");
+		} catch (IllegalArgumentException e2) {
+			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
-			System.err.println("Il y a une erreur d'I/O pour addPage");
+			System.err.println("Erreur d'I/O pour addPage");
 		}
-
+		
 		PageId p = new PageId("Data_" + fileIdx + ".rf");
 		return (p);
 	}
 
 	/**
-	 * 
-	 * @param pageId    un identifiant de page
-	 * @param buff un buffer
-	 * @return Remplir l argument buff avec le contenu disque de la page identifi√©e
+	 * @param pageId un identifiant de page
+	 * @param buff un buffer : byte[], ByteBuffer...
+	 * @return Remplir l argument buff avec le contenu disque de la page identifiee
 	 *         par l argument pageId. c est l appelant de cette mehode qui cree et
-	 *         fournit le buffer √† remplir!
+	 *         fournit le buffer a remplir!
+	 *         
+	 * @Attention : c est l appelant de cette methode qui cree et fournit 
+	 * 					le buffer a remplir!        
 	 * @throws IOException
 	 */
 	public void readPage(PageId pageId, ByteBuffer buff) {
@@ -100,7 +103,7 @@ public class DiskManager {
 		} catch (IllegalArgumentException e2) {
 			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
-			System.out.println("Erreur d'I/O au niveau de la position du RandomFileAccess");
+			System.err.println("Erreur d'I/O au niveau de la position du RandomFileAccess");
 		}
 		// Verif : System.out.println(nbr);
 		System.out.println("Affichage X15 - ByteBuffer pour la pageId "+pageId.getPageIdx()+" " + Arrays.toString(buff.array()));
@@ -108,31 +111,28 @@ public class DiskManager {
 	}
 	
 	/**
-	 * Ecrire le contenu du ByteBuffer dans la page concerne
+	 * Ecrire le contenu de l'argument du ByteBuffer dans le fichier et a la
+	 * position indiques par l argument pageId.
 	 * @param pageId
 	 * @param buff
 	 */
 	public void writePage(PageId pageId, ByteBuffer buff) {
-		RandomAccessFile rf = null;
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		System.out.println(f.toString());
 		int positionPage = pageId.getPageIdx();
-		try {
-			rf = new RandomAccessFile(f, "rw");
-			/**
-			 * Position du RandomAccessFile
-			 */
+		try (RandomAccessFile rf = new RandomAccessFile(f, "rw")){
+			
+			//Position du RandomAccessFile
 			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
-
 			rf.write(buff.array());
 			
 		} catch (FileNotFoundException e1) {
-			System.err.println("Le fichier " + rf + " n'a pas ete trouve !");
+			System.err.println("Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Erreur d'I/O du fichier au niveau de writePage");
 		}
 	}
 	

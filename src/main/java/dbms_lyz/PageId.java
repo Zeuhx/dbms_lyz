@@ -35,9 +35,7 @@ public class PageId {
 		int taille = nomFichier.length()-4;
 		int debut = nomFichier.length()-3;
 		String nbARecup;
-		
 		boolean isInteger = true;
-		
 		int nbInt = 0;
 		
 		while(isInteger) {
@@ -46,16 +44,12 @@ public class PageId {
 				nbInt++;
 				taille--;
 			}
-			
 			else {
 				isInteger = false;	
 			}
 		}
-		
 		nbARecup = nomFichier.substring(debut-nbInt, debut);
-		
 		return Integer.parseInt(nbARecup);
-		
 	}
 
 	public int getFileIdx() { return fileIdx ; }

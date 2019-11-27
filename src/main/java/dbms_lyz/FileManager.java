@@ -10,7 +10,7 @@ import java.util.List;
 public class FileManager {
 	private List <HeapFile> heapFiles;
 	
-	/** Singleton */
+	/* Singleton */
 	private static FileManager INSTANCE = null;
 	private FileManager() { heapFiles = new ArrayList<>(); }
 	public static FileManager getInstance() {
@@ -65,6 +65,7 @@ public class FileManager {
 	 * @return le Rid du record
 	 */
 	public Rid insertRecordInRelation(Record record, String relName) {
+		System.out.println("----------------- INSERT IN RELATION --------------------");
 		//TODO : ACTUALISER LE HeaderPage !!!!
 		Rid rid = null ;
 		/**
@@ -72,15 +73,44 @@ public class FileManager {
 		 * le relName du record
 		 **/
 		
+		System.out.println("Affichage X69 - Test");
 		System.out.println("Affichage X63 - Affichage de si heapFiles vide ou non :  " + heapFiles.isEmpty());
+		boolean continu = true ;
 		for(HeapFile hf : heapFiles) {
-			System.out.println("Affichage X64 - Affichage du relDef d'un heapFiles - " + hf);
-			System.out.println("Affichage X65 - Verification si la condition est respecte : " + hf.getRelDef().getNomRelation().equals(relName));
-			if(hf.getRelDef().getNomRelation().equals(relName)) {
+			System.err.println("Affichage X64 - Affichage du relDef d'un heapFiles - " + hf);
+			System.err.println("Affichage X65 - Verification si la condition est respecte : " + hf.getRelDef().getNomRelation().equals(relName));
+			if(hf.getRelDef().getNomRelation().equals(relName) && continu) {
 				rid = hf.insertRecord(record);
 				System.out.println("Affichage X62 - Affichage du rid - Rid(" + rid.getSlotIdx() + "," + rid.getPageId()+")");
+				continu = false ;
 				return rid;
 			}
+			/**
+			 * Si le relName n'existe pas, on creer un HeapFile a l'aide
+			 * de ce relDef, et on l'insere dedans
+			 */
+			else {
+				throw new RuntimeException("La relation n'existe pas ");
+				/**
+				 * TODO A traiter plus tard car une excpetion
+				 */
+//				RelDef relDef = new RelDef(relName, record.getValues());
+//				HeapFile heap = new HeapFile(relDef);
+//				rid = heap.insertRecord(record); 
+//				/**
+//				 * TODO Verifier si c'est bon pour actualiser la headerPage
+//				 */
+//				
+//				PageId pageId = new PageId(0, relDef.getFileIdx());
+//				System.out.println("Affichage X55 - Traverse InsertRecordInRelation - " + pageId);
+//				ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId); // get
+//				System.out.println("Affichage X56 - Affichage du buffer " + bufferPage);
+//				bufferPage.putInt(0, 1);
+//				System.out.println("Affichage X57 - Affichage du buffer " + bufferPage);
+//				BufferManager.getInstance().freePage(pageId, true); // free
+//				// Ecriture dans le fichier
+//				DiskManager.getInstance().writePage(pageId, bufferPage);
+			 }
 		}
 		return rid;
 	}

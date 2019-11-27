@@ -26,7 +26,7 @@ public class BufferManager {
 	}
 
 	/**
-	 * On cherche le Frame qui correpond a un PageId
+	 * Recherche le Frame qui correpond a un PageId
 	 * 
 	 * @param page
 	 * @return le Frame qui correspond
@@ -42,11 +42,15 @@ public class BufferManager {
 
 	/**
 	 * Cette methode doit reppondre a une demande de page venant des couches plus
-	 * hautes, et donc retourner un des buffers associeer a une case. Le buffer sera
-	 * rempli avec le contenu de la page designee par argument pageId.
+	 * hautes, et donc retourner un des buffers associeer a une case. 
 	 * 
-	 * @param pageId
-	 * @return
+	 * Le buffer sera rempli avec le contenu de la page designee par argument pageId.
+	 * 
+	 * @attention : ne pas creer de buffer supplementaire,"recuperer" simplement celui 
+	 * qui correspond a la bonne frame, apres l�avoir rempli si besoin par un appel au DiskManager.
+	 * @attention : cette methode devra utiuliser une politique de remplacement.
+	 * @param pageId un PageId
+	 * @return buff un buffer 
 	 */
 	public ByteBuffer getPage(PageId pageId) {
 		ByteBuffer bytebuff ;
@@ -60,7 +64,7 @@ public class BufferManager {
 		if(f==null) {
 			int i = indexLibre();
 			if(i==-1) {
-				i = calcul_LRU();
+				i = calcul_LRU(); 
 				System.out.println("On active la methode de remplacement LRU, on doit remplace la frame " + i);
 				framePool[i].enregistrerPage();
 			}
@@ -85,8 +89,8 @@ public class BufferManager {
 	 * Cette methode devra decrementer le pin_count 
 	 * et actualiser le flag dirty de la page pour savoir si elle a ete modifier
 	 * 
-	 * @param pageId
-	 * @param valdirty
+	 * @param pageId une PageId
+	 * @param valdirty un entier booleen
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
 		Frame f = searchFrame(pageId);
@@ -112,8 +116,8 @@ public class BufferManager {
 	}
 
 	public int calcul_LRU() {
-		int min = Integer.MAX_VALUE ;
-		int position = -2 ;
+		int min = Integer.MAX_VALUE;
+		int position = -2;
 		for (int i = 0; i < framePool.length; i++) {
 			if(framePool[i].getCompteurPersoLRU() < min && framePool[i].getPin_count() == 0) {
 				min = framePool[i].getCompteurPersoLRU();
@@ -125,10 +129,9 @@ public class BufferManager {
 	}
 	
 	/**
-	 * 
-	 * Cette méthode s’occupe de : l'ecriture de toutes les pages dont le flag
+	 * Cette methode s'occupe de : l'ecriture de toutes les pages dont le flag
 	 * dirty = 1 sur disque, la remise a 0 de tous les flags/informations et
-	 * contenus des buffers (buffer pool « vide »)
+	 * contenus des buffers (buffer pool a vide)
 	 */
 	public void flushAll() throws FlagException {
 		DBManager.finish();
