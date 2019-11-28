@@ -117,7 +117,6 @@ public class DiskManager {
 	 * @param buff
 	 */
 	public void writePage(PageId pageId, ByteBuffer buff) {
-		
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		System.out.println(f.toString());
 		int positionPage = pageId.getPageIdx();

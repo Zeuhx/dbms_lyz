@@ -120,14 +120,13 @@ public class HeapFile {
 		BufferManager.getInstance().freePage(page, flagDirty); // free
 		// TODO voir quel methode utilsie le cas du null
 		if (deLaPlace == false) {
-			System.out.println("Affichage X75 - Il n'y a pas de place");
+			System.out.println("Affichage X75 - Il n'y a pas de place"); 
 			return null;
 		}
 		System.err.println("Affichage X71 - Affichage du numero de page retourne : " + i);
 		System.out.println("Affichage X50 - Affichage de la page a retourne : " + new PageId(i/4,fileIdx));
 		return new PageId(i/4,fileIdx);
 	}
-	
 	
 
 	/**
@@ -257,7 +256,7 @@ public class HeapFile {
 			pageLibre = addDataPage();
 			System.out.println("Affichage X80 : Affichage pageLibre : " + pageLibre);
 			int compteur = bufferHeader.getInt(0);
-			bufferHeader.putInt(0, compteur+1);
+//			bufferHeader.putInt(0, compteur+1);
 			int positionSlotCount = (compteur * Integer.BYTES) + Integer.BYTES;
 			bufferHeader.putInt(positionSlotCount, relDef.getSlotCount()-1);
 			System.out.println("Affichage X79 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));

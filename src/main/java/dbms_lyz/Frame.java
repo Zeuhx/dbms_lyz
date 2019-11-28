@@ -43,7 +43,7 @@ public class Frame {
 		DiskManager.getInstance().readPage(pageId, buff);
 	}
 	
-	// enregistre la page dans le buffer
+	// enregistre la page depuis le buffer
 	public void enregistrerPage() {
 		if(flag_dirty) { 
 			DiskManager.getInstance().writePage(pageId, buff); 

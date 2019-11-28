@@ -70,7 +70,8 @@ public class FileManager {
 		/**
 		 * Parcour du heapFiles pour inserer le bon record avec 
 		 * le relName du record
-		 */
+		 **/
+		
 		System.out.println("Affichage X69 - Test");
 		System.out.println("Affichage X63 - Affichage de si heapFiles vide ou non :  " + heapFiles.isEmpty());
 		boolean continu = true ;
@@ -81,6 +82,7 @@ public class FileManager {
 				rid = hf.insertRecord(record);
 				System.out.println("Affichage X62 - Affichage du rid - Rid(" + rid.getSlotIdx() + "," + rid.getPageId()+")");
 				continu = false ;
+				return rid;
 			}
 			/**
 			 * Si le relName n'existe pas, on creer un HeapFile a l'aide
@@ -108,9 +110,28 @@ public class FileManager {
 //				// Ecriture dans le fichier
 //				DiskManager.getInstance().writePage(pageId, bufferPage);
 			 }
-			
-			
 		}
+		return rid;
+	}
+		/**
+		 * Si le relName n'existe pas, on creer un HeapFile a l'aide
+		 * de ce relDef, et on l'insere dedans
+		 */
+		/*
+		RelDef relDef = new RelDef(relName, record.getValues());
+		HeapFile heap = new HeapFile(relDef);
+		rid = heap.insertRecord(record);
+		
+		PageId pageId = new PageId(0, relDef.getFileIdx());
+		System.out.println("Affichage X55 - Traverse InsertRecordInRelation - " + pageId);
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId); // get
+		System.out.println("Affichage X56 - Affichage du buffer " + bufferPage);
+		bufferPage.putInt(0, 1);
+		System.out.println("Affichage X57 - Affichage du buffer " + bufferPage);
+		BufferManager.getInstance().freePage(pageId, true); // free
+		// Ecriture dans le fichier
+		DiskManager.getInstance().writePage(pageId, bufferPage);
+
 		return rid ;
 	}
 	

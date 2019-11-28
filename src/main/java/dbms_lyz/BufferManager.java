@@ -29,8 +29,8 @@ public class BufferManager {
 	 * Recherche le Frame qui correpond a un PageId
 	 * 
 	 * @param page
-	 * @return l'index de Frame qui correspondant au PageId
-	 * @return -1 : la pageId n'est pas dans le
+	 * @return le Frame qui correspond
+	 * @return null si pas de correspondance
 	 */
 	public Frame searchFrame(PageId pageId) {
 		for(Frame f : framePool) {
@@ -57,6 +57,10 @@ public class BufferManager {
 		Frame f = searchFrame(pageId);
 		
 		System.err.println("Affichage X18 - get("+pageId +")");
+		
+		/**
+		 * Si la page
+		 */
 		if(f==null) {
 			int i = indexLibre();
 			if(i==-1) {
