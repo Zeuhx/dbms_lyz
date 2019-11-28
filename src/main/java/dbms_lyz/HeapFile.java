@@ -153,6 +153,7 @@ public class HeapFile {
 //		}
 		
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
+		System.out.println("Affichage X86 - Affichage du buffer de la page ou on va ecrire le record : " + Arrays.toString(bufferPage.array()));
 		int positionByteMap = 0;
 		boolean caseLibre = false;
 		while (!caseLibre && positionByteMap < bufferPage.getInt(0)) {
@@ -261,6 +262,9 @@ public class HeapFile {
 		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record.toString());
 		PageId pageLibre = getFreeDataPageId();
 		System.out.println("Affichage X72 : Affichage de la page libre - " + pageLibre);
+		ByteBuffer bufferLibre = BufferManager.getInstance().getPage(pageLibre);
+		System.out.println("Affichage X88 - Affichage buffer de la page libre : " + Arrays.toString(bufferLibre.array()));
+		BufferManager.getInstance().freePage(pageLibre, false);
 		PageId headerPage = new PageId(0, relDef.getFileIdx()) ;
 		ByteBuffer bufferHeader  = BufferManager.getInstance().getPage(headerPage);
 		System.out.println("Affichage X77 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
@@ -285,10 +289,14 @@ public class HeapFile {
 			bufferHeader.putInt(pageIdx * Integer.BYTES, slotCount - 1);
 			System.out.println("Affichage X78 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		}
+		
 		BufferManager.getInstance().freePage(headerPage , true);
 		
 		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
 		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
+		bufferLibre = BufferManager.getInstance().getPage(pageLibre);
+		System.out.println("Affichage X87 - Affichage buffer de la page libre : " + Arrays.toString(bufferLibre.array()));
+		BufferManager.getInstance().freePage(pageLibre, false);
 		return writeRecordToDataPage(record, pageLibre);
 	}
 
