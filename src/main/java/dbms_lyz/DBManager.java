@@ -354,20 +354,17 @@ public class DBManager {
 	}
 	
 	public void selectCommande(StringTokenizer commande) {
-		String nomRelation = "";
-		int colonne;
-		String valeur = "";
-
-		commande.nextElement();
-		nomRelation = commande.nextToken();
-		colonne = (int) commande.nextElement();
-		valeur = commande.nextToken(); 
+		String nomRelation = commande.nextToken();
+		String colonne = commande.nextToken();
+		String valeur = commande.nextToken(); 
+//suppression d'un nexElement en trop ici  -> deja supprime 
+		int column = Integer.parseInt(colonne);
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
 		for(Record r : listRecords) {
 			List<String> values = r.getValues();
-			if(values.get(colonne).equals(valeur)) {
+			if(values.get(column).equals(valeur)) {
 				StringBuffer stringBuffRecord = new StringBuffer("");
 				for(String s : r.getValues()) {
 					stringBuffRecord.append(s);
@@ -375,11 +372,10 @@ public class DBManager {
 				}
 				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 				System.out.println(stringRecord);
-				
 			}
 		}
-		
 	}
+
 	public void exitCommande(StringTokenizer commande) {
 		DBManager.finish();
 	}
