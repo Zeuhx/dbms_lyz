@@ -447,7 +447,7 @@ public class DBManager {
 					boolean success = file.renameTo(file2);	//renommer le fichier file par file2
 					
 					if (!success) {
-						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas �t� renomm�");
+						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas ete renomme");
 					}
 				}
 			}
