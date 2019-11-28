@@ -380,6 +380,7 @@ public class DBManager {
 		}
 		
 	}
+	
 	public void exitCommande(StringTokenizer commande) {
 		DBManager.finish();
 	}
@@ -430,9 +431,9 @@ public class DBManager {
 
 					for(Record r : listRecords) {
 						totalRecord++; //incremente a chaque record
-						/*parcou la liste de valeur dans un record si elle n'est pas équal j'ecrit sur la pageToSave*/
+						/*parcou la liste de valeur dans un record si elle n'est pas ï¿½qual j'ecrit sur la pageToSave*/
 						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
-							//ecrit le record sur la page à sauvegarder
+							//ecrit le record sur la page ï¿½ sauvegarder
 							heapFiles.get(i).writeRecordToDataPage(r, pageToSave);
 							recordWrited++;
 						}
@@ -449,7 +450,7 @@ public class DBManager {
 					boolean success = file.renameTo(file2);	//renommer le fichier file par file2
 					
 					if (!success) {
-						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas été renommé");
+						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas ï¿½tï¿½ renommï¿½");
 					}
 				}
 			}
