@@ -34,6 +34,7 @@ public class Main2 {
 		//insert S1 PO 29 Conc 535.8 Prod6 6 32 1
 		
 		testDelete();
+		PageId headerPage = new PageId("Data_0.rf"); 
 		String commande = "R 3 2";
 		StringTokenizer stCommandaCouper;
 		stCommandaCouper = new StringTokenizer(commande, " ");
