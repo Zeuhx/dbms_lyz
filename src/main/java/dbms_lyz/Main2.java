@@ -33,12 +33,56 @@ public class Main2 {
 		//insert S1 MO 97 Conc 180 Prod3 25 23 0
 		//insert S1 PO 29 Conc 535.8 Prod6 6 32 1
 		
-		testDelete();
-		String commande = "R 3 2";
-		StringTokenizer stCommandaCouper;
-		stCommandaCouper = new StringTokenizer(commande, " ");
-		DBManager.getInstance().deleteCommande(stCommandaCouper);
+//		testDelete();
+//		PageId headerPage = new PageId("Data_0.rf"); 
+//		String commande = "R 3 2";
+//		StringTokenizer stCommandaCouper;
+//		stCommandaCouper = new StringTokenizer(commande, " ");
+//		DBManager.getInstance().deleteCommande(stCommandaCouper);
+		testCom("select R 3 1");
 	}
+	
+	
+	public static void testCom(String commande) {
+		StringTokenizer stCommandaCouper;
+
+		stCommandaCouper = new StringTokenizer(commande, " ");
+		String typeCommande = stCommandaCouper.nextToken() ;
+		switch(typeCommande) {
+		case "select" : selectCommande(stCommandaCouper);
+		break ;
+		default : System.err.println("commande incorrect");
+		break ;
+		}
+
+	}
+	public static void selectCommande(StringTokenizer commande) {
+		String nomRelation = commande.nextToken();
+		String colonne = commande.nextToken();
+		String valeur = commande.nextToken(); 
+		
+		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
+		System.out.println("nomRelation :"+nomRelation);
+		System.out.println("colonne :"+colonne);
+		System.out.println("valeur :"+valeur);
+		int column = Integer.parseInt(colonne);
+				System.out.println("colonne de la boucle : "+ column);
+//				StringBuffer stringBuffRecord = new StringBuffer("");
+//				for(String s : r.getValues()) {
+//					stringBuffRecord.append(s);
+//					stringBuffRecord.append(" ; ");
+//				}
+//				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
+//				System.out.println(stringRecord);
+			
+		
+	}
+	private static int parseInt(String colonne) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 	public static void testDelete() {
 		 List<String> typeCol = new ArrayList<String>();
 		 typeCol.add("int");typeCol.add("string3");typeCol.add("int");
@@ -118,36 +162,7 @@ public class Main2 {
 		System.out.println();
 	}
 
-	
-	////////////////////////////////////////
 
-	
-	public static void testFreePage(PageId pageId, boolean valdirty, List<Frame> listFrame) {
-		int indexFrame = testSearchFrame(pageId, listFrame);
-		if (indexFrame == 2)
-			System.out.println("Frame pas trouve");
-		else {
-			Frame frame = listFrame.get(indexFrame);
-			frame.decrementePinCount();
-		}
-	}
-
-	/////////////////////////////////////////////////////
-	public static int testSearchFrame(PageId pageId, List<Frame> listFrame) {
-		BufferManager.getInstance();
-		int i = 0;
-		System.out.println("id de pageId a chercher : "+pageId.getPageIdx());
-
-		for (Frame f : listFrame) {
-			System.out.println("id de la page dans frame : "+i+" est : "+f.getPageId().getPageIdx());
-			if (f.getPageId().getPageIdx() == (pageId.getPageIdx())) {
-				System.out.println("resultat incide du frame: "+i);
-				return (i);
-			}
-			i++;
-		}		
-		return (2);
-	}
 
 	
 }

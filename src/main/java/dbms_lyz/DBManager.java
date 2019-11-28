@@ -238,7 +238,7 @@ public class DBManager {
 	 */
 	public void insertCommande(StringTokenizer commande) {
 		String relName = commande.nextToken();
-		List<String> valeurs = new ArrayList<String>(); //list valeurs de chaque colonne
+		List<String> valeurs = new ArrayList<String>(); //list valeurs de records
 		
 		//stock les valeur dans la liste
 		while(commande.hasMoreTokens()) {
@@ -354,20 +354,17 @@ public class DBManager {
 	}
 	
 	public void selectCommande(StringTokenizer commande) {
-		String nomRelation = "";
-		int colonne;
-		String valeur = "";
-
-		commande.nextElement();
-		nomRelation = commande.nextToken();
-		colonne = (int) commande.nextElement();
-		valeur = commande.nextToken(); 
+		String nomRelation = commande.nextToken();
+		String colonne = commande.nextToken();
+		String valeur = commande.nextToken(); 
+//suppression d'un nexElement en trop ici  -> deja supprime 
+		int column = Integer.parseInt(colonne);
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
 		for(Record r : listRecords) {
 			List<String> values = r.getValues();
-			if(values.get(colonne).equals(valeur)) {
+			if(values.get(column).equals(valeur)) {
 				StringBuffer stringBuffRecord = new StringBuffer("");
 				for(String s : r.getValues()) {
 					stringBuffRecord.append(s);
@@ -375,10 +372,8 @@ public class DBManager {
 				}
 				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 				System.out.println(stringRecord);
-				
 			}
 		}
-		
 	}
 	
 	public void exitCommande(StringTokenizer commande) {
@@ -404,10 +399,12 @@ public class DBManager {
 		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();		
 		int j=1; 	//boucle pour parcourrir heapfile selon le nb page
 		
-		PageId headerPage = new PageId("Data_0.rf"); 
+		/* recupere la header page pour connaitre le nb de page a chercher, c'est le premier int */
+		PageId headerPage = new PageId("Data_0.rf"); 				//TODO : comment recuperer la header page
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);	//taille de page inportant
 		bf = BufferManager.getInstance().getPage(headerPage);		//recup le contenu de page 
 		int nbPage = bf.getInt(); 									//attention la position change
+		//TODO sur la header page il n y a pas le nb de page donc BufferUnderflowException il n y a pas de contenu a recuperer 
 		BufferManager.getInstance().freePage(headerPage, false);
 		
 		File file;
