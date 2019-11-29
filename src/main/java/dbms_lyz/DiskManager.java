@@ -74,9 +74,11 @@ public class DiskManager {
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O pour addPage");
 		}
-		
-		PageId p = new PageId("Data_" + fileIdx + ".rf");
-		return (p);
+
+		ByteBuffer bf = BufferManager.getInstance().getPage(new PageId(0, fileIdx));
+		int nbPage = bf.getInt(0);
+		System.out.println("Affichage X81 - Affichage du compteur page de la headerPage : " + nbPage);
+		return new PageId(nbPage , fileIdx);
 	}
 
 	/**

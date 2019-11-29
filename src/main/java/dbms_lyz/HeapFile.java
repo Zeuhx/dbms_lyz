@@ -2,6 +2,7 @@ package main.java.dbms_lyz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class HeapFile {
 		for (int i = 0 ; i < Constants.PAGE_SIZE ; i += Integer.BYTES) {
 			bufferDeHeaderPage.putInt(0);
 		}
-		DiskManager.getInstance().writePage(headerPage, bufferDeHeaderPage);
+		// DiskManager.getInstance().writePage(headerPage, bufferDeHeaderPage);
 		BufferManager.getInstance().freePage(headerPage, true);	// free
 	}
 
@@ -59,18 +60,18 @@ public class HeapFile {
 		System.out.println("Affichage X48 - Affichage buffer de la headerPage " + Arrays.toString(bufferHeaderPage.array()));
 		// On parcours jusqu'au dernier et on ajoute le slotCount
 		System.out.println("Affichage X49 : Affichage de la headerPage");
-		
 		for(int i=0 ; i<Constants.PAGE_SIZE ; i+=4) {
 			System.out.print(bufferHeaderPage.getInt(i)+ " ");
 		}
+		
 		System.out.println();
+		
 		int i;
 		System.err.println("Affichage X9 : Nombre de page, lecture de headerPage get(0) " + bufferHeaderPage.getInt(0));
 		for (i = 1; i < bufferHeaderPage.getInt(0); i++) ; //juste pour parcourir //test//
 		System.out.println("Affichage X47 : Affichage du i " +"("+i+ ") "+ "et du slotCount " + "(" +relDef.getSlotCount()+ ")" );
 		bufferHeaderPage.putInt(i * Integer.BYTES, relDef.getSlotCount());
 		System.out.println("Affichage X76 - Affichage du buffer apres le put : " + Arrays.toString(bufferHeaderPage.array()));
-		// DiskManager.writePage(pageId, bufferPage);
 		BufferManager.getInstance().freePage(headerPage, true); // free
 		return DiskManager.getInstance().addPage(relDef.getFileIdx());
 	}
@@ -91,7 +92,7 @@ public class HeapFile {
 		System.out.println("Erreur X54 - Affichage du buffer - " + bufferPage);
 		System.out.println("Erreur X46 - Affichage du buffer - " + Arrays.toString(bufferPage.array()));
 		// On parcours tant que il n'y a pas de place
-		int i = 4; 
+		int i = 0; 
 		boolean deLaPlace = false;
 		System.out.println("Affichage X52 : Affichage get(0) de getFreeDataPageId : " +bufferPage.getInt(0));
 		// Si il n'y a pas de page, on doit creer une page et on actualise la headePage
@@ -103,13 +104,16 @@ public class HeapFile {
 		}
 		System.out.println("Affichage X70 : Affichage get(0) de getFreeDataPageId & le nombre de slot dispo " +bufferPage.getInt(0) + ", " + bufferPage.getInt(1));
 		// On parcours les pages
+		System.out.println("Affichage X84 - Affichage du get(0) : " + bufferPage.getInt(0));
+		boolean b = !deLaPlace && i < bufferPage.getInt(0) ;
+		System.out.println("Affichage X85 - Boolean b rentre dans le while : " + b);
 		while (!deLaPlace && i < bufferPage.getInt(0)) {
+			i+=Integer.BYTES ;
 			// Il parcours les slots count, si il a plus de 0 places, on peut sortir de la boucle, sinon on continue
+			System.out.println("Affichage X83 - Affichages des getInt(i) : " + bufferPage.getInt(i));
 			if (bufferPage.getInt(i) != 0) {
 				deLaPlace = true;
-			} else {
-				i += Integer.BYTES;
-			}
+			} 
 		}
 		System.err.println("Affichage 71bis - Affichage du numero de page retourne : " + i);
 		boolean flagDirty = false ;
@@ -137,18 +141,19 @@ public class HeapFile {
 	 * @return
 	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
-		RandomAccessFile rf = null;
 		
 		System.err.println("Affichage X7 : Verification - Affichage du fichierId saisie en parametre " + pageId.getFileIdx());
-		int fileIdx = pageId.getFileIdx();
+//		int fileIdx = pageId.getFileIdx();
+//		
+//		try(RandomAccessFile rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw")) {
+//		} catch (FileNotFoundException e) {
+//			System.err.println("le fichier " +Constants.PATH + "Data n'a pas ete trouver");
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
 		
-		try {
-			rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw");
-		} catch (FileNotFoundException e) {
-			System.err.println("le fichier " +Constants.PATH + "Data_" +rf + " n'a pas ete trouver");
-			
-		}
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
+		System.out.println("Affichage X86 - Affichage du buffer de la page ou on va ecrire le record : " + Arrays.toString(bufferPage.array()));
 		int positionByteMap = 0;
 		boolean caseLibre = false;
 		while (!caseLibre && positionByteMap < bufferPage.getInt(0)) {
@@ -162,6 +167,8 @@ public class HeapFile {
 		}
 		
 		bufferPage.put(positionByteMap, (byte) 1); // C'est occupe mtn
+		
+		
 
 		// On insere apres avoir focus la place dans la page
 		System.out.println("Affichage X35 - Affichage positionbyteMap depuis depuis le writeToDataPage de Heap : " + positionByteMap);
@@ -169,7 +176,6 @@ public class HeapFile {
 		int positionSlot = relDef.getSlotCount() + relDef.getRecordSize() * positionByteMap;
 		System.err.println("Affichage X36 - Affichage positionSlot byteMap depuis depuis le writeToDataPage de Heap : " + positionSlot);
 		record.writeToBuffer(bufferPage, positionSlot);
-		
 		System.out.println("Affichage X37 : Affichage du PageId " + pageId.toString());
 		System.out.println("Affichage X38 : Affichage du bufferPage " + bufferPage);
 		DiskManager.getInstance().writePage(pageId, bufferPage);
@@ -178,6 +184,17 @@ public class HeapFile {
 		/**
 		 * On retourne a la headerPage et on arrive jusqu'a la pageIdx et on enleve 1
 		 */
+		/**
+		 * TODO A delete, test pour verifier la header 
+		 */
+		ByteBuffer headerPageBuff = BufferManager.getInstance().getPage(new PageId(0, 0));
+		System.out.println("Affichage X82 : Affichage de la headerPage");
+		for(int i=0 ; i<Constants.PAGE_SIZE ; i+=4) {
+			System.out.print(headerPageBuff.getInt(i)+ " ");
+		}
+		BufferManager.getInstance().freePage(new PageId(0,0), false);
+		
+		System.out.println();
 		pageId = new PageId(0, pageId.getFileIdx());
 		for (int j = 0; j < bufferPage.get(pageId.getPageIdx()); j += Integer.BYTES);
 		bufferPage.putInt(positionByteMap, bufferPage.getInt(positionByteMap) - 1);
@@ -245,6 +262,9 @@ public class HeapFile {
 		System.out.println("Affichage X27 : Affichage du record passer en parametre du insertRecord : " + record.toString());
 		PageId pageLibre = getFreeDataPageId();
 		System.out.println("Affichage X72 : Affichage de la page libre - " + pageLibre);
+		ByteBuffer bufferLibre = BufferManager.getInstance().getPage(pageLibre);
+		System.out.println("Affichage X88 - Affichage buffer de la page libre : " + Arrays.toString(bufferLibre.array()));
+		BufferManager.getInstance().freePage(pageLibre, false);
 		PageId headerPage = new PageId(0, relDef.getFileIdx()) ;
 		ByteBuffer bufferHeader  = BufferManager.getInstance().getPage(headerPage);
 		System.out.println("Affichage X77 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
@@ -255,9 +275,9 @@ public class HeapFile {
 			System.err.println("Affichage X73 : Entre dans la boucle null ou 0 du insertRecord" );
 			pageLibre = addDataPage();
 			System.out.println("Affichage X80 : Affichage pageLibre : " + pageLibre);
-			int compteur = bufferHeader.getInt(0);
+			int nbPage = bufferHeader.getInt(0);
 //			bufferHeader.putInt(0, compteur+1);
-			int positionSlotCount = (compteur * Integer.BYTES) + Integer.BYTES;
+			int positionSlotCount = nbPage * Integer.BYTES;
 			bufferHeader.putInt(positionSlotCount, relDef.getSlotCount()-1);
 			System.out.println("Affichage X79 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		}
@@ -269,9 +289,14 @@ public class HeapFile {
 			bufferHeader.putInt(pageIdx * Integer.BYTES, slotCount - 1);
 			System.out.println("Affichage X78 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		}
+		
 		BufferManager.getInstance().freePage(headerPage , true);
+		
 		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
 		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
+		bufferLibre = BufferManager.getInstance().getPage(pageLibre);
+		System.out.println("Affichage X87 - Affichage buffer de la page libre : " + Arrays.toString(bufferLibre.array()));
+		BufferManager.getInstance().freePage(pageLibre, false);
 		return writeRecordToDataPage(record, pageLibre);
 	}
 
