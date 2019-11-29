@@ -10,15 +10,6 @@ package main.java.dbms_lyz;
 public class PageId {
 	private int fileIdx;
 	private int pageIdx;
-
-	public PageId(String nomFichier) {
-		try {
-			fileIdx = idFichier(nomFichier);
-		}
-		catch(StringIndexOutOfBoundsException e) {
-			System.err.println("Attention : Le fichier " + nomFichier + " n'est pas du bon format");
-		}
-	}
 	
 	public PageId(int pageIdx, int fileIdx) {
 		this.pageIdx = pageIdx ;
