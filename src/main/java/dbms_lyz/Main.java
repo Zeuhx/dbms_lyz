@@ -56,15 +56,13 @@ public class Main {
 		DiskManager.getInstance().createFile(0);
 		DiskManager.getInstance().createFile(1);
 		
-		PageId pageId1 = new PageId("Data_1.rf");
-		PageId pageId2 = new PageId("Data_2.rf");
-		
-		
+//		PageId pageId1 = new PageId("Data_1.rf");
+//		PageId pageId2 = new PageId("Data_2.rf");
 	}
 	
 	public static void testEcrireFichierAvecLeurPage() {
 		DiskManager.getInstance().createFile(5);
-		PageId pageId5 = new PageId("Data_5.rf");
+//		PageId pageId5 = new PageId("Data_5.rf");
 		
 		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
 		
@@ -122,32 +120,32 @@ public class Main {
 		testCommandeDBDefPourCreer();
 	}
 	
-	public static void testFrame() {
-		BufferManager bfm = BufferManager.getInstance();
-		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		DiskManager.getInstance().createFile(5);
-		PageId pageId5 = new PageId("Data_5.rf");
-		
-		File file = new File("C:\\Users\\willy\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_5.rf");
-		RandomAccessFile f = null;
-		System.out.println("ok");
-		
-		try {
-			f = new RandomAccessFile(file,"rw");
-			//fc = f.getChannel();
-			bf.putInt(1);
-			bf.putInt(5);
-			//DiskManager.writePage(pageId5, bf);
-			f.write(bf.array());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("# GET PAGE #");
-		bfm.getPage(pageId5);
-		System.out.println("# FREE PAGE #");
-		bfm.freePage(pageId5, true);
-	}
+//	public static void testFrame() {
+//		BufferManager bfm = BufferManager.getInstance();
+//		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);
+//		DiskManager.getInstance().createFile(5);
+//		PageId pageId5 = new PageId("Data_5.rf");
+//		
+//		File file = new File("C:\\Users\\willy\\git\\dbms_lyz\\src\\main\\resources\\DB\\Data_5.rf");
+//		RandomAccessFile f = null;
+//		System.out.println("ok");
+//		
+//		try {
+//			f = new RandomAccessFile(file,"rw");
+//			//fc = f.getChannel();
+//			bf.putInt(1);
+//			bf.putInt(5);
+//			//DiskManager.writePage(pageId5, bf);
+//			f.write(bf.array());
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println("# GET PAGE #");
+//		bfm.getPage(pageId5);
+//		System.out.println("# FREE PAGE #");
+//		bfm.freePage(pageId5, true);
+//	}
 
 }
