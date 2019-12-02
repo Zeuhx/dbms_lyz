@@ -1,9 +1,6 @@
 package main.java.dbms_lyz;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,8 +164,6 @@ public class HeapFile {
 		}
 		
 		bufferPage.put(positionByteMap, (byte) 1); // C'est occupe mtn
-		
-		
 
 		// On insere apres avoir focus la place dans la page
 		System.out.println("Affichage X35 - Affichage positionbyteMap depuis depuis le writeToDataPage de Heap : " + positionByteMap);
@@ -178,7 +173,6 @@ public class HeapFile {
 		record.writeToBuffer(bufferPage, positionSlot);
 		System.out.println("Affichage X37 : Affichage du PageId " + pageId.toString());
 		System.out.println("Affichage X38 : Affichage du bufferPage " + bufferPage);
-		DiskManager.getInstance().writePage(pageId, bufferPage);
 		
 		BufferManager.getInstance().freePage(pageId, true);	// free
 		/**
@@ -193,10 +187,13 @@ public class HeapFile {
 			System.out.print(headerPageBuff.getInt(i)+ " ");
 		}
 		BufferManager.getInstance().freePage(new PageId(0,0), false);
-		
 		System.out.println();
+		
 		pageId = new PageId(0, pageId.getFileIdx());
 		for (int j = 0; j < bufferPage.get(pageId.getPageIdx()); j += Integer.BYTES);
+		/**
+		 * TODO A CHANGER ! URGENT
+		 */
 		bufferPage.putInt(positionByteMap, bufferPage.getInt(positionByteMap) - 1);
 		return new Rid(pageId, positionByteMap);
 	}
@@ -278,6 +275,7 @@ public class HeapFile {
 			int nbPage = bufferHeader.getInt(0);
 //			bufferHeader.putInt(0, compteur+1);
 			int positionSlotCount = nbPage * Integer.BYTES;
+			System.err.println("Affichage X89 - Ca fait -1");
 			bufferHeader.putInt(positionSlotCount, relDef.getSlotCount()-1);
 			System.out.println("Affichage X79 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		}

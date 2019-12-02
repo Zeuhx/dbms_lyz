@@ -47,7 +47,7 @@ public class BufferManager {
 	 * Le buffer sera rempli avec le contenu de la page designee par argument pageId.
 	 * 
 	 * @attention : ne pas creer de buffer supplementaire,"recuperer" simplement celui 
-	 * qui correspond a la bonne frame, apres l’avoir rempli si besoin par un appel au DiskManager.
+	 * qui correspond a la bonne frame, apres lï¿½avoir rempli si besoin par un appel au DiskManager.
 	 * @attention : cette methode devra utiuliser une politique de remplacement.
 	 * @param pageId un PageId
 	 * @return buff un buffer 
@@ -133,8 +133,7 @@ public class BufferManager {
 	 * dirty = 1 sur disque, la remise a 0 de tous les flags/informations et
 	 * contenus des buffers (buffer pool a vide)
 	 */
-	public void flushAll() throws FlagException {
-		DBManager.finish();
+	public void flushAll(){
 		for (Frame frame : framePool) {
 			frame.enregistrerPage();
 		}

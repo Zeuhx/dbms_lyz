@@ -43,6 +43,7 @@ public class DBManager {
 	 */
 	public static void finish() {
 		DBDef.getInstance().finish();
+		BufferManager.getInstance().flushAll();
 	}
 
 	/**
@@ -67,8 +68,6 @@ public class DBManager {
 		break ;
 		case "selectAll" : case "selectall" : selectAllCommande(stCommandaCouper);
 		break ;
-//		case "delete" : deleteCommande(stCommandaCouper);
-//		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
 		default : System.err.println("commande incorrect");
@@ -180,7 +179,7 @@ public class DBManager {
 			System.err.println("[Attention] Un element de la commande n'a pas ete saisie");
 		} catch(NoSuchElementException e) {
 			System.err.println("[Attention] Il vous manque des elements a remplir, le programme s'arrete");
-			System.exit(-1);
+			System.exit(0);
 		}
 		System.out.print("La relation cree est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
