@@ -181,20 +181,21 @@ public class HeapFile {
 		/**
 		 * TODO A delete, test pour verifier la header 
 		 */
-		ByteBuffer headerPageBuff = BufferManager.getInstance().getPage(new PageId(0, 0));
+		ByteBuffer headerPageBuff = BufferManager.getInstance().getPage(new PageId(pageId.getFileIdx(), 0));
 		System.out.println("Affichage X82 : Affichage de la headerPage");
 		for(int i=0 ; i<Constants.PAGE_SIZE ; i+=4) {
 			System.out.print(headerPageBuff.getInt(i)+ " ");
 		}
 		BufferManager.getInstance().freePage(new PageId(0,0), false);
 		System.out.println();
+		int pos = pageId.getPageIdx() * Integer.BYTES;
+		headerPageBuff.position(pos);
+		int oldcount = headerPageBuff.getInt();
+		headerPageBuff.position(pos);
+		headerPageBuff.putInt(oldcount+1);
 		
-		pageId = new PageId(0, pageId.getFileIdx());
-		for (int j = 0; j < bufferPage.get(pageId.getPageIdx()); j += Integer.BYTES);
-		/**
-		 * TODO A CHANGER ! URGENT
-		 */
-		bufferPage.putInt(positionByteMap, bufferPage.getInt(positionByteMap) - 1);
+		
+		BufferManager.getInstance().freePage(new PageId(pageId.getFileIdx(), 0), true);
 		return new Rid(pageId, positionByteMap);
 	}
 
