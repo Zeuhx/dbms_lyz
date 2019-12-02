@@ -333,7 +333,7 @@ public class DBManager {
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
-
+		System.out.println("Affichage X91 - Affichage si la liste de record est vide ? " + listRecords.isEmpty());
 		for(Record r : listRecords) {
 			System.out.println("Affichage X66 - Affichage des records - " + r);
 			StringBuffer stringBuffRecord = new StringBuffer("");

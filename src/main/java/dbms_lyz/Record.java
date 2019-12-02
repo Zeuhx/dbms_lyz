@@ -1,6 +1,7 @@
 package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,13 +20,18 @@ public class Record {
 		this.values = values;
 	}
 	
+	public Record(RelDef reldef) {
+		relDef = reldef;
+		values = new ArrayList<>();
+	}
+	
 	/**
 	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres dans le buffer
 	 * Ajoute dans le bytebuffer en fonction des types de col
 	 * La boucle permet d'ajouter en fonction des types
 	 * 
 	 * @param buff un buffer
-	 * @param position un entier correspondant à une position dans le buffer
+	 * @param position un entier correspondant ï¿½ une position dans le buffer
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		System.out.println("Affichage X23bis - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
@@ -83,7 +89,7 @@ public class Record {
 	 * La boucle permet de lire le bytebuffer en fonction des types
 	 * et les affiche avec println
 	 * @param buffun buffer
-	 * @param position un entier correspondant à une position dans le buffer
+	 * @param position un entier correspondant ï¿½ une position dans le buffer
 	 * 
 	 */
 	public void readFromBuffer(ByteBuffer buff, int position) {
@@ -106,7 +112,6 @@ public class Record {
 					sb.append(buff.getChar());
 				}
 				values.add(sb.toString());
-
 			}
 		}
 	}
