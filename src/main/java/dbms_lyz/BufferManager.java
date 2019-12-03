@@ -79,7 +79,7 @@ public class BufferManager {
 		}
 		
 		bytebuff = f.getBuffer();
-		System.out.println("Affichage X60 - Affichage du buffer du fichier qui vient d'etre cree : " + Arrays.toString(bytebuff.array()));
+		System.out.println("Affichage X60 - Affichage du buffer de la page mis dans le frame: " + Arrays.toString(bytebuff.array()));
 		f.incrementePinCount(); 
 		System.out.println("Affichage X61 - Affichage de la frame qui contient la page - " + f);
 		return bytebuff ;
@@ -98,7 +98,9 @@ public class BufferManager {
 		if (f == null)
 			throw new RuntimeException("Frame pas trouve");
 		else {
+			System.err.println("###visualiser le pin_count avant "+f.getPin_count());
 			f.decrementePinCount();
+			System.err.println("###visualiser le pin_count "+f.getPin_count());
 			if(valdirty)
 				f.setDirty();
 		}
