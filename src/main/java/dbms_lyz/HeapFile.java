@@ -182,7 +182,6 @@ public class HeapFile {
 			System.out.print(headerPageBuff.getInt(i)+ " ");
 		}
 		System.out.println();
-		BufferManager.getInstance().freePage(new PageId(0,relDef.getFileIdx()), false);
 		
 		int pos = pageId.getPageIdx()*Integer.BYTES;
 		System.out.println("Affichage X100 - Affichage de la postion : " + pos);
@@ -191,8 +190,7 @@ public class HeapFile {
 		System.out.println("Affichage X101 - Affichage nbPage dans la header : " + oldcount);
 		headerPageBuff.position(pos);
 		headerPageBuff.putInt(oldcount+1);	
-		
-		BufferManager.getInstance().freePage(new PageId(pageId.getFileIdx(), 0), true);
+		BufferManager.getInstance().freePage(new PageId(0, pageId.getFileIdx()), true);
 		return new Rid(pageId, positionByteMap);
 	}
 

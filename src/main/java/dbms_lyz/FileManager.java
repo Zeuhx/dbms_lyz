@@ -66,6 +66,7 @@ public class FileManager {
 	 */
 	public Rid insertRecordInRelation(Record record, String relName) {
 		System.out.println("----------------- INSERT IN RELATION --------------------");
+		System.out.println("Affichage X106 - Affichage du relName passer en parametre : " + relName);
 		Rid rid = null ;
 		/**
 		 * Parcour du heapFiles pour inserer le bon record avec 
@@ -88,7 +89,8 @@ public class FileManager {
 			 * Si le relName n'existe pas, on creer un HeapFile a l'aide
 			 * de ce relDef, et on l'insere dedans
 			 */
-			else {
+		}
+		if(continu) {
 				throw new RuntimeException("La relation n'existe pas ");
 				/**
 				 * TODO A traiter plus tard car une excpetion
@@ -109,7 +111,6 @@ public class FileManager {
 //				BufferManager.getInstance().freePage(pageId, true); // free
 //				// Ecriture dans le fichier
 //				DiskManager.getInstance().writePage(pageId, bufferPage);
-			 }
 		}
 		return rid;
 	}
