@@ -73,7 +73,7 @@ public class DiskManager {
 			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O pour addPage");
-		}
+		} 
 
 		ByteBuffer bf = BufferManager.getInstance().getPage(new PageId(0, fileIdx));
 		
