@@ -3,6 +3,7 @@ package main.java.dbms_lyz;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,6 @@ public class FileManager {
 	 */
 	public Rid insertRecordInRelation(Record record, String relName) {
 		System.out.println("----------------- INSERT IN RELATION --------------------");
-		//TODO : ACTUALISER LE HeaderPage !!!!
 		Rid rid = null ;
 		/**
 		 * Parcour du heapFiles pour inserer le bon record avec 
@@ -144,37 +144,40 @@ public class FileManager {
 	 */
 	public List<Record> selectAllFromRelation (String relName) {
 		List<Record> listRecord = new ArrayList<>();
-		RandomAccessFile rf = null;
 		
 		//Parcours du heapfile pour recuperer la liste de records dont le relName correspond
+		System.out.println("Affichage X93 - Affichage si heapFiles de FileManager est vide : " + heapFiles.isEmpty());
 		for(HeapFile hf : heapFiles) {
+			System.out.println("Affichage X94 - Affichage du relDef du hf - " + hf.getRelDef().getNomRelation());
 			if(hf.getRelDef().getNomRelation().equals(relName)){
-				int fileIdx = hf.getRelDef().getFileIdx();
-				try {
-					rf = new RandomAccessFile(Constants.PATH + "Data_" + fileIdx + ".rf" , "r" );
-					int nbPage = rf.readInt();
-					System.err.println("Affichage X39 - Affichage du nombre de page dans le heapFile : " + nbPage + " page(s)");
-					rf.seek(Constants.PAGE_SIZE);
-					System.err.println("Affichage X40 - Affichage du pointeur " + rf); 
-					for(int numeroPage = 1; numeroPage<=nbPage ; numeroPage++) {
-						PageId pageId = new PageId(numeroPage, hf.getRelDef().getFileIdx());
-						for (Record record : hf.getRecordInDataPage(pageId)) {
-							System.out.println("Affichage X66 - Affichage record : " + record);
-							listRecord.add(record);
-							System.err.println("Affichage X43 : " + record);
+				ByteBuffer headerPageBuffer = BufferManager.getInstance().getPage(new PageId(0, hf.getRelDef().getFileIdx()));
+				int nbPages = headerPageBuffer.getInt(0);
+				
+				BufferManager.getInstance().freePage(new PageId(0, hf.getRelDef().getFileIdx()),  false);
+				System.out.println("Affichage X97 - Affichage nb de page : " + nbPages);
+				for(int i=1; i<=nbPages; i++) {
+					ByteBuffer pageBuffer = BufferManager.getInstance().getPage(new PageId(i, hf.getRelDef().getFileIdx()));
+					
+					System.out.println("Affichage X98 - Affichage SlotCount " + hf.getRelDef().getSlotCount());
+					for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
+						System.out.println("Affichage X99 - Affichage du bufferGet : " + pageBuffer.get(compteurRecord));
+						if(pageBuffer.get(compteurRecord) == (byte) 1) {
+							int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
+							Record r = new Record(hf.getRelDef());
+							System.out.println("Affichage X90 - Affichage du record " + r);
+							r.readFromBuffer(pageBuffer, positionSlot);
+							listRecord.add(r);
+							System.out.println("Affichage X96 - Affichage si la listRecord est vide " + listRecord.isEmpty());
 						}
 					}
-					System.out.println("Affichage X41 - Affichage de la list de record " + listRecord);
-				} catch (FileNotFoundException e) {
-					System.err.println("Pas de fichier trouve");
-				} catch (IOException e) {
-					System.err.println("On a pas acces a la page depuis le selectAll");
+					BufferManager.getInstance().freePage(new PageId(i, hf.getRelDef().getFileIdx()), false);
 				}
 			}
 			else {
 				throw new RuntimeException("Il n'y a pas heapFile avec ce relName");
 			}
 		}
+		System.out.println("Affichage X92 - Affichage si la lsite de record est vide depuis FileManager : " + listRecord.isEmpty());
 		return listRecord;
 	}
 
