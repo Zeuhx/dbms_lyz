@@ -303,16 +303,22 @@ public class DBManager {
 		System.err.println("Affichage 6 - fin de trycatch");
 		try {
 			System.out.println("Affichage Y6 - entre dans le try catch pour recuperer les lignes");
-			while(br.readLine() != null) {
-				System.out.println("Affichage Y7a - creation String pour recuperer la ligne");
+			do {
+
 				uneLineDeCSV = new String (relName+","+br.readLine());
-				System.out.println("Affichage Y7b - creation String pour recuperer la ligne "+uneLineDeCSV);
+				System.out.println("Affichage Y7a - creation String pour recuperer la ligne "+uneLineDeCSV);
 				//contenu d'une ligne de csv pour la command insert()
-				uneLigneInsert = new StringTokenizer(uneLineDeCSV, ",");
-				insertCommande(uneLigneInsert);
+				uneLigneInsert = new StringTokenizer(uneLineDeCSV, " ");
+				//					insertCommande(uneLigneInsert);
 				uneLineDeCSV.toString();
+
+				System.err.println("Affichage Y7b - String  pour ajouter la ligne "+uneLigneInsert);
 				System.err.println("Affichage YX");
+
+
 			}
+			while(uneLineDeCSV != null);
+
 		} catch (IOException e) {
 			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
 		} 
