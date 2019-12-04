@@ -98,9 +98,9 @@ public class BufferManager {
 		if (f == null)
 			throw new RuntimeException("Frame pas trouve");
 		else {
-			System.err.println("###visualiser le pin_count avant "+f.getPin_count());
+			System.err.println("#Pin_count avant "+f.getPin_count());
 			f.decrementePinCount();
-			System.err.println("###visualiser le pin_count "+f.getPin_count());
+			System.err.println("#Pin_count apres"+f.getPin_count());
 			if(valdirty)
 				f.setDirty();
 		}

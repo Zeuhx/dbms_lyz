@@ -65,8 +65,11 @@ public class DiskManager {
 	public PageId addPage(int fileIdx) {
 		
 		byte[] bt = new byte[Constants.PAGE_SIZE];
+		int pageidx=0;
 		try (RandomAccessFile rf = new RandomAccessFile(new File(Constants.PATH + "Data_" + fileIdx + ".rf"), "rw")){
+			rf.seek(rf.length());
 			rf.write(bt);
+			pageidx = (int) (rf.length()/Constants.PAGE_SIZE-1);
 		} catch (FileNotFoundException e1) {
 			System.err.println("Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
@@ -74,13 +77,7 @@ public class DiskManager {
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O pour addPage");
 		} 
-
-		ByteBuffer bf = BufferManager.getInstance().getPage(new PageId(0, fileIdx));
-		
-		int nbPage = bf.getInt(0);
-		BufferManager.getInstance().freePage(new PageId(0, fileIdx), false);
-		System.out.println("Affichage X81 - Affichage du compteur page de la headerPage : " + nbPage);
-		return new PageId(nbPage+1, fileIdx);
+		return new PageId(pageidx, fileIdx);
 	}
 
 	/**
