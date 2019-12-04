@@ -349,11 +349,11 @@ public class DBManager {
 					int byteMapSlot = bufferPage.get(positionSlot * Byte.BYTES);
 					if(byteMapSlot == (byte) 1) {
 						Record record = new Record(reldef);
-						record.readFromBuffer(bufferPage, calculSlotCount(reldef)+ positionSlot * reldef.getRecordSize());
+						record.readFromBuffer(bufferPage, reldef.getSlotCount()+ positionSlot * reldef.getRecordSize());
 						
 						if(record.getValues().get(numeroColonne).equals(valeurASup)){
 							bufferPage.put(positionSlot, (byte) 0);
-							bufferPage.position(calculSlotCount(reldef)+ positionSlot * reldef.getRecordSize());
+							bufferPage.position(reldef.getSlotCount()+ positionSlot * reldef.getRecordSize());
 							
 							for(int j=0; j<reldef.getRecordSize(); j++) {
 								bufferPage.put((byte) 0);
@@ -368,7 +368,6 @@ public class DBManager {
 						}
 					}
 				}
-				System.out.println("Affichage X111 - Page modifier ? " + pageModifiee);
 				BufferManager.getInstance().freePage(new PageId(i, reldef.getFileIdx()), pageModifiee);
 			}
 			BufferManager.getInstance().freePage(new PageId(0, reldef.getFileIdx()), headerPageModifiee);
