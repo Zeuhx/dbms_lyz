@@ -36,9 +36,9 @@ public class RelDef {
 		this.relName = nomRelation;
 		this.typeCol = typeCol ;
 		this.nbCol = typeCol.size();
-		this.fileIdx = fileIdx;			// id de fichier
-		this.recordSize = recordSize;	// Attention : initialiser selon la taille du record
-		this.slotCount = slotCount;		// Attention : calculer en fonction de pageSize et de recordSize
+		this.fileIdx = fileIdx;	
+		this.recordSize = recordSize;
+		this.slotCount = slotCount;
 	}
 
 	public void affiche() {
@@ -172,17 +172,17 @@ public class RelDef {
 	}
 
 	// Getters
-	public String getNomRelation() { return relName; }
-	public int getNbCol() { return (nbCol); }
-	public int getFileIdx() { return fileIdx ; }
-	public List<String> getTypeCol(){ return typeCol ; }
-	public int getRecordSize() { return recordSize;	}
-	public int getSlotCount() { return slotCount; }
-	public String getRelName() { return relName; }
+	public String getNomRelation() 		{ return relName; }
+	public int getNbCol() 				{ return nbCol; }
+	public int getFileIdx() 			{ return fileIdx; }
+	public List<String> getTypeCol()	{ return typeCol; }
+	public int getRecordSize() 			{ return recordSize; }
+	public int getSlotCount() 			{ return slotCount; }
+	public String getRelName() 			{ return relName; }
 	
 	// Setters
-	public void setRecordSize(int recordSize) { this.recordSize = recordSize; }
-	public void setSlotCount(int slotCount) { this.slotCount = slotCount; }
-	public void setRelName(String relName) { this.relName = relName; }
+	public void setRecordSize(int recordSize) 	{ this.recordSize = recordSize; }
+	public void setSlotCount(int slotCount) 	{ this.slotCount = slotCount; }
+	public void setRelName(String relName) 		{ this.relName = relName; }
 
 }

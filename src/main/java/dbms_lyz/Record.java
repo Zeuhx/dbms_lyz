@@ -35,11 +35,7 @@ public class Record {
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
 		System.out.println("Affichage X23bis - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
-		System.out.println("Affichage X29 : Affichage Buff depuis writeToBuffer - " + buff);
-		//buff = ByteBuffer.allocate(Constants.PAGE_SIZE);
-		System.out.println("Affichage X34 - Affichage de la postion : " + position);
 		buff.position(position);
-		System.out.println("Affichage X30 : Affichage APRES Buff depuis writeToBuffer - " + buff);
 		int i = 0;
 		List<String> list = relDef.getTypeCol(); //recupere la liste
 		
@@ -66,16 +62,11 @@ public class Record {
 					if(j>=tailleString)
 						buff.putChar(' ');
 					else {
-						System.out.println("Affichage X31 : Affichage du charAt(j) : " + values.get(i).charAt(j));
-						System.out.println("Affichage X32 - ByteBuffer : " + Arrays.toString(buff.array()));
 						buff.putChar(values.get(i).charAt(j));
-						System.out.println("Affichage X33 - ByteBuffer : " + Arrays.toString(buff.array()));
 					}
 				}
 			}
-			else if(isInt) {
-				System.out.println("Affichage X9bis : Affichage du nombre passe en parametre: " + values.get(i));
-				
+			else if(isInt) {				
 				buff.putInt(Integer.parseInt(values.get(i)));
 			}
 			else if(isFloat)
@@ -126,7 +117,6 @@ public class Record {
 			build.append(s);
 			build.append(" ; ");
 		}
-		build.append("\n");
 		return build.toString();
 	}
 	

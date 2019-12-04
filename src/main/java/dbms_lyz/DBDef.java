@@ -25,7 +25,10 @@ import java.util.List;
  */
 public class DBDef implements Serializable{
 
-	private final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<RelDef> relDefTab = new ArrayList<>();
 	private int compteurRelation = 0;
 
@@ -80,7 +83,6 @@ public class DBDef implements Serializable{
 					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 					relDefTab.add(relation);
 					FileManager.getInstance().createHeapFileWithRelation(relation);
-					//TODO cr�er heapfile avec
 				}
 				ois.close();
 			} catch (FileNotFoundException e) {

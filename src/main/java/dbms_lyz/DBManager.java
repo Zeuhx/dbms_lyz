@@ -88,8 +88,6 @@ public class DBManager {
 
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
-//		System.out.println("Affichage X10 [Fonction createRelation]");
-//		System.err.println("Erreur X5 : " + typeCol);
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
 		
 		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
@@ -99,17 +97,9 @@ public class DBManager {
 		reldef.setRecordSize(recordSize);
 		int slotCount = calculSlotCount(reldef);
 		reldef.setSlotCount(slotCount);
-		System.out.println("Taille d'un record de cette relation : "+ recordSize);
-		System.out.println("La taille d'une page est de "+ Constants.PAGE_SIZE);
-		System.out.println("On peut saisir "+ slotCount + " records sur une page");
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
 		reldef = new RelDef(nomRelation, typeCol, DBDef.getInstance().getCompteurRelation(), recordSize, slotCount);
-		// System.err.println("Erreur X6 : " + reldef.getTypeCol());
-		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
-		
-		// On creer le heapFile
-		// System.out.println("Affichage X19 - Affichage du relDef : " + reldef.toString());
 		FileManager.getInstance().createHeapFileWithRelation(reldef);
 		return (reldef);
 	}
@@ -134,7 +124,6 @@ public class DBManager {
 				} catch(NumberFormatException e) {
 					System.err.println("Il n'y a pas la taille du String : le format doit etre stringx avec x un nombre");
 				}
-				
 			}	
 		}
 		return recordSize;
@@ -183,18 +172,13 @@ public class DBManager {
 			System.err.println("[Attention] Il vous manque des elements a remplir, le programme s'arrete");
 			System.exit(0);
 		}
-		System.out.print("La relation cree est la suivante : ");
 		for (int i = 0; i < typeCol.size(); i++) {
 			System.out.print(typeCol.get(i) + " ");
 		}
 		
-		System.out.println(); System.out.println();
-		System.out.println("----- INFORMATION SUR LA RELATION CREEE  -----");
 		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
 		System.out.println("Affichage X1 : relDef cree " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
-		System.out.println();
-		System.out.println("----- FIN COMMANDE CREATE -----");
 	}
 	
 	/**
@@ -203,7 +187,7 @@ public class DBManager {
 	 * Supprime les fichiers Data
 	 */
 	public void cleanCommande(){
-		System.err.println("Affichage X21 : Compteur relation de cleanCommande : " + DBDef.getInstance().getCompteurRelation());
+		System.out.println("Affichage X21 : Nombre de relation en cours: " + DBDef.getInstance().getCompteurRelation());
 //		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		
@@ -216,19 +200,14 @@ public class DBManager {
 		});
 		//suppression des fichiers dans listData
 		for (File file : foundFiles) {
-			System.out.println("Affichage Y2 : suppression de fichier Data ");
 			file.delete();
 			cptDataFile ++;
 		}
-		System.out.println(" "+cptDataFile+" fichier(s) supprime(s)");
-
-		
+		if(cptDataFile > 0){
+			System.out.println("Il y a "+cptDataFile+" fichier(s) supprime(s)");
+		}
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
-		/**
-		 * 
-		 * S'occuper de BufferManager
-		 */
 	}
 	
 	/**
@@ -240,28 +219,20 @@ public class DBManager {
 	public void insertCommande(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		List<String> valeurs = new ArrayList<String>(); //list valeurs de records
-		
-		//stock les valeur dans la liste
+
 		while(commande.hasMoreTokens()) {
 			valeurs.add(commande.nextToken());
 		}
-		System.out.println("Affichage X23 : Affichage values depuis insertCommande : " + valeurs);
 		
-		//accede au Heapfiles pour avoir la liste
 		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
 
 		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
-			System.err.println("Affichage X24 : Affichage du getRelDef de insertCommande : " + heapFiles.get(i).getRelDef());
 			if(reldef.getNomRelation().equals(relName)) {
 				//ecriture du record dans la relation
-				System.out.println("Affichage X25 : Affichage des valeurs 2 : " + valeurs);
 				Record r = new Record(reldef, valeurs);
-				System.out.println("Affichage X26 : Affichage du record depuis Insert : " + r.toString());
-				System.out.println("Affichage X58 - insertion record dans la relation dans la relation " + reldef.getNomRelation() );
 				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
-				// heapFiles.get(i).insertRecord(r);
 			}
 		}
 	}
@@ -280,15 +251,9 @@ public class DBManager {
 		String nomFichierCSV = commande.nextToken();
 		String path = new String("src" + File.separator + "main" + 
 						File.separator + "resources" + File.separator );
-		
-		System.out.println("Affichage Y4 - nom du fichier recupere : " + nomFichierCSV);
-
+	
 		try(FileReader readFile = new FileReader(path+nomFichierCSV)) {
 			BufferedReader br = new BufferedReader(readFile);
-			String uneLigneDeCSV;
-			StringTokenizer uneLigneInsert = new StringTokenizer("");
-			System.err.println("Affichage Y5");
-			System.out.println("Affichage Y6 - entre dans le try catch pour recuperer les lignes");
 			String ligne;
 			while((ligne = br.readLine() )!= null) {
 				
@@ -300,24 +265,12 @@ public class DBManager {
 					sbValues.append(" ");
 				}
 				insertCommande(new StringTokenizer(sbValues.toString()));
-				System.out.println("Affichage Y7a - creation String pour recuperer la ligne "+sbValues.toString() );
-				//contenu d'une ligne de csv pour la command insert()
-
-//				System.err.println("Affichage Y7b - String  pour ajouter la ligne "+uneLigneInsert);
-//				System.err.println("Affichage YX");
 			} 
 		}catch (FileNotFoundException e) {
 			System.err.println("Le fichier CSV n'a pas ete trouve");
 		}catch (IOException e) {
-			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
+			System.err.println("Erreur I/O par rapport au contenu du fichier CSV");
 		}
-
-		/**
-		 * cree un string pour stCommande pour faire appel a insert()
-		 * on recup les contenus de record
-		 */	
-		//boucle tant qu'il existe des lignes
-		
 	}
 	
 	public void selectAllCommande(StringTokenizer commande) {
@@ -326,9 +279,7 @@ public class DBManager {
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
-		System.out.println("Affichage X91 - Affichage si la liste de record est vide ? " + listRecords.isEmpty());
 		for(Record r : listRecords) {
-			System.out.println("Affichage X66 - Affichage des records - " + r);
 			StringBuffer stringBuffRecord = new StringBuffer("");
 			for(String s : r.getValues()) {
 				stringBuffRecord.append(s);
@@ -337,9 +288,7 @@ public class DBManager {
 			String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 			System.out.println(stringRecord);
 			compteurRecord ++;
-			System.out.println("Affichage X42 - "+ r);
 		}
-
 		System.out.println("Total Records : "+ compteurRecord);
 		System.out.println("Nombre de records : "+ listRecords.size());
 
@@ -354,11 +303,8 @@ public class DBManager {
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
 		for(Record r : listRecords) {
-//			System.out.println("Affichage X108 - Affichage d'un record de "+ nomRelation+" : "+r);
 			List<String> values = r.getValues();
-			/**
-			 * column-1 car l'index commence a partir de 0
-			 */
+			//column-1 car l'index commence a partir de 0
 			if(values.get(column-1).equals(valeur)) {
 				System.out.println(r); 
 			}
@@ -377,22 +323,19 @@ public class DBManager {
 	 * @param commande
 	 */
 	public void deleteCommande(StringTokenizer commande){
-		System.out.println("Affichage Y25 - afficher la commande en entré pour delete");
 		String relName = commande.nextToken();
 		String colonne = commande.nextToken();
 		int numeroColonne = Integer.parseInt(colonne)-1;
 		String valeurASup = commande.nextToken();
 		RelDef reldef = null;
 		int compteurRecordSup = 0;
-		System.out.println("Affichage X110 - Afficher si le reldeftab est vide : " +DBDef.getInstance().getRelDefTab().isEmpty());
 		for(RelDef r : DBDef.getInstance().getRelDefTab()) {
 			if(r.getRelName().equals(relName)) {
 				reldef = r;
 			}
 		}
-		System.out.println("Affichage X109 - Affichage de la relation retourne " + reldef);
 		if(reldef == null) {
-			System.out.println("Cette relation n'existe pas");
+			System.err.println("Cette relation n'existe pas");
 		}
 		else {
 			ByteBuffer headerPage = BufferManager.getInstance().getPage(new PageId(0, reldef.getFileIdx()));
@@ -430,7 +373,7 @@ public class DBManager {
 			}
 			BufferManager.getInstance().freePage(new PageId(0, reldef.getFileIdx()), headerPageModifiee);
 		}
-		System.out.println("Affichage X112 - Nombre total de record supprime : "+compteurRecordSup);
+		System.out.println(" Nombre total de record supprime : "+compteurRecordSup);
 	
 	}
 	

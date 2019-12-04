@@ -39,17 +39,13 @@ public class DiskManager {
 		File f = new File(Constants.PATH + "Data_"+ fileIdx + ".rf");
 
 		try {
-			if (f.createNewFile()) {
-				System.out.println("Le fichier dont l'id est " + fileIdx + " a ete cree");
-			} else {
-				System.err.println("Erreur X13 : Le fichier id " + fileIdx + " est non cree [peut etre qu'il existe deja]");
-			}
+			if (!f.createNewFile())
+				System.err.println("\nErreur X13 : Le fichier id " + fileIdx + " est non cree [peut etre qu'il existe deja]");
 		} catch (SecurityException e_s) {
 			System.out.println("Security Exception : il n'y a pas les droits necessaires");
 		} catch (IOException e) {
 			System.out.println("Il y a une erreur d'I/O");
 		}
-		System.out.println("Affichage X14 : Voici le chemin du fichier : " + f.getAbsolutePath());
 	}
 
 	/**
@@ -94,7 +90,6 @@ public class DiskManager {
 	public void readPage(PageId pageId, ByteBuffer buff) {
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		int numeroPage = pageId.getPageIdx(); 
-		// Verif : System.out.println(f.getAbsolutePath());
 			
 		try (RandomAccessFile rf = new RandomAccessFile(f, "r")){
 			rf.seek(numeroPage * Constants.PAGE_SIZE);
@@ -106,7 +101,7 @@ public class DiskManager {
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O au niveau de la position du RandomFileAccess");
 		}
-		// Verif : System.out.println(nbr);
+		// Verif : System.out.println(nbr);c
 		System.out.println("Affichage X15 - ByteBuffer pour la pageId "+pageId.getPageIdx()+" " + Arrays.toString(buff.array()));
 
 	}

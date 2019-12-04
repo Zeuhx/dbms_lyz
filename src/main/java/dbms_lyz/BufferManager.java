@@ -55,12 +55,6 @@ public class BufferManager {
 	public ByteBuffer getPage(PageId pageId) {
 		ByteBuffer bytebuff ;
 		Frame f = searchFrame(pageId);
-		
-		System.err.println("Affichage X18 - get("+pageId +")");
-		
-		/**
-		 * Si la page
-		 */
 		if(f==null) {
 			int i = indexLibre();
 			if(i==-1) {
@@ -77,11 +71,8 @@ public class BufferManager {
 			System.out.println(" ]");
 			f = framePool[i];
 		}
-		
 		bytebuff = f.getBuffer();
-		System.out.println("Affichage X60 - Affichage du buffer de la page mis dans le frame: " + Arrays.toString(bytebuff.array()));
 		f.incrementePinCount(); 
-		System.out.println("Affichage X61 - Affichage de la frame qui contient la page - " + f);
 		return bytebuff ;
 	}
 
@@ -94,15 +85,10 @@ public class BufferManager {
 	 */
 	public void freePage(PageId pageId, boolean valdirty) {
 		Frame f = searchFrame(pageId);
-		System.out.println("Affichage X17 - free("+pageId+")");
 		if (f == null)
-			throw new RuntimeException("Frame pas trouve");
+			throw new RuntimeException("La frame que l'on cherche n'a pas ete trouve");
 		else {
-			System.err.println("Affiche X107 - Affichage de la page concerne - "+pageId);
-			System.err.println("#Pin_count avant "+f.getPin_count());
 			f.decrementePinCount();
-			System.err.println("#Pin_count apres "+f.getPin_count());
-			
 			if(valdirty)
 				f.setDirty();
 		}
