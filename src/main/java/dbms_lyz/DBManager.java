@@ -361,15 +361,13 @@ public class DBManager {
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
 		for(Record r : listRecords) {
+//			System.out.println("Affichage X108 - Affichage d'un record de "+ nomRelation+" : "+r);
 			List<String> values = r.getValues();
-			if(values.get(column).equals(valeur)) {
-				StringBuffer stringBuffRecord = new StringBuffer("");
-				for(String s : r.getValues()) {
-					stringBuffRecord.append(s);
-					stringBuffRecord.append(" ; ");
-				}
-				String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
-				System.out.println(stringRecord);
+			/**
+			 * column-1 car l'index commence a partir de 0
+			 */
+			if(values.get(column-1).equals(valeur)) {
+				System.out.println(r);
 			}
 		}
 	}
