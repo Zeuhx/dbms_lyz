@@ -250,7 +250,6 @@ public class DBManager {
 
 		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
-			System.out.println("Affichage X19 - Entre dans le insert");
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
 			System.err.println("Affichage X24 : Affichage du getRelDef de insertCommande : " + heapFiles.get(i).getRelDef());
 			if(reldef.getNomRelation().equals(relName)) {
@@ -281,55 +280,42 @@ public class DBManager {
 						File.separator + "resources" + File.separator );
 		
 		System.out.println("Affichage Y4 - nom du fichier recupere : " + nomFichierCSV);
-		
-		FileReader readFile = null ;
-		try {
-			//dans ce fichier lire les element et les classe selon la reldef
-			readFile = new FileReader(path+nomFichierCSV);
-		} catch (FileNotFoundException e) {
+
+		try(FileReader readFile = new FileReader(path+nomFichierCSV)) {
+			BufferedReader br = new BufferedReader(readFile);
+			String uneLigneDeCSV;
+			StringTokenizer uneLigneInsert = new StringTokenizer("");
+			System.err.println("Affichage Y5");
+			System.out.println("Affichage Y6 - entre dans le try catch pour recuperer les lignes");
+			String ligne;
+			while((ligne = br.readLine() )!= null) {
+				
+				String[]values = ligne.split(",");
+				StringBuffer sbValues = new StringBuffer();
+				sbValues.append(relName + " ");
+				for(int i=0; i<values.length; i++) {
+					sbValues.append(values[i]);
+					sbValues.append(" ");
+				}
+				insertCommande(new StringTokenizer(sbValues.toString()));
+				System.out.println("Affichage Y7a - creation String pour recuperer la ligne "+sbValues.toString() );
+				//contenu d'une ligne de csv pour la command insert()
+
+//				System.err.println("Affichage Y7b - String  pour ajouter la ligne "+uneLigneInsert);
+//				System.err.println("Affichage YX");
+			} 
+		}catch (FileNotFoundException e) {
 			System.err.println("Le fichier CSV n'a pas ete trouve");
-		}	
-		
+		}catch (IOException e) {
+			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
+		}
+
 		/**
 		 * cree un string pour stCommande pour faire appel a insert()
 		 * on recup les contenus de record
-		 */		
-		BufferedReader br = new BufferedReader(readFile);
-		String uneLineDeCSV;
-		StringTokenizer uneLigneInsert = new StringTokenizer("");
-		System.err.println("Affichage Y5");
-		
+		 */	
 		//boucle tant qu'il existe des lignes
-		System.err.println("Affichage 6 - fin de trycatch");
-		try {
-			System.out.println("Affichage Y6 - entre dans le try catch pour recuperer les lignes");
-			do {
-
-				uneLineDeCSV = new String (relName+","+br.readLine());
-				System.out.println("Affichage Y7a - creation String pour recuperer la ligne "+uneLineDeCSV);
-				//contenu d'une ligne de csv pour la command insert()
-				uneLigneInsert = new StringTokenizer(uneLineDeCSV, " ");
-				//					insertCommande(uneLigneInsert);
-				uneLineDeCSV.toString();
-
-				System.err.println("Affichage Y7b - String  pour ajouter la ligne "+uneLigneInsert);
-				System.err.println("Affichage YX");
-
-
-			}
-			while(uneLineDeCSV != null);
-
-		} catch (IOException e) {
-			System.out.println("Erreur I/O par rapport au contenu du fichier CSV");
-		} 
-		finally {
-			try {
-				br.close();
-				readFile.close();
-			} catch (IOException e) {
-				System.out.println("Erreur I/O a la fermeture des readers");
-			}
-		}
+		
 	}
 	
 	public void selectAllCommande(StringTokenizer commande) {
