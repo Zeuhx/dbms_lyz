@@ -54,7 +54,10 @@ public class Frame {
 	public boolean equals(PageId autrePageId) { return this.pageId.equals(autrePageId); }
 
 	// Pas un getter maj de pin_count
-	public void incrementePinCount() 		{ pin_count++; }
+	public void incrementePinCount() 		
+	{ 
+		pin_count++; 
+		}
 	
 	// Pas un setter maj de dirty
 	public void setDirty() 					{ this.flag_dirty = true ; }

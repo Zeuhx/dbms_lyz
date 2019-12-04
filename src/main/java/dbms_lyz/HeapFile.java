@@ -272,21 +272,11 @@ public class HeapFile {
 			System.err.println("Affichage X73 : Entre dans la boucle null ou 0 du insertRecord" );
 			pageLibre = addDataPage(); //TODO actualiser le header dans cette methode
 			System.out.println("Affichage X80 : Affichage pageLibre : " + pageLibre);
-//			int nbPage = bufferHeader.getInt(0);
-//			bufferHeader.putInt(0, compteur+1);
-//			int positionSlotCount = nbPage * Integer.BYTES;
-//			System.err.println("Affichage X89 - Ca fait -1");
-			//bufferHeader.putInt(positionSlotCount, relDef.getSlotCount()-1);
 			System.out.println("Affichage X79 - Affichage headerPage Buffer " + Arrays.toString(bufferHeader.array()));
 		}
 		
-//		BufferManager.getInstance().freePage(headerPage , true);
-//		
-//		System.out.println("Affichage X51 : Affichage pageLibre : " + pageLibre);
-//		System.err.println("Affichage X8 : Affichage page libre " + pageLibre);
-//		bufferLibre = BufferManager.getInstance().getPage(pageLibre);
-//		System.out.println("Affichage X87 - Affichage buffer de la page libre : " + Arrays.toString(bufferLibre.array()));
-//		BufferManager.getInstance().freePage(pageLibre, false);
+		BufferManager.getInstance().freePage(new PageId(0, relDef.getFileIdx()) , true);
+
 		return writeRecordToDataPage(record, pageLibre);
 	}
 

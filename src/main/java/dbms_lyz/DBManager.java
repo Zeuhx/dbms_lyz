@@ -329,7 +329,6 @@ public class DBManager {
 	public void selectAllCommande(StringTokenizer commande) {
 		String nomRelation = "";
 		int compteurRecord = 0;
-		
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
