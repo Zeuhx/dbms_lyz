@@ -367,7 +367,7 @@ public class DBManager {
 			 * column-1 car l'index commence a partir de 0
 			 */
 			if(values.get(column-1).equals(valeur)) {
-				System.out.println(r);
+				System.out.println(r); 
 			}
 		}
 	}
