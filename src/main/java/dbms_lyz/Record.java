@@ -89,7 +89,7 @@ public class Record {
 	 * La boucle permet de lire le bytebuffer en fonction des types
 	 * et les affiche avec println
 	 * @param buffun buffer
-	 * @param position un entier correspondant � une position dans le buffer
+	 * @param position un entier correspondant une position dans le buffer
 	 * 
 	 */
 	public void readFromBuffer(ByteBuffer buff, int position) {

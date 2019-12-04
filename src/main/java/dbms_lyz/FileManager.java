@@ -27,10 +27,10 @@ public class FileManager {
 	 */
 	public void init() {
 		DBDef.getInstance();
-		if(DBDef.getRelDefTab().isEmpty()) {
+		if(DBDef.getInstance().getRelDefTab().isEmpty()) {
 			throw new RuntimeException("Il n'y a pas de RelDef stocke");
 		} else {
-			for(RelDef relDef : DBDef.getRelDefTab()) {
+			for(RelDef relDef : DBDef.getInstance().getRelDefTab()) {
 				HeapFile hf = new HeapFile(relDef);
 				heapFiles.add(hf);
 			}
@@ -86,7 +86,7 @@ public class FileManager {
 				return rid;
 			}
 			/**
-			 * Si le relName n'existe pas, on creer un HeapFile a l'aide
+			 * Si le relName n'existe pas, on creer un HeapFile a l'aideY
 			 * de ce relDef, et on l'insere dedans
 			 */
 		}

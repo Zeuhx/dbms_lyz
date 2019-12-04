@@ -25,9 +25,9 @@ import java.util.List;
  */
 public class DBDef implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-	private static List<RelDef> relDefTab = new ArrayList<>();
-	private static int compteurRelation = 0;
+	private final long serialVersionUID = 1L;
+	private List<RelDef> relDefTab = new ArrayList<>();
+	private int compteurRelation = 0;
 
 	/** Singleton */
 	private DBDef() {}
@@ -80,7 +80,7 @@ public class DBDef implements Serializable{
 					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 					relDefTab.add(relation);
 					FileManager.getInstance().createHeapFileWithRelation(relation);
-					//TODO créer heapfile avec
+					//TODO crï¿½er heapfile avec
 				}
 				ois.close();
 			} catch (FileNotFoundException e) {
@@ -155,7 +155,7 @@ public class DBDef implements Serializable{
 				System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre cree");
 			}
 		} catch(FileSystemException e) {
-			System.err.println("Erreur le fichier catalogue.def est ouvert, il ne peux être supprimé");
+			System.err.println("Erreur le fichier catalogue.def est ouvert, il ne peux ï¿½tre supprimï¿½");
 			System.out.println("Solution finale : veuillez supprimer manuellement");
 		} catch (IOException e) {
 			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre supprimer");
@@ -163,9 +163,9 @@ public class DBDef implements Serializable{
 	}
 	
 	// Getters et Setters 
-	public static int getListSize() 			{ return relDefTab.size(); }
-	public static List<RelDef> getRelDefTab()	{ return relDefTab; }
-	public static int getCompteurRelation()		{ return compteurRelation; }
+	public int getListSize() 			{ return relDefTab.size(); }
+	public List<RelDef> getRelDefTab()	{ return relDefTab; }
+	public int getCompteurRelation()		{ return compteurRelation; }
 	
 	public void setList(List <RelDef> l) 		{ relDefTab = l; }
 	

@@ -68,6 +68,8 @@ public class DBManager {
 		break ;
 		case "selectAll" : case "selectall" : selectAllCommande(stCommandaCouper);
 		break ;
+		case "delete" : deleteCommande(stCommandaCouper) ;
+		break ;
 		case "exit" : exitCommande(stCommandaCouper) ;
 		break ;
 		default : System.err.println("commande incorrect");
@@ -102,7 +104,7 @@ public class DBManager {
 		System.out.println("On peut saisir "+ slotCount + " records sur une page");
 		
 		// On creer mtn cette nouvelle relation avec la taille du record et le nb de slot
-		reldef = new RelDef(nomRelation, typeCol, DBDef.getCompteurRelation(), recordSize, slotCount);
+		reldef = new RelDef(nomRelation, typeCol, DBDef.getInstance().getCompteurRelation(), recordSize, slotCount);
 		// System.err.println("Erreur X6 : " + reldef.getTypeCol());
 		// System.out.println("Affichage du compte (bis) : " + DBDef.getCompteurRelation());
 		
@@ -201,7 +203,7 @@ public class DBManager {
 	 * Supprime les fichiers Data
 	 */
 	public void cleanCommande(){
-		System.err.println("Affichage X21 : Compteur relation de cleanCommande : " + DBDef.getCompteurRelation());
+		System.err.println("Affichage X21 : Compteur relation de cleanCommande : " + DBDef.getInstance().getCompteurRelation());
 //		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		
@@ -347,7 +349,6 @@ public class DBManager {
 		String nomRelation = commande.nextToken();
 		String colonne = commande.nextToken();
 		String valeur = commande.nextToken(); 
-//suppression d'un nexElement en trop ici  -> deja supprime 
 		int column = Integer.parseInt(colonne);
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
@@ -368,79 +369,69 @@ public class DBManager {
 		DBManager.finish();
 	}
 	
-//	public void deleteCommande(StringTokenizer commande){
-//		String relName = commande.nextToken();
-//		System.out.println("relName : " + relName);
-//		String indiceColonne = commande.nextToken();
-//		System.out.println("indice colonne : " + indiceColonne);
-//		int indiceColonneInt = Integer.parseInt(indiceColonne);
-//		String valeur = commande.nextToken();
-//		System.out.println("valeur : " + valeur);
-//		int totalRecord = 0;
-//		int recordWrited = 0;
-//		int deletedRecord = 0;
-//		/*chaque iteration va attribuer la page*/
-//		PageId pageToRead;
-//		PageId pageToSave;
-//		
-//		//pour accede au Heapfiles pour avoir la liste
-//		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();		
-//		int j=1; 	//boucle pour parcourrir heapfile selon le nb page
-//		
-//		/* recupere la header page pour connaitre le nb de page a chercher, c'est le premier int */
-//		PageId headerPage = new PageId("Data_0.rf"); 				//TODO : comment recuperer la header page
-//		ByteBuffer bf = ByteBuffer.allocate(Constants.PAGE_SIZE);	//taille de page inportant
-//		bf = BufferManager.getInstance().getPage(headerPage);		//recup le contenu de page 
-//		int nbPage = bf.getInt(); 									//attention la position change
-//		//TODO sur la header page il n y a pas le nb de page donc BufferUnderflowException il n y a pas de contenu a recuperer 
-//		BufferManager.getInstance().freePage(headerPage, false);
-//		
-//		File file;
-//		File file2;
-//		
-//		List<Record> listRecords;
-//		
-//		/*parcourir Heapfiles pour comparer les relName*/
-//		for(int i=0; i<heapFiles.size(); i++) {
-//			RelDef reldef = heapFiles.get(i).getRelDef();
-//			//comparer les relName avec get(i)
-//			if(reldef.getNomRelation().equals(relName)) {
-//				/*boucle pour acceder aux pagex selon le nb page*/
-//				while(j<=nbPage){
-//
-//					pageToRead = new PageId("Data_"+j+".rf");	//acces a j-ieme page
-//					pageToSave = new PageId("Data_to_save.fr");
-//
-//					/*comparer sur le record a "indiceColonne" si la "valeur" correspond*/
-//					listRecords = heapFiles.get(i).getRecordInDataPage(pageToRead); //return la liste de records de la page -j pour heapfile -i
-//
-//					for(Record r : listRecords) {
-//						totalRecord++; //incremente a chaque record
-//						/*parcou la liste de valeur dans un record si elle n'est pas �qual j'ecrit sur la pageToSave*/
-//						if(!(r.getValues().get(indiceColonneInt).equals(valeur))) {
-//							//ecrit le record sur la page � sauvegarder
-//							heapFiles.get(i).writeRecordToDataPage(r, pageToSave);
-//							recordWrited++;
-//						}
-//					}
-//					/**
-//					 * remplacer pageToRead par pageToSave,
-//					 * suppression du fichier pour pouvoir le remplacer par pageToSave 
-//					 * qui contient les records qui ne sont pas a supprimer
-//					 */
-//					File fichier = new File (Constants.PATH+"Data_"+j+".rf");
-//					fichier.delete();
-//					file = new File("Data_to_save.rf");
-//					file2 = new File("Data_"+j+".rf");
-//					boolean success = file.renameTo(file2);	//renommer le fichier file par file2
-//					
-//					if (!success) {
-//						System.err.println("Y8 : le fichier Data_"+j+".rf n'a pas ete renomme");
-//					}
-//				}
-//			}
-//		}
-//		deletedRecord = totalRecord-recordWrited;
-//		System.out.println("Total deleted records = " + deletedRecord); //Consigne d'affihage TD6
-//	}
+	/**
+	 * Supprime le record
+	 * Remplace par 0 le contenu de la ligne
+	 * Remplace le 1 de la byteMap par 0
+	 * Incremente le slotCount de la page sur le headerPage
+	 * @param commande
+	 */
+	public void deleteCommande(StringTokenizer commande){
+		System.out.println("Affichage Y25 - afficher la commande en entré pour delete");
+		String relName = commande.nextToken();
+		String colonne = commande.nextToken();
+		int numeroColonne = Integer.parseInt(colonne)-1;
+		String valeurASup = commande.nextToken();
+		RelDef reldef = null;
+		int compteurRecordSup = 0;
+		System.out.println("Affichage X110 - Afficher si le reldeftab est vide : " +DBDef.getInstance().getRelDefTab().isEmpty());
+		for(RelDef r : DBDef.getInstance().getRelDefTab()) {
+			if(r.getRelName().equals(relName)) {
+				reldef = r;
+			}
+		}
+		System.out.println("Affichage X109 - Affichage de la relation retourne " + reldef);
+		if(reldef == null) {
+			System.out.println("Cette relation n'existe pas");
+		}
+		else {
+			ByteBuffer headerPage = BufferManager.getInstance().getPage(new PageId(0, reldef.getFileIdx()));
+			int nbPage = headerPage.getInt(0);
+			boolean headerPageModifiee = false;
+			
+			for(int i =1; i<=nbPage; i++) {
+				boolean pageModifiee = false;
+				ByteBuffer bufferPage = BufferManager.getInstance().getPage(new PageId(i, reldef.getFileIdx()));
+				for(int positionSlot = 0; positionSlot < reldef.getSlotCount(); positionSlot++) {
+					int byteMapSlot = bufferPage.get(positionSlot * Byte.BYTES);
+					if(byteMapSlot == (byte) 1) {
+						Record record = new Record(reldef);
+						record.readFromBuffer(bufferPage, calculSlotCount(reldef)+ positionSlot * reldef.getRecordSize());
+						
+						if(record.getValues().get(numeroColonne).equals(valeurASup)){
+							bufferPage.put(positionSlot, (byte) 0);
+							bufferPage.position(calculSlotCount(reldef)+ positionSlot * reldef.getRecordSize());
+							
+							for(int j=0; j<reldef.getRecordSize(); j++) {
+								bufferPage.put((byte) 0);
+							}
+							pageModifiee = true;
+
+							int positionPageSlot = headerPage.getInt(Integer.BYTES + (i-1) * Integer.BYTES );
+							int slotCount = headerPage.getInt(positionPageSlot)+1;
+							headerPage.putInt(positionPageSlot, slotCount);
+							headerPageModifiee = true;
+							compteurRecordSup++;
+						}
+					}
+				}
+				System.out.println("Affichage X111 - Page modifier ? " + pageModifiee);
+				BufferManager.getInstance().freePage(new PageId(i, reldef.getFileIdx()), pageModifiee);
+			}
+			BufferManager.getInstance().freePage(new PageId(0, reldef.getFileIdx()), headerPageModifiee);
+		}
+		System.out.println("Affichage X112 - Nombre total de record supprime : "+compteurRecordSup);
+	
+	}
+	
 }
