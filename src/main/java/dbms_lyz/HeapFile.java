@@ -189,7 +189,7 @@ public class HeapFile {
 		int oldcount = headerPageBuff.getInt();
 		System.out.println("Affichage X101 - Affichage nbPage dans la header : " + oldcount);
 		headerPageBuff.position(pos);
-		headerPageBuff.putInt(oldcount+1);	
+		headerPageBuff.putInt(oldcount-1);	
 		BufferManager.getInstance().freePage(new PageId(0, pageId.getFileIdx()), true);
 		return new Rid(pageId, positionByteMap);
 	}
