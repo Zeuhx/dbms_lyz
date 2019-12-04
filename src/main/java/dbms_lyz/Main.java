@@ -43,7 +43,7 @@ public class Main {
 			commande = scan.nextLine();
 			manager.processCommand(commande);	
 		} while(!commande.equals("exit"));
-		//scan.close();
+		scan.close();
 		System.out.println();
 	}
 	
@@ -74,7 +74,6 @@ public class Main {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		System.out.println("Affichage X3 - ByteBuffer : " + Arrays.toString(bf.array()));
@@ -100,7 +99,6 @@ public class Main {
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
