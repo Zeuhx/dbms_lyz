@@ -51,28 +51,27 @@ public class DBManager {
 	 *                  une commande entrer en parametre sous forme d'un String
 	 */
 	public void processCommand(String commande) {
-		StringTokenizer stCommandaCouper;
-
-		stCommandaCouper = new StringTokenizer(commande, " ");
-		String typeCommande = stCommandaCouper.nextToken() ;
-		switch(typeCommande) {
-		case "create" : createCommande(stCommandaCouper) ;
+		StringTokenizer commandeSaisie;
+		commandeSaisie = new StringTokenizer(commande, " ");
+		String typeCommande = commandeSaisie.nextToken() ;
+		switch(typeCommande.toLowerCase()) {
+		case "create" : createCommande(commandeSaisie) ;
 		break ;
 		case "clean" : cleanCommande() ;
 		break ;
-		case "insert" : insertCommande(stCommandaCouper) ;
+		case "insert" : insertCommande(commandeSaisie) ;
 		break ;
-		case "insertAll" : case "insertall" : insertAllCommande(stCommandaCouper) ;
+		case "insertall" : insertAllCommande(commandeSaisie) ;
 		break ;
-		case "select" : selectCommande(stCommandaCouper);
+		case "select" : selectCommande(commandeSaisie);
 		break ;
-		case "selectAll" : case "selectall" : selectAllCommande(stCommandaCouper);
+		case "selectall" : selectAllCommande(commandeSaisie);
 		break ;
-		case "delete" : deleteCommande(stCommandaCouper) ;
+		case "delete" : deleteCommande(commandeSaisie) ;
 		break ;
-		case "exit" : exitCommande(stCommandaCouper) ;
+		case "exit" : exitCommande(commandeSaisie) ;
 		break ;
-		default : System.err.println("commande incorrect");
+		default : System.err.println("La commande n'est pas reconnu, veuillez resaisir");
 		break ;
 		}
 	}
@@ -85,7 +84,6 @@ public class DBManager {
 	 * @param nombreCol
 	 * @param typeCol     
 	 * @return, une relation RelDef conformement aux arguments et ajoute dans DBDef
-
 	 */
 	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
@@ -140,6 +138,7 @@ public class DBManager {
 	}
 	
 	/**
+	 * TODO a completer
 	 * Lit la commande et creer la relation
 	 * @param commande la commande qui va creer la relation
 	 */
@@ -185,6 +184,7 @@ public class DBManager {
 	 * Remet a 0 le programme
 	 * Efface le contenu du catalogue.def
 	 * Supprime les fichiers Data
+	 * TODO a completer
 	 */
 	public void cleanCommande(){
 		System.out.println("Affichage X21 : Nombre de relation en cours: " + DBDef.getInstance().getCompteurRelation());
@@ -214,6 +214,7 @@ public class DBManager {
 	 * Cette commande demande l'inserttion d'un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
 	 *  colonne) du record et le nom de la relation.
+	 *  TODO A detailler
 	 * @param commande
 	 */
 	public void insertCommande(StringTokenizer commande) {
@@ -273,6 +274,10 @@ public class DBManager {
 		}
 	}
 	
+	/**
+	 * TODO description
+	 * @param commande
+	 */
 	public void selectAllCommande(StringTokenizer commande) {
 		String nomRelation = "";
 		int compteurRecord = 0;
@@ -294,6 +299,10 @@ public class DBManager {
 
 	}
 	
+	/**
+	 * TODO description
+	 * @param commande
+	 */
 	public void selectCommande(StringTokenizer commande) {
 		String nomRelation = commande.nextToken();
 		String colonne = commande.nextToken();
@@ -311,6 +320,10 @@ public class DBManager {
 		}
 	}
 	
+	/**
+	 * TODO description
+	 * @param commande
+	 */
 	public void exitCommande(StringTokenizer commande) {
 		DBManager.finish();
 	}
@@ -376,4 +389,73 @@ public class DBManager {
 	
 	}
 	
+	/**
+	 * TODO description pour join
+	 * On charge la premiere page de la relation R
+	 * On charge la premiere page de la relation S
+	 * On ne fait pas de sélection (select)
+	 * On compare tuple par tuple entre R et S sur ces 2 pages
+	 * On parcours les pages de S tant qu'il y en a
+	 * On passe à la deuxième page de R 
+	 * etc...
+	 */
+	public void joinCommande(StringTokenizer commande) {
+		String relName1 = commande.nextToken();
+		String relName2 = commande.nextToken();
+		String indiceCol1 = commande.nextToken();
+		String indiceCol2 = commande.nextToken();
+		
+		int compteurRelation = 0 ;
+
+		RelDef reldef1 = null ;
+		RelDef reldef2 = null ;
+		for(RelDef r : DBDef.getInstance().getRelDefTab()) {
+			if(r.getRelName().equals(relName1)) {
+				reldef1 = r;
+			}
+			if(r.getRelName().equals(relName2)) {
+				reldef2 = r;
+			}
+			
+		}
+		
+		if(reldef1 == null || reldef2 == null ) {
+			System.err.println("Il y a une relation qui n'existe pas");
+		}
+		else if(reldef1 == reldef2) {
+			System.err.println("Les deux relations ne peuvent pas etre identique");
+		}
+		else {
+			// Nb de page pour rel1
+			ByteBuffer headerBuffer1 = BufferManager.getInstance().getPage(new PageId(0, reldef1.getFileIdx()));
+			int nbPageRel1 = headerBuffer1.getInt(0);
+			BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
+			
+			// Nb de page pour rel2
+			ByteBuffer headerBuffer2 = BufferManager.getInstance().getPage(new PageId(0, reldef2.getFileIdx()));
+			int nbPageRel2 = headerBuffer2.getInt(0);
+			BufferManager.getInstance().freePage(new PageId(0, reldef2.getFileIdx()), false);
+			
+			for(int indicePageRel1 = 1 ; indicePageRel1<nbPageRel1 ; indicePageRel1++) {
+				ByteBuffer pageBuffer = BufferManager.getInstance().getPage(new PageId(indicePageRel1, reldef1.getFileIdx()));
+				for(int indicePageRel2 = 1 ; indicePageRel2<nbPageRel2 ; indicePageRel2++) {
+					/**
+					 * Prend 1 tuple de rel1 et un autre de rel2, comparer leur colone
+					 * Creer une liste de record et les ajouter si la condition est respectee ????
+					 */
+					// A supprimer, temporaire
+					boolean condition = true ;
+					/**
+					 * TODO
+					 * Si c'est respecter, on ajoute a la liste ?? 
+					 */
+					if(true) {
+						compteurRelation++ ;
+					}
+				}
+				BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
+			}
+		}
+		
+	}
 }
