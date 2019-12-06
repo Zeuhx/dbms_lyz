@@ -46,16 +46,14 @@ public class DBDef implements Serializable{
 	 * Ouvre les infos deja stocker dans catalogue.def
 	 */
 	public void init() {
-		// src/main/ressources/DB/catalogue.def
 		//condition si le fichier n'exist pas on le cree
-		boolean isFilee = false;
+		boolean isFile = new File(Constants.PATH+"catalogue.def").exists();
 		File file = new File(Constants.PATH+"catalogue.def"); 
-//		file.delete();
 		
 		if(!(file.isFile())) {
-			System.out.println("Affichage Y1 - Verification du fichier s'il dois etre cree : Fichier est cree");
+			System.out.println("Affichage Y1 - Verification du fichier s'il doit etre cree : Fichier est cree");
 			File creatingCatalogue = new File (Constants.PATH + "catalogue.def");
-			isFilee = true;
+			isFile = true;
 			try {
 				creatingCatalogue.createNewFile();
 			} catch (IOException e) {
@@ -63,7 +61,7 @@ public class DBDef implements Serializable{
 			}
 		}
 		
-		if(isFilee) {
+		if(isFile) {
 			try{
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def"));	
 				compteurRelation = ois.readInt() ;
@@ -92,9 +90,6 @@ public class DBDef implements Serializable{
 			} catch (ClassNotFoundException e) {
 				System.err.println("La classe n'a pas ete trouver pour le fichier");
 			}
-
-
-
 		}
 	}
 	
@@ -158,8 +153,6 @@ public class DBDef implements Serializable{
 				System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre cree");
 			}
 		} catch(FileSystemException e) {
-			System.err.println("Erreur le fichier catalogue.def est ouvert, il ne peux �tre supprim�");
-			System.out.println("Solution finale : veuillez supprimer manuellement");
 		} catch (IOException e) {
 			System.err.println("Erreur I/O Exception : le ou les fichier ne peuvent etre supprimer");
 		}
@@ -168,7 +161,7 @@ public class DBDef implements Serializable{
 	// Getters et Setters 
 	public int getListSize() 			{ return relDefTab.size(); }
 	public List<RelDef> getRelDefTab()	{ return relDefTab; }
-	public int getCompteurRelation()		{ return compteurRelation; }
+	public int getCompteurRelation()	{ return compteurRelation; }
 	
 	public void setList(List <RelDef> l) 		{ relDefTab = l; }
 	

@@ -40,7 +40,7 @@ public class DiskManager {
 
 		try {
 			if (!f.createNewFile())
-				System.err.println("\nErreur X13 : Le fichier id " + fileIdx + " est non cree [peut etre qu'il existe deja]");
+				System.err.println("\nErreur X13 : Le fichier id " + fileIdx + " est non cree, peut etre qu'il existe deja");
 		} catch (SecurityException e_s) {
 			System.out.println("Security Exception : il n'y a pas les droits necessaires");
 		} catch (IOException e) {

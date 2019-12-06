@@ -169,8 +169,8 @@ public class DBManager {
 		}
 		
 		RelDef relDefcree = createRelation(relName, nbCol, typeCol);
-		System.out.println("[X1] Pour afficher les details sur la relation cree");
-		//System.out.println("Affichage X1 : relDef cree " + relDefcree.toString());
+		System.out.println("[X88] Pour afficher les details sur la relation cree");
+		//System.out.println("Affichage X88 : relDef cree " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 	}
 	
@@ -181,7 +181,6 @@ public class DBManager {
 	 * TODO a completer
 	 */
 	public void cleanCommande(){
-		System.out.println("Affichage X21 : Nombre de relation en cours: " + DBDef.getInstance().getCompteurRelation());
 //		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		
@@ -200,6 +199,7 @@ public class DBManager {
 		if(cptDataFile > 0){
 			System.out.println("Il y a "+cptDataFile+" fichier(s) supprime(s)");
 		}
+		System.out.println("Nombre de relation en cours: " + DBDef.getInstance().getCompteurRelation());
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
 	}
@@ -388,7 +388,7 @@ public class DBManager {
 	}
 	
 	/**
-	 * TODO description pour join
+	 * TODO description pour join : produit cartesien puis selection
 	 * On charge la premiere page de la relation R
 	 * On charge la premiere page de la relation S
 	 * On ne fait pas de sélection (select)
