@@ -33,7 +33,7 @@ public class DBManager {
 	/**
 	 * Fait appel au init de DBDef seulement
 	 */
-	public static void init() {
+	public void init() {
 		DBDef.getInstance().init();
 		//FileManager.getInstance().init();
 	}
@@ -41,7 +41,7 @@ public class DBManager {
 	/**
 	 * Fait appel au finish de DBDef seulement
 	 */
-	public static void finish() {
+	public void finish() {
 		DBDef.getInstance().finish();
 		BufferManager.getInstance().flushAll();
 	}
@@ -323,7 +323,7 @@ public class DBManager {
 	 * @param commande
 	 */
 	public void exitCommande(StringTokenizer commande) {
-		DBManager.finish();
+		DBManager.getInstance().finish();
 	}
 	
 	/**

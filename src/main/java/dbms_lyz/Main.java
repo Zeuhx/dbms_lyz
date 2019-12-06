@@ -16,7 +16,7 @@ public class Main {
 	
 	public static void launch() {
 		DBManager manager = new DBManager();
-		DBManager.init();
+		DBManager.getInstance().init();
 		Scanner scan = new Scanner(System.in);
 		String commande = "";
 		System.out.println("----- BASE DE DONNEE - LYZ -----");

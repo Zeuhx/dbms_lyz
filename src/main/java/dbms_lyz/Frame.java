@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
  *
  */
 public class Frame {
-	private static int compteurGeneralLRU  = 0;
+	private int compteurGeneralLRU  = 0;
 	private int compteurPersoLRU ;
 	private ByteBuffer buff = ByteBuffer.allocate(Constants.PAGE_SIZE);;
 	private PageId pageId;
@@ -74,7 +74,7 @@ public class Frame {
 	// Setters
 	public void setBuff(ByteBuffer buff) 	{ this.buff = buff; }
 	public void setPageId(PageId pageId) 	{ this.pageId = pageId; }
-	public static void setCompteurGeneralLRU(int compteurGeneralLRU) { Frame.compteurGeneralLRU = compteurGeneralLRU; }
+	public void setCompteurGeneralLRU(int compteurGeneralLRU) { this.compteurGeneralLRU = compteurGeneralLRU; }
 
 	@Override
 	public String toString() {

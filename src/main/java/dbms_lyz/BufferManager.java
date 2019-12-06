@@ -13,7 +13,8 @@ public class BufferManager {
 	/**
 	 * Singleton
 	 */
-	public static Frame[] framePool = new Frame[Constants.FRAME_COUNT];
+	public Frame[] framePool = new Frame[Constants.FRAME_COUNT];
+	
 	private BufferManager() {}
 	private static BufferManager INSTANCE = null;
 
@@ -128,6 +129,6 @@ public class BufferManager {
 		}
 	}
 
-	public static Frame[] getFramePool() { return framePool; }
+	public Frame[] getFramePool() { return framePool; }
 
 }
