@@ -68,10 +68,8 @@ public class FileManager {
 		 **/
 		boolean continu = true ;
 		for(HeapFile hf : heapFiles) {
-			System.out.println("Affichage X115 : Affichage du nom de la relation dans la liste des heaps : " + hf.getRelDef().getNomRelation());
 			if(hf.getRelDef().getNomRelation().equals(relName) && continu) {
 				rid = hf.insertRecord(record);
-				System.out.println("Affichage X62 - Affichage du rid - Rid(" + rid.getSlotIdx() + "," + rid.getPageId()+")");
 				continu = false ;
 				return rid;
 			}
@@ -101,7 +99,6 @@ public class FileManager {
 		
 		//Parcours du heapfile pour recuperer la liste de records dont le relName correspond
 		for(HeapFile hf : heapFiles) {
-			System.out.println("Affichage X94 - Affichage du relDef du hf - " + hf.getRelDef().getNomRelation());
 			if(hf.getRelDef().getNomRelation().equals(relName)){
 				ByteBuffer headerPageBuffer = BufferManager.getInstance().getPage(new PageId(0, hf.getRelDef().getFileIdx()));
 				int nbPages = headerPageBuffer.getInt(0);
@@ -113,7 +110,6 @@ public class FileManager {
 						if(pageBuffer.get(compteurRecord) == (byte) 1) {
 							int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
 							Record r = new Record(hf.getRelDef());
-							System.out.println("Affichage X90 - Affichage du record " + r);
 							r.readFromBuffer(pageBuffer, positionSlot);
 							listRecord.add(r);
 						}
@@ -121,11 +117,7 @@ public class FileManager {
 					BufferManager.getInstance().freePage(new PageId(i, hf.getRelDef().getFileIdx()), false);
 				}
 			}
-			else {
-				System.err.println("Aucune relation correspondante");
-			}
 		}
-		System.out.println("Affichage X92 - Affichage si la lsite de record est vide depuis FileManager : " + listRecord.isEmpty());
 		return listRecord;
 	}
 

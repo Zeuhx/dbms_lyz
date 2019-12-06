@@ -67,7 +67,7 @@ public class PageId {
 
 	@Override
 	public String toString() {
-		return "P[fileIdx=" + fileIdx + ", pageIdx=" + pageIdx + "]";
+		return "P[pageIdx=" + pageIdx + "fileIdx=" + fileIdx + "]";
 	}
 	
 	

@@ -58,16 +58,17 @@ public class BufferManager {
 			int i = indexLibre();
 			if(i==-1) {
 				i = calcul_LRU(); 
-				System.out.println("On active la methode de remplacement LRU, on doit remplace la frame " + i);
+//				System.out.println("Les " + Constants.FRAME_COUNT + " frames sont utilises."
+//						+ "\nOn active la methode de remplacement LRU, on doit remplace la frame " + i);
 				framePool[i].enregistrerPage();
 			}
 			framePool[i] = new Frame(pageId);
 			framePool[i].chargerPage();
-			System.out.print("Affichage X59 - Affichage du pool - [ ");
-			for(int j=0 ; j<framePool.length ; j++) {
-				System.out.print(framePool[j] + ",");
-			}
-			System.out.println(" ]");
+//			System.out.print("Affichage X59 - Affichage du pool - [");
+//			for(int j=0 ; j<framePool.length ; j++) {
+//				System.out.print(framePool[j] + " | ");
+//			}
+//			System.out.println("]");
 			f = framePool[i];
 		}
 		bytebuff = f.getBuffer();
@@ -96,11 +97,10 @@ public class BufferManager {
 	public int indexLibre() {
 		for(int i = 0 ; i<framePool.length ; i++) {
 			if(framePool[i] == null) {
-				System.out.println("Affichage X20 - Le frame " + i + " est libre, on place la page dedans");
+				//System.out.println("Affichage X20 - Le frame " + i + " est libre, on place la page dedans");
 				return i ;
 			}
 		}
-		System.err.println("Il n'y a pas de place"); 
 		return -1 ;
 	}
 

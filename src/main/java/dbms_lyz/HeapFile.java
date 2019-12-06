@@ -51,11 +51,6 @@ public class HeapFile {
 		
 		PageId headerPage = new PageId(0, relDef.getFileIdx());
 		ByteBuffer bufferHeaderPage = BufferManager.getInstance().getPage(headerPage); // get
-		// On parcours jusqu'au dernier et on ajoute le slotCount
-		for(int i=0 ; i<Constants.PAGE_SIZE ; i+=4) {
-			System.out.print(bufferHeaderPage.getInt(i)+ " ");
-		}
-		System.out.println();
 		bufferHeaderPage.putInt(0,bufferHeaderPage.getInt(0)+1);
 		bufferHeaderPage.putInt(bufferHeaderPage.getInt(0) * Integer.BYTES, relDef.getSlotCount());
 		BufferManager.getInstance().freePage(headerPage, true); // free
@@ -198,7 +193,6 @@ public class HeapFile {
 		PageId pageLibre = getFreeDataPageId();
 		if(pageLibre == null) {
 			pageLibre = addDataPage();
-			System.out.println("Affichage X80 : Affichage pageLibre : " + pageLibre);
 		}
 		return writeRecordToDataPage(record, pageLibre);
 	}

@@ -90,10 +90,10 @@ public class DiskManager {
 	public void readPage(PageId pageId, ByteBuffer buff) {
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		int numeroPage = pageId.getPageIdx(); 
-			
+				
 		try (RandomAccessFile rf = new RandomAccessFile(f, "r")){
 			rf.seek(numeroPage * Constants.PAGE_SIZE);
-			System.out.println(rf.read(buff.array()));
+			rf.read(buff.array());
 		} catch (FileNotFoundException e1) {
 			System.out.println("Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
@@ -101,9 +101,6 @@ public class DiskManager {
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O au niveau de la position du RandomFileAccess");
 		}
-		// Verif : System.out.println(nbr);c
-		System.out.println("Affichage X15 - ByteBuffer pour la pageId "+pageId.getPageIdx()+" " + Arrays.toString(buff.array()));
-
 	}
 	
 	/**
@@ -114,12 +111,11 @@ public class DiskManager {
 	 */
 	public void writePage(PageId pageId, ByteBuffer buff) {
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
-		System.out.println(f.toString());
 		int positionPage = pageId.getPageIdx();
 		try (RandomAccessFile rf = new RandomAccessFile(f, "rw")){
 			
 			//Position du RandomAccessFile
-			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
+//			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 			rf.write(buff.array());
 			

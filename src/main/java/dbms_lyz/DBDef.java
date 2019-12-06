@@ -123,7 +123,9 @@ public class DBDef implements Serializable{
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O lors du fermeture du DBDef (1)");
 		}
-		System.out.println("Le programme s'est arrete correctement ! Merci d'avoir utiliser le SGBD LYZ");
+		System.out.println("Vous avez demande la fermeture du programme. "
+				+ "Le programme s'est arrete correctement ! "
+				+ "Merci d'avoir utiliser le SGBD LYZ");
 	}
 
 	/**
@@ -135,7 +137,6 @@ public class DBDef implements Serializable{
 		if(rd != null) {
 			relDefTab.add(rd);
 			compteurRelation++;
-			System.out.println("Affichage : nombre de relation : " + compteurRelation);
 		} else 
 			System.err.println("Erreur : le contenu du relDef saisie est vide");
 	}

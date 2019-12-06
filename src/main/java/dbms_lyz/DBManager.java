@@ -143,18 +143,14 @@ public class DBManager {
 	 * @param commande la commande qui va creer la relation
 	 */
 	public void createCommande(StringTokenizer commande) {
-		String nomRelation = new String();
-		int nbCol = 0;
+		String relName = commande.nextToken();
+		int nbCol = Integer.parseInt(commande.nextToken()) ;
 		List<String> typeCol = new ArrayList<String>();
 		
+		System.out.println("La relation " + relName + " a ete cree");
+		
 		try {
-			for (int i = 1; commande.hasMoreElements(); i++) {
-				if(i == 1) {
-					nomRelation = commande.nextToken();
-				}
-				if(i == 2) {
-					nbCol = Integer.parseInt(commande.nextToken());
-				}
+			for (int i = 3; commande.hasMoreElements(); i++) {
 				if(i > 2) {
 					for(int j=0 ; j<nbCol ; j++) {
 						typeCol.add(commande.nextToken());
@@ -171,12 +167,10 @@ public class DBManager {
 			System.err.println("[Attention] Il vous manque des elements a remplir, le programme s'arrete");
 			System.exit(0);
 		}
-		for (int i = 0; i < typeCol.size(); i++) {
-			System.out.print(typeCol.get(i) + " ");
-		}
 		
-		RelDef relDefcree = createRelation(nomRelation, nbCol, typeCol);
-		System.out.println("Affichage X1 : relDef cree " + relDefcree.toString());
+		RelDef relDefcree = createRelation(relName, nbCol, typeCol);
+		System.out.println("[X1] Pour afficher les details sur la relation cree");
+		//System.out.println("Affichage X1 : relDef cree " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 	}
 	
@@ -221,6 +215,8 @@ public class DBManager {
 		String relName = commande.nextToken();
 		List<String> valeurs = new ArrayList<String>(); //list valeurs de records
 
+		//System.out.println("Les valeurs ont bien ete saisie dans la relation " + relName);
+		
 		while(commande.hasMoreTokens()) {
 			valeurs.add(commande.nextToken());
 		}
@@ -272,6 +268,7 @@ public class DBManager {
 		}catch (IOException e) {
 			System.err.println("Erreur I/O par rapport au contenu du fichier CSV");
 		}
+		System.out.println("Tous les tuples du fichier "+ nomFichierCSV + " ont ete ajoute a " + relName);
 	}
 	
 	/**
@@ -285,18 +282,16 @@ public class DBManager {
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		for(Record r : listRecords) {
-			StringBuffer stringBuffRecord = new StringBuffer("");
+			StringBuffer stringBuffRecord = new StringBuffer("Affichage des valeurs : ");
 			for(String s : r.getValues()) {
 				stringBuffRecord.append(s);
-				stringBuffRecord.append(" ; ");
+				stringBuffRecord.append(" | ");
 			}
 			String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 			System.out.println(stringRecord);
 			compteurRecord ++;
 		}
-		System.out.println("Total Records : "+ compteurRecord);
-		System.out.println("Nombre de records : "+ listRecords.size());
-
+		System.out.println("Total Record : "+ compteurRecord);
 	}
 	
 	/**
@@ -308,6 +303,7 @@ public class DBManager {
 		String colonne = commande.nextToken();
 		String valeur = commande.nextToken(); 
 		int column = Integer.parseInt(colonne);
+		int cptRelation = 0 ;
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
@@ -316,8 +312,10 @@ public class DBManager {
 			//column-1 car l'index commence a partir de 0
 			if(values.get(column-1).equals(valeur)) {
 				System.out.println(r); 
+				cptRelation++;
 			}
 		}
+		System.out.println("Total Records : " + cptRelation);
 	}
 	
 	/**
@@ -385,7 +383,7 @@ public class DBManager {
 			}
 			BufferManager.getInstance().freePage(new PageId(0, reldef.getFileIdx()), headerPageModifiee);
 		}
-		System.out.println(" Nombre total de record supprime : "+compteurRecordSup);
+		System.out.println("Total de record supprime : "+compteurRecordSup);
 	
 	}
 	

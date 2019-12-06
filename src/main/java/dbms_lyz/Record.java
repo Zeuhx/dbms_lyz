@@ -33,7 +33,6 @@ public class Record {
 	 * @param position un entier correspondant � une position dans le buffer
 	 */
 	public void writeToBuffer(ByteBuffer buff, int position) {
-		System.out.println("Affichage X23bis - Affichage des values du record " + relDef.getNomRelation() + " : " + values);
 		buff.position(position);
 		int i = 0;
 		List<String> list = relDef.getTypeCol(); //recupere la liste
@@ -109,12 +108,11 @@ public class Record {
 	@Override
 	public String toString() {
 		StringBuilder build = new StringBuilder();
-		build.append("[Record de " + relDef.getNomRelation() + "]" + " ");
-		System.out.println("Affichage X28 : Affichage values : " + values);
+		System.out.print("Affichage des valeurs : ");
 		
 		for(String s : values) {
 			build.append(s);
-			build.append(" ; ");
+			build.append(" | ");
 		}
 		return build.toString();
 	}
