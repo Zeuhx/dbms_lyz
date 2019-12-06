@@ -31,6 +31,7 @@ public class FileManager {
 			for(RelDef relDef : DBDef.getInstance().getRelDefTab()) {
 				HeapFile hf = new HeapFile(relDef);
 				heapFiles.add(hf);
+				FileManager.getInstance().createHeapFileWithRelation(hf.getRelDef());
 			}
 		}
 	}
