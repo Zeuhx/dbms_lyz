@@ -67,6 +67,8 @@ public class DBManager {
 		break ;
 		case "selectall" : selectAllCommande(commandeSaisie);
 		break ;
+		case "join" : joinCommande(commandeSaisie) ;
+		break ;
 		case "delete" : deleteCommande(commandeSaisie) ;
 		break ;
 		case "exit" : exitCommande(commandeSaisie) ;
@@ -214,7 +216,7 @@ public class DBManager {
 	public void insertCommande(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		List<String> valeurs = new ArrayList<String>(); //list valeurs de records
-
+		boolean relationExistante = false ;
 		//System.out.println("Les valeurs ont bien ete saisie dans la relation " + relName);
 		
 		while(commande.hasMoreTokens()) {
@@ -227,11 +229,16 @@ public class DBManager {
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
 			if(reldef.getNomRelation().equals(relName)) {
+				relationExistante = true ;
 				//ecriture du record dans la relation
 				Record r = new Record(reldef, valeurs);
 				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
 			}
 		}
+		if(!relationExistante) {
+			System.err.println("Vous essayez d'inserer dans une relation qui n'existe pas, veuillez la cree auparavant");
+		}
+		
 	}
 	
 	/**
@@ -400,8 +407,8 @@ public class DBManager {
 	public void joinCommande(StringTokenizer commande) {
 		String relName1 = commande.nextToken();
 		String relName2 = commande.nextToken();
-		String indiceCol1 = commande.nextToken();
-		String indiceCol2 = commande.nextToken();
+		int indiceCol1 = (int) Integer.valueOf(commande.nextToken());
+		int indiceCol2 = (int) Integer.valueOf(commande.nextToken());
 		
 		int compteurRelation = 0 ;
 
@@ -428,31 +435,26 @@ public class DBManager {
 			ByteBuffer headerBuffer1 = BufferManager.getInstance().getPage(new PageId(0, reldef1.getFileIdx()));
 			int nbPageRel1 = headerBuffer1.getInt(0);
 			BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
+			List<List<String>> listeDeJoin = new ArrayList<>();
 			
 			// Nb de page pour rel2
 			ByteBuffer headerBuffer2 = BufferManager.getInstance().getPage(new PageId(0, reldef2.getFileIdx()));
 			int nbPageRel2 = headerBuffer2.getInt(0);
 			BufferManager.getInstance().freePage(new PageId(0, reldef2.getFileIdx()), false);
 			
-			for(int indicePageRel1 = 1 ; indicePageRel1<nbPageRel1 ; indicePageRel1++) {
-				ByteBuffer pageBuffer = BufferManager.getInstance().getPage(new PageId(indicePageRel1, reldef1.getFileIdx()));
-				for(int indicePageRel2 = 1 ; indicePageRel2<nbPageRel2 ; indicePageRel2++) {
-					/**
-					 * Prend 1 tuple de rel1 et un autre de rel2, comparer leur colone
-					 * Creer une liste de record et les ajouter si la condition est respectee ????
-					 */
-					// A supprimer, temporaire
-					boolean condition = true ;
-					/**
-					 * TODO
-					 * Si c'est respecter, on ajoute a la liste ?? 
-					 */
-					if(true) {
-						compteurRelation++ ;
+			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
+				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
+					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().join2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
+					// Le nombre total de record selectionnee correspond a la taille de la liste
+					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
+					
+					// Affichage des records 
+					for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
+						System.out.println("Affichage des records de join : " + uneLigneJoin);
 					}
 				}
-				BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
 			}
+			System.out.println("Affichage total record de join : " + compteurRelation);
 		}
 		
 	}

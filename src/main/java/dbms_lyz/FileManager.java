@@ -153,6 +153,73 @@ public class FileManager {
 		return listeDeRecordsAvecValeur;
 	}
 	
+	public List<String> join2Relation(String relName1, String relName2, int indexColRel1, int indexColRel2, int numPageRel1, int numPageRel2){
+		List<Record> listeDeRecord_relation1 = new ArrayList<>();
+		List<Record> listeDeRecord_relation2 = new ArrayList<>();
+		List<String> listeDeValeur = new ArrayList<>();
+		
+		// On affecte a la liste de record les record de la page
+		for(HeapFile hf : heapFiles) {
+			// Recupere une page de record de la relation 1
+			if(hf.getRelDef().getNomRelation().equals(relName1)) {
+				// On recupere la page qu'on souhaite
+				ByteBuffer pageBufferRel1 = BufferManager.getInstance().getPage(new PageId(numPageRel1, hf.getRelDef().getFileIdx())); // get
+				for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
+					if(pageBufferRel1.get(compteurRecord) == (byte) 1) {
+						int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
+						Record r = new Record(hf.getRelDef());
+						r.readFromBuffer(pageBufferRel1, positionSlot);
+						listeDeRecord_relation1.add(r);
+					}
+				}
+				BufferManager.getInstance().freePage(new PageId(numPageRel1, hf.getRelDef().getFileIdx()), false); // free
+			}
+			// Recupere une page de record de la relation 2
+			if(hf.getRelDef().getNomRelation().equals(relName2)) {
+				// On recupere la page qu'on souhaite
+				ByteBuffer pageBufferRel2 = BufferManager.getInstance().getPage(new PageId(numPageRel2, hf.getRelDef().getFileIdx())); // get
+				for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
+					if(pageBufferRel2.get(compteurRecord) == (byte) 1) {
+						int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
+						Record r = new Record(hf.getRelDef());
+						r.readFromBuffer(pageBufferRel2, positionSlot);
+						listeDeRecord_relation2.add(r);
+					}
+				}
+				BufferManager.getInstance().freePage(new PageId(numPageRel2, hf.getRelDef().getFileIdx()), false);	// free
+			}
+		}
+		
+		// Si les deux liste ne sont pas vide 
+		if( (!listeDeRecord_relation1.isEmpty()) && (!listeDeRecord_relation2.isEmpty())) {
+			listeDeValeur = joinPageOriented(listeDeRecord_relation1, indexColRel1-1, listeDeRecord_relation2, indexColRel2-1);
+		}
+		return listeDeValeur;
+	}
+	
+	private List<String> joinPageOriented(List<Record> lr1, int indexColRel1, List<Record> lr2, int indexColRel2){
+		List<String> listeDeValeur = new ArrayList<>();
+		
+		for(Record record1 : lr1) {
+			for(Record record2 : lr2) {
+				String colValueRecord1 = record1.getValues().get(indexColRel1) ;
+				String colValueRecord2 = record2.getValues().get(indexColRel2) ;
+				
+				if(colValueRecord1.equals(colValueRecord2)) {
+					// On cree
+					StringBuilder build = new StringBuilder();
+					for(String s : record1.getValues()) {
+						build.append(s + " | ");
+					}
+					for(String s : record2.getValues()) {
+						build.append(s + " | ");
+					}
+					listeDeValeur.add(build.toString());
+				}
+			}
+		}
+		return listeDeValeur;
+	}
 	// Getters 
 	public List<HeapFile> getHeapFiles()	{ return heapFiles; }
 	

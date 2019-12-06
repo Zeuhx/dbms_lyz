@@ -24,6 +24,11 @@ public class Record {
 		values = new ArrayList<>();
 	}
 	
+	public Record(List<String> values) {
+		relDef = null ;
+		this.values = values;
+	}
+	
 	/**
 	 * Methode qui ecrit les valeurs du Records les unes a la suite des autres dans le buffer
 	 * Ajoute dans le bytebuffer en fonction des types de col
@@ -64,8 +69,13 @@ public class Record {
 					}
 				}
 			}
-			else if(isInt) {				
-				buff.putInt(Integer.parseInt(values.get(i)));
+			else if(isInt) {
+				try {
+					buff.putInt(Integer.parseInt(values.get(i)));
+				} catch(NumberFormatException e1) {
+					System.err.println("Attention, vous n'avez pas saisit un chiffre, le programme s'arrete, veuillez relancer le programme");
+					System.exit(0);
+				}
 			}
 			else if(isFloat)
 				buff.putFloat(Float.parseFloat(values.get(i)));
