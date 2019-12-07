@@ -46,6 +46,7 @@ public class Frame {
 	// enregistre la page depuis le buffer
 	public void enregistrerPage() {
 		if(flag_dirty) { 
+			System.out.println("Affichage X158 - Enregistrement de la page : " + pageId);
 			DiskManager.getInstance().writePage(pageId, buff); 
 			pin_count = 0 ;
 		}

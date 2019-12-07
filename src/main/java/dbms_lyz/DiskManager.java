@@ -66,7 +66,7 @@ public class DiskManager {
 			rf.write(bt);
 			pageidx = (int) (rf.length()/Constants.PAGE_SIZE-1);
 		} catch (FileNotFoundException e1) {
-			System.err.println("Le fichier saisie n'a pas ete trouve !");
+			System.err.println("Erreur X162 - Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
@@ -94,7 +94,7 @@ public class DiskManager {
 			rf.seek(numeroPage * Constants.PAGE_SIZE);
 			rf.read(buff.array());
 		} catch (FileNotFoundException e1) {
-			System.out.println("Le fichier saisie n'a pas ete trouve !");
+			System.out.println("Erreur X163 - Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.out.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {
@@ -119,7 +119,7 @@ public class DiskManager {
 			rf.write(buff.array());
 			
 		} catch (FileNotFoundException e1) {
-			System.err.println("Le fichier saisie n'a pas ete trouve !");
+			System.err.println("Erreur X164 - Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {
 			System.err.println("Le mode choisit n'est pas parmis les choix : \"r\", \"rw\", \"rws\", or \"rwd\"");
 		} catch (IOException e) {

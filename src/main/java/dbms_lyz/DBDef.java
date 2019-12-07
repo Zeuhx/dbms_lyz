@@ -62,9 +62,8 @@ public class DBDef implements Serializable{
 		}
 		
 		if(isFile) {
-			try{
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def"));	
-				compteurRelation = ois.readInt() ;
+			try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def"))){
+				compteurRelation = ois.readInt();
 				/* Pour chaque relDef : on va creer un relDef */
 				System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def a " + compteurRelation);
 				for(int i = 0; i<compteurRelation ; i++) {
@@ -80,8 +79,11 @@ public class DBDef implements Serializable{
 
 					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 					relDefTab.add(relation);
+					System.out.println("Affichage X159 : Affichage de toutes les relations dispo : " );
+					for(RelDef relDef : relDefTab) {
+						System.out.println("Affichage X160 : Affichage du record " + relDef.toString());
+					}
 				}
-				ois.close();
 			} catch (FileNotFoundException e) {
 				System.err.println("Le fichier catalogue n'existe pas");
 			} catch (IOException e) {

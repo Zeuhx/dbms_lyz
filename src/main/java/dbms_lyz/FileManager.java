@@ -45,7 +45,7 @@ public class FileManager {
 	public void createHeapFileWithRelation(RelDef relDef) {
 		HeapFile hf = new HeapFile(relDef);
 		heapFiles.add(hf);
-		hf.createNewOnDisk();
+		hf.createNewOnDisk();		// Attention --> si on supprime, probleme de insert
 	}
 	
 
