@@ -35,7 +35,7 @@ public class DBManager {
 	 */
 	public void init() {
 		DBDef.getInstance().init();
-		//FileManager.getInstance().init();
+		FileManager.getInstance().init();
 	}
 
 	/**
@@ -55,23 +55,23 @@ public class DBManager {
 		commandeSaisie = new StringTokenizer(commande, " ");
 		String typeCommande = commandeSaisie.nextToken() ;
 		switch(typeCommande.toLowerCase()) {
-		case "create" : createCommande(commandeSaisie) ;
+		case "create" : create(commandeSaisie) ;
 		break ;
-		case "clean" : cleanCommande() ;
+		case "clean" : clean() ;
 		break ;
-		case "insert" : insertCommande(commandeSaisie) ;
+		case "insert" : insert(commandeSaisie) ;
 		break ;
-		case "insertall" : insertAllCommande(commandeSaisie) ;
+		case "insertall" : insertAll(commandeSaisie) ;
 		break ;
-		case "select" : selectCommande(commandeSaisie);
+		case "select" : select(commandeSaisie);
 		break ;
-		case "selectall" : selectAllCommande(commandeSaisie);
+		case "selectall" : selectAll(commandeSaisie);
 		break ;
-		case "join" : joinCommande(commandeSaisie) ;
+		case "join" : join(commandeSaisie) ;
 		break ;
-		case "delete" : deleteCommande(commandeSaisie) ;
+		case "delete" : delete(commandeSaisie) ;
 		break ;
-		case "exit" : exitCommande(commandeSaisie) ;
+		case "exit" : exit(commandeSaisie) ;
 		break ;
 		default : System.err.println("La commande n'est pas reconnu, veuillez resaisir");
 		break ;
@@ -87,12 +87,10 @@ public class DBManager {
 	 * @param typeCol     
 	 * @return, une relation RelDef conformement aux arguments et ajoute dans DBDef
 	 */
-	public RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
+	private RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
 		
 		// On calcul le recordSize et le nb de slot count et slotCount avec les donnees qu'on a	
-		// Calcul de la taille du record
-		
 		int recordSize = calculRecordSize(reldef);
 		reldef.setRecordSize(recordSize);
 		int slotCount = calculSlotCount(reldef);
@@ -108,7 +106,7 @@ public class DBManager {
 	 * On calcule la taille d'un record dans une page
 	 * @return  : ici qu'on calcule recordSize 
 	 */
-	public int calculRecordSize(RelDef rd) {
+	private int calculRecordSize(RelDef rd) {
 		int recordSize = 0;
 		for(String col : rd.getTypeCol()) {
 			if(col.equals("int")) {
@@ -135,7 +133,7 @@ public class DBManager {
 	 * @param rd la relation concernee
 	 * @return  : ici qu'on calcule slotCount
 	 */
-	public int calculSlotCount(RelDef rd) {
+	private int calculSlotCount(RelDef rd) {
 		return Constants.PAGE_SIZE/(rd.getRecordSize()+1);
 	}
 	
@@ -144,7 +142,7 @@ public class DBManager {
 	 * Lit la commande et creer la relation
 	 * @param commande la commande qui va creer la relation
 	 */
-	public void createCommande(StringTokenizer commande) {
+	private void create(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		int nbCol = Integer.parseInt(commande.nextToken()) ;
 		List<String> typeCol = new ArrayList<String>();
@@ -177,43 +175,13 @@ public class DBManager {
 	}
 	
 	/**
-	 * Remet a 0 le programme
-	 * Efface le contenu du catalogue.def
-	 * Supprime les fichiers Data
-	 * TODO a completer
-	 */
-	public void cleanCommande(){
-//		int compteurRelation = DBDef.getCompteurRelation() ;
-		int cptDataFile=0;
-		
-		//recuperer les fichier commencant par "Data_" dans une listData
-		File dir = new File(Constants.PATH);
-		File [] foundFiles = dir.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".rf");
-			}
-		});
-		//suppression des fichiers dans listData
-		for (File file : foundFiles) {
-			file.delete();
-			cptDataFile ++;
-		}
-		if(cptDataFile > 0){
-			System.out.println("Il y a "+cptDataFile+" fichier(s) supprime(s)");
-		}
-		System.out.println("Nombre de relation en cours: " + DBDef.getInstance().getCompteurRelation());
-		DBDef.getInstance().reset();
-		FileManager.getInstance().reset();
-	}
-	
-	/**
 	 * Cette commande demande l'inserttion d'un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
 	 *  colonne) du record et le nom de la relation.
 	 *  TODO A detailler
 	 * @param commande
 	 */
-	public void insertCommande(StringTokenizer commande) {
+	private void insert(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		List<String> valeurs = new ArrayList<String>(); //list valeurs de records
 		boolean relationExistante = false ;
@@ -249,7 +217,7 @@ public class DBManager {
 	 * les sous-repertoires Code et DB).
 	 * @param commande
 	 */
-	public void insertAllCommande(StringTokenizer commande) {
+	private void insertAll(StringTokenizer commande) {
 		String relName = commande.nextToken();
 		
 		String nomFichierCSV = commande.nextToken();
@@ -268,7 +236,7 @@ public class DBManager {
 					sbValues.append(values[i]);
 					sbValues.append(" ");
 				}
-				insertCommande(new StringTokenizer(sbValues.toString()));
+				insert(new StringTokenizer(sbValues.toString()));
 			} 
 		}catch (FileNotFoundException e) {
 			System.err.println("Le fichier CSV n'a pas ete trouve");
@@ -282,14 +250,14 @@ public class DBManager {
 	 * TODO description
 	 * @param commande
 	 */
-	public void selectAllCommande(StringTokenizer commande) {
+	private void selectAll(StringTokenizer commande) {
 		String nomRelation = "";
 		int compteurRecord = 0;
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		for(Record r : listRecords) {
-			StringBuffer stringBuffRecord = new StringBuffer("Affichage des valeurs : ");
+			StringBuffer stringBuffRecord = new StringBuffer("[SELECTALL] Affichage des valeurs : ");
 			for(String s : r.getValues()) {
 				stringBuffRecord.append(s);
 				stringBuffRecord.append(" | ");
@@ -298,14 +266,14 @@ public class DBManager {
 			System.out.println(stringRecord);
 			compteurRecord ++;
 		}
-		System.out.println("Total Record : "+ compteurRecord);
+		System.out.println("Total Records : "+ compteurRecord);
 	}
 	
 	/**
 	 * TODO description
 	 * @param commande
 	 */
-	public void selectCommande(StringTokenizer commande) {
+	private void select(StringTokenizer commande) {
 		String nomRelation = commande.nextToken();
 		String colonne = commande.nextToken();
 		String valeur = commande.nextToken(); 
@@ -314,22 +282,116 @@ public class DBManager {
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
 		
-		for(Record r : listRecords) {
-			List<String> values = r.getValues();
+		for(Record record : listRecords) {
+			List<String> values = record.getValues();
 			//column-1 car l'index commence a partir de 0
 			if(values.get(column-1).equals(valeur)) {
-				System.out.println(r); 
+				System.out.println("[SELECT] Affichage des valeurs : " + record.toString().substring(0, record.toString().length()-3)); 
 				cptRelation++;
 			}
 		}
 		System.out.println("Total Records : " + cptRelation);
 	}
-	
+		
+	/**
+	 * TODO description pour join : produit cartesien puis selection
+	 * On charge la premiere page de la relation R
+	 * On charge la premiere page de la relation S
+	 * On ne fait pas de sélection (select)
+	 * On compare tuple par tuple entre R et S sur ces 2 pages
+	 * On parcours les pages de S tant qu'il y en a
+	 * On passe à la deuxième page de R 
+	 * etc...
+	 */
+	private void join(StringTokenizer commande) {
+		String relName1 = commande.nextToken();
+		String relName2 = commande.nextToken();
+		int indiceCol1 = (int) Integer.valueOf(commande.nextToken());
+		int indiceCol2 = (int) Integer.valueOf(commande.nextToken());
+		
+		int compteurRelation = 0 ;
+
+		RelDef reldef1 = null ;
+		RelDef reldef2 = null ;
+		for(RelDef r : DBDef.getInstance().getRelDefTab()) {
+			if(r.getRelName().equals(relName1)) {
+				reldef1 = r;
+			}
+			if(r.getRelName().equals(relName2)) {
+				reldef2 = r;
+			}
+			
+		}
+		
+		if(reldef1 == null || reldef2 == null ) {
+			System.err.println("Il y a une relation qui n'existe pas");
+		}
+		else if(reldef1 == reldef2) {
+			System.err.println("Les deux relations ne peuvent pas etre identique");
+		}
+		else {
+			// Nb de page pour rel1
+			ByteBuffer headerBuffer1 = BufferManager.getInstance().getPage(new PageId(0, reldef1.getFileIdx()));
+			int nbPageRel1 = headerBuffer1.getInt(0);
+			BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
+			
+			// Nb de page pour rel2
+			ByteBuffer headerBuffer2 = BufferManager.getInstance().getPage(new PageId(0, reldef2.getFileIdx()));
+			int nbPageRel2 = headerBuffer2.getInt(0);
+			BufferManager.getInstance().freePage(new PageId(0, reldef2.getFileIdx()), false);
+			
+			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
+				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
+					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().join2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
+					// Le nombre total de record selectionnee correspond a la taille de la liste
+					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
+					
+					// Affichage des records 
+					for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
+						System.out.println("[JOIN] Affichage des records : " + uneLigneJoin.substring(0, uneLigneJoin.length()-3));
+					}
+				}
+			}
+			System.out.println("Total Records : " + compteurRelation);
+		}
+		
+	}
+
+	/**
+	 * Remet a 0 le programme
+	 * Efface le contenu du catalogue.def
+	 * Supprime les fichiers Data
+	 * TODO a completer
+	 */
+	private void clean(){
+//		int compteurRelation = DBDef.getCompteurRelation() ;
+		int cptDataFile=0;
+		
+		//recuperer les fichier commencant par "Data_" dans une listData
+		File dir = new File(Constants.PATH);
+		File [] foundFiles = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".rf");
+			}
+		});
+		//suppression des fichiers dans listData
+		for (File file : foundFiles) {
+			file.delete();
+			cptDataFile ++;
+		}
+		if(cptDataFile > 0){
+			System.out.println("Il y a "+cptDataFile+" fichier(s) supprime(s)");
+		}
+		System.out.println("Nombre de relation en cours : " + DBDef.getInstance().getCompteurRelation());
+		DBDef.getInstance().reset();
+		FileManager.getInstance().reset();
+	}
+
 	/**
 	 * TODO description
 	 * @param commande
 	 */
-	public void exitCommande(StringTokenizer commande) {
+	private void exit(StringTokenizer commande) {
 		DBManager.getInstance().finish();
 	}
 	
@@ -340,7 +402,7 @@ public class DBManager {
 	 * Incremente le slotCount de la page sur le headerPage
 	 * @param commande
 	 */
-	public void deleteCommande(StringTokenizer commande){
+	private void delete(StringTokenizer commande){
 		String relName = commande.nextToken();
 		String colonne = commande.nextToken();
 		int numeroColonne = Integer.parseInt(colonne)-1;
@@ -390,72 +452,9 @@ public class DBManager {
 			}
 			BufferManager.getInstance().freePage(new PageId(0, reldef.getFileIdx()), headerPageModifiee);
 		}
-		System.out.println("Total de record supprime : "+compteurRecordSup);
+		System.out.println("Total Records supprimes : "+compteurRecordSup);
 	
 	}
-	
-	/**
-	 * TODO description pour join : produit cartesien puis selection
-	 * On charge la premiere page de la relation R
-	 * On charge la premiere page de la relation S
-	 * On ne fait pas de sélection (select)
-	 * On compare tuple par tuple entre R et S sur ces 2 pages
-	 * On parcours les pages de S tant qu'il y en a
-	 * On passe à la deuxième page de R 
-	 * etc...
-	 */
-	public void joinCommande(StringTokenizer commande) {
-		String relName1 = commande.nextToken();
-		String relName2 = commande.nextToken();
-		int indiceCol1 = (int) Integer.valueOf(commande.nextToken());
-		int indiceCol2 = (int) Integer.valueOf(commande.nextToken());
-		
-		int compteurRelation = 0 ;
 
-		RelDef reldef1 = null ;
-		RelDef reldef2 = null ;
-		for(RelDef r : DBDef.getInstance().getRelDefTab()) {
-			if(r.getRelName().equals(relName1)) {
-				reldef1 = r;
-			}
-			if(r.getRelName().equals(relName2)) {
-				reldef2 = r;
-			}
-			
-		}
-		
-		if(reldef1 == null || reldef2 == null ) {
-			System.err.println("Il y a une relation qui n'existe pas");
-		}
-		else if(reldef1 == reldef2) {
-			System.err.println("Les deux relations ne peuvent pas etre identique");
-		}
-		else {
-			// Nb de page pour rel1
-			ByteBuffer headerBuffer1 = BufferManager.getInstance().getPage(new PageId(0, reldef1.getFileIdx()));
-			int nbPageRel1 = headerBuffer1.getInt(0);
-			BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
-			List<List<String>> listeDeJoin = new ArrayList<>();
-			
-			// Nb de page pour rel2
-			ByteBuffer headerBuffer2 = BufferManager.getInstance().getPage(new PageId(0, reldef2.getFileIdx()));
-			int nbPageRel2 = headerBuffer2.getInt(0);
-			BufferManager.getInstance().freePage(new PageId(0, reldef2.getFileIdx()), false);
-			
-			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
-				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
-					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().join2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
-					// Le nombre total de record selectionnee correspond a la taille de la liste
-					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
-					
-					// Affichage des records 
-					for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
-						System.out.println("Affichage des records de join : " + uneLigneJoin);
-					}
-				}
-			}
-			System.out.println("Affichage total record de join : " + compteurRelation);
-		}
-		
-	}
+
 }

@@ -25,9 +25,8 @@ public class FileManager {
 	 */
 	public void init() {
 		DBDef.getInstance();
-		if(DBDef.getInstance().getRelDefTab().isEmpty()) {
-			throw new RuntimeException("Il n'y a pas de RelDef stocke");
-		} else {
+		if(!DBDef.getInstance().getRelDefTab().isEmpty()) {
+			System.out.println("La table des relations contient " + DBDef.getInstance().getRelDefTab().size() + " relations");
 			for(RelDef relDef : DBDef.getInstance().getRelDefTab()) {
 				HeapFile hf = new HeapFile(relDef);
 				heapFiles.add(hf);

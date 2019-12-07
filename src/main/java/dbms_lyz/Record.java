@@ -119,8 +119,6 @@ public class Record {
 	@Override
 	public String toString() {
 		StringBuilder build = new StringBuilder();
-		System.out.print("Affichage des valeurs : ");
-		
 		for(String s : values) {
 			build.append(s);
 			build.append(" | ");
