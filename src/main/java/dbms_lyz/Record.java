@@ -42,6 +42,7 @@ public class Record {
 		int i = 0;
 		List<String> list = relDef.getTypeCol(); //recupere la liste
 		
+		//System.out.println("Affichage X151 - Affichage du buffer de writeToBuffer et de sa position normalement : " + buff + " pos : " + position);
 		for(i=0 ; i<list.size() ; i++) {
 			boolean isFloat = false;
 			boolean isString = false;

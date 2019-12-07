@@ -33,6 +33,7 @@ public class HeapFile {
 		PageId headerPage = new PageId(0, fileIdx);
 		ByteBuffer headerPageBuff = BufferManager.getInstance().getPage(headerPage); // get
 		for (int i = 0 ; i < Constants.PAGE_SIZE ; i += Integer.BYTES) {
+			headerPageBuff.position(0);
 			headerPageBuff.putInt(0);
 		}
 		BufferManager.getInstance().freePage(headerPage, true);	// free
@@ -120,6 +121,8 @@ public class HeapFile {
 
 		// On insere apres avoir focus la place dans la page
 		int positionSlot = relDef.getSlotCount() + relDef.getRecordSize() * positionByteMap;
+		System.out.println("Affichage X152 : Affichage : [slotcount : " +relDef.getSlotCount() + 
+				" recordSize : " + relDef.getRecordSize() + " positionByteMap : " +  positionByteMap + "]");
 		record.writeToBuffer(bufferPage, positionSlot);
 		
 		BufferManager.getInstance().freePage(pageId, true);	// free
