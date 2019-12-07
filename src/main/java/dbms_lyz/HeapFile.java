@@ -103,11 +103,13 @@ public class HeapFile {
 	 * @return
 	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
-
-		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
 		int positionByteMap = 0;
+		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
+//		bufferPage.position(pageId.getPageIdx() * Constants.PAGE_SIZE);
 		boolean caseLibre = false;
-		while (!caseLibre && positionByteMap < bufferPage.getInt(0)) {
+		
+		while (!caseLibre && positionByteMap <= bufferPage.getInt(0)) {
+			System.out.println("Affichage X165 : Affichage du slot : " + bufferPage.get(positionByteMap));
 			if (bufferPage.get(positionByteMap) == 0) {
 				caseLibre = true;
 			}

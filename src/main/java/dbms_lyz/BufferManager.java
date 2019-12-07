@@ -124,7 +124,7 @@ public class BufferManager {
 	 * contenus des buffers (buffer pool a vide)
 	 */
 	public void flushAll(){
-		for (Frame frame : framePool) {
+		for(Frame frame : framePool) {
 			frame.enregistrerPage();
 		}
 	}
