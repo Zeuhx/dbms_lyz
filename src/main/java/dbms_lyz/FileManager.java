@@ -153,7 +153,8 @@ public class FileManager {
 		return listeDeRecordsAvecValeur;
 	}
 	
-	public List<String> join2Relation(String relName1, String relName2, int indexColRel1, int indexColRel2, int numPageRel1, int numPageRel2){
+	public List<String> joinPageOriented2Relation(String relName1, String relName2, int indexColRel1, int indexColRel2, int numPageRel1, int numPageRel2){
+		// Maintenant qu'on a nos relations et les pages qu'on souhaite, on verifie qu'elle existe bien
 		List<Record> listeDeRecord_relation1 = new ArrayList<>();
 		List<Record> listeDeRecord_relation2 = new ArrayList<>();
 		List<String> listeDeValeur = new ArrayList<>();
@@ -164,6 +165,7 @@ public class FileManager {
 			if(hf.getRelDef().getNomRelation().equals(relName1)) {
 				// On recupere la page qu'on souhaite
 				ByteBuffer pageBufferRel1 = BufferManager.getInstance().getPage(new PageId(numPageRel1, hf.getRelDef().getFileIdx())); // get
+				// Parcours pour recuper les records de la relation 1 d'une page qu'on ajoute dans la liste
 				for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
 					if(pageBufferRel1.get(compteurRecord) == (byte) 1) {
 						int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
@@ -178,6 +180,7 @@ public class FileManager {
 			if(hf.getRelDef().getNomRelation().equals(relName2)) {
 				// On recupere la page qu'on souhaite
 				ByteBuffer pageBufferRel2 = BufferManager.getInstance().getPage(new PageId(numPageRel2, hf.getRelDef().getFileIdx())); // get
+				// Parcours pour recuper les records de la relation 2 d'une page qu'on ajoute dans la liste
 				for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
 					if(pageBufferRel2.get(compteurRecord) == (byte) 1) {
 						int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
@@ -192,19 +195,21 @@ public class FileManager {
 		
 		// Si les deux liste ne sont pas vide 
 		if( (!listeDeRecord_relation1.isEmpty()) && (!listeDeRecord_relation2.isEmpty())) {
-			listeDeValeur = joinPageOriented(listeDeRecord_relation1, indexColRel1-1, listeDeRecord_relation2, indexColRel2-1);
+			listeDeValeur = fusion2Relation(listeDeRecord_relation1, indexColRel1-1, listeDeRecord_relation2, indexColRel2-1);
 		}
 		return listeDeValeur;
 	}
 	
-	private List<String> joinPageOriented(List<Record> lr1, int indexColRel1, List<Record> lr2, int indexColRel2){
+	private List<String> fusion2Relation(List<Record> lr1, int indexColRel1, List<Record> lr2, int indexColRel2){
 		List<String> listeDeValeur = new ArrayList<>();
 		
+		// Apres avoir recuperer les records des pages maintenant en parametre, on cherche a comparer un par un les records entre eux
 		for(Record record1 : lr1) {
 			for(Record record2 : lr2) {
 				String colValueRecord1 = record1.getValues().get(indexColRel1) ;
 				String colValueRecord2 = record2.getValues().get(indexColRel2) ;
 				
+				// "Fusion" des deux relation
 				if(colValueRecord1.equals(colValueRecord2)) {
 					// On cree
 					StringBuilder build = new StringBuilder();
@@ -234,5 +239,6 @@ public class FileManager {
 	 */
 	public void reset() {
 		heapFiles = new ArrayList<>();
+		BufferManager.getInstance().flushAll();
 	}
 }

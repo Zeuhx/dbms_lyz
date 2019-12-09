@@ -34,7 +34,7 @@ public class BufferManager {
 	 */
 	public Frame searchFrame(PageId pageId) {
 		for(Frame f : framePool) {
-			if(f!=null && (f.getPageId().equals(pageId)))
+			if((f!=null) && (f.getPageId()!=null) && (f.getPageId().equals(pageId)))
 				return f;
 		}
 		return null ;
@@ -121,14 +121,22 @@ public class BufferManager {
 	/**
 	 * Cette methode s'occupe de : l'ecriture de toutes les pages dont le flag
 	 * dirty = 1 sur disque, la remise a 0 de tous les flags/informations et
-	 * contenus des buffers (buffer pool a vide)
+	 * contenus des buffers (framePool a vide)
 	 */
 	public void flushAll(){
 		for(Frame frame : framePool) {
-			frame.enregistrerPage();
+			/**
+			 * Si le frame n'est pas vide et que son pin count est a 1, on l'enregistre sinon on vide juste
+			 */
+			if(frame != null) {
+				if(frame.getPin_count() == 1) {
+					frame.enregistrerPage();
+				}
+				frame.resetFrame();
+			}
 		}
 	}
-
+	
 	public Frame[] getFramePool() { return framePool; }
 
 }

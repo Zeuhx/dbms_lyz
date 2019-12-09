@@ -342,7 +342,8 @@ public class DBManager {
 			
 			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
 				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
-					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().join2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
+					// On affecte une page a chaque fois (du coup la page est selectionnee)
+					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().joinPageOriented2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
 					// Le nombre total de record selectionnee correspond a la taille de la liste
 					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
 					
@@ -364,6 +365,7 @@ public class DBManager {
 	 * TODO a completer
 	 */
 	private void clean(){
+		BufferManager.getInstance().flushAll();
 //		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		

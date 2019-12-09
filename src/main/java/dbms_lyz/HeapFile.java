@@ -109,7 +109,7 @@ public class HeapFile {
 		boolean caseLibre = false;
 		
 		while (!caseLibre && positionByteMap <= bufferPage.getInt(0)) {
-			System.out.println("Affichage X165 : Affichage du slot : " + bufferPage.get(positionByteMap));
+			System.out.println("Affichage X165 - Affichage du slot : " + bufferPage.get(positionByteMap));
 			if (bufferPage.get(positionByteMap) == 0) {
 				caseLibre = true;
 			}
@@ -123,8 +123,6 @@ public class HeapFile {
 
 		// On insere apres avoir focus la place dans la page
 		int positionSlot = relDef.getSlotCount() + relDef.getRecordSize() * positionByteMap;
-		System.out.println("Affichage X152 : Affichage : [slotcount : " +relDef.getSlotCount() + 
-				" recordSize : " + relDef.getRecordSize() + " positionByteMap : " +  positionByteMap + "]");
 		record.writeToBuffer(bufferPage, positionSlot);
 		
 		BufferManager.getInstance().freePage(pageId, true);	// free

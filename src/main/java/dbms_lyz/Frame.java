@@ -32,7 +32,10 @@ public class Frame {
 		if (pin_count>0) pin_count-- ;
 	}
 	
-	public void flushFrame() {
+	/**
+	 * On remet a vide le frame --> utilisation dans flushAll
+	 */
+	public void resetFrame() {
 		pageId = null;
 		pin_count = 0;
 		flag_dirty = false;
@@ -46,7 +49,6 @@ public class Frame {
 	// enregistre la page depuis le buffer
 	public void enregistrerPage() {
 		if(flag_dirty) { 
-			System.out.println("Affichage X158 - Enregistrement de la page : " + pageId);
 			DiskManager.getInstance().writePage(pageId, buff); 
 			pin_count = 0 ;
 		}
