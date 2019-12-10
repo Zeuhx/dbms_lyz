@@ -109,7 +109,6 @@ public class HeapFile {
 		boolean caseLibre = false;
 		
 		while (!caseLibre && positionByteMap <= bufferPage.getInt(0)) {
-			System.out.println("Affichage X165 - Affichage du slot : " + bufferPage.get(positionByteMap));
 			if (bufferPage.get(positionByteMap) == 0) {
 				caseLibre = true;
 			}
@@ -159,8 +158,6 @@ public class HeapFile {
 		 * A partir du slotCount on lit les records que l'on va stocker dans une liste
 		 */
 		for (int positionByteMap = 0; positionByteMap < relDef.getSlotCount(); positionByteMap++) {
-			int positionRecord = relDef.getSlotCount() + positionByteMap;
-			System.out.println("Affichage X67 - Position du record : " + positionRecord);
 			bufferPage.position(positionByteMap);
 			if (bufferPage.get(positionByteMap) == 1) {
 				bufferPage.position(positionByteMap);
@@ -180,7 +177,6 @@ public class HeapFile {
 						for (int j = 0; j < taille; j++) {
 							String charBuff = Character.toString(bufferPage.getChar());
 							valARecup = valARecup.concat(charBuff);
-							System.out.println("Affichage X44 - Affichage du charbuff" + valARecup);
 						}
 						listElementRecord.add(valARecup);
 					}

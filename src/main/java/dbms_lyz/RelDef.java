@@ -167,8 +167,13 @@ public class RelDef {
 				build.append(" ");
 			}
 		}
-		return "RelDef [relName=" + relName + ", nbCol=" + nbCol + ", typeCol=" + build.toString() + ", fileIdx=" + fileIdx
-				+ ", recordSize=" + recordSize + ", slotCount=" + slotCount + "]";
+		return "\n"
+				+ "\nRelation " + relName 
+				+ "\nNombre de colonne : " + nbCol 
+				+ "\nType de colonne : " + build.toString() 
+				+ "\nID fichier : " + fileIdx
+				+ "\nTaille d'un record : " + recordSize 
+				+ "\nNombre de slot count sur une page=" + slotCount;
 	}
 
 	// Getters

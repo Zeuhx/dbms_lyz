@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
@@ -169,8 +170,7 @@ public class DBManager {
 		}
 		
 		RelDef relDefcree = createRelation(relName, nbCol, typeCol);
-		System.out.println("[X88] Pour afficher les details sur la relation cree");
-		//System.out.println("Affichage X88 : relDef cree " + relDefcree.toString());
+		System.out.println("Affichage de la relation cree - " + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 	}
 	
@@ -339,18 +339,26 @@ public class DBManager {
 			ByteBuffer headerBuffer2 = BufferManager.getInstance().getPage(new PageId(0, reldef2.getFileIdx()));
 			int nbPageRel2 = headerBuffer2.getInt(0);
 			BufferManager.getInstance().freePage(new PageId(0, reldef2.getFileIdx()), false);
+//			String affichage ;
 			
+//			try(Scanner scan = new Scanner(System.in)){
+//				System.out.print("Voulez vous afficher les resultats de la jointure : ");
+//				affichage = scan.nextLine();
+//			}
 			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
 				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
 					// On affecte une page a chaque fois (du coup la page est selectionnee)
 					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().joinPageOriented2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
+					
 					// Le nombre total de record selectionnee correspond a la taille de la liste
 					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
 					
 					// Affichage des records 
-					for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
-						System.out.println("[JOIN] Affichage des records : " + uneLigneJoin.substring(0, uneLigneJoin.length()-3));
-					}
+//					if(affichage.equals("oui")) {
+						for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
+							System.out.println("[JOIN] Affichage des records : " + uneLigneJoin.substring(0, uneLigneJoin.length()-3));
+						}
+//					}
 				}
 			}
 			System.out.println("Total Records : " + compteurRelation);
@@ -387,14 +395,6 @@ public class DBManager {
 		System.out.println("Nombre de relation en cours : " + DBDef.getInstance().getCompteurRelation());
 		DBDef.getInstance().reset();
 		FileManager.getInstance().reset();
-	}
-
-	/**
-	 * TODO description
-	 * @param commande
-	 */
-	private void exit(StringTokenizer commande) {
-		DBManager.getInstance().finish();
 	}
 	
 	/**
@@ -457,6 +457,14 @@ public class DBManager {
 		System.out.println("Total Records supprimes : "+compteurRecordSup);
 	
 	}
-
+	
+	/**
+	 * TODO description
+	 * @param commande
+	 */
+	private void exit(StringTokenizer commande) {
+		DBManager.getInstance().finish();
+		System.out.println("----------- [BASE DE DONNEE - FIN] -----------");
+	}
 
 }

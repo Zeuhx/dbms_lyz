@@ -78,6 +78,10 @@ public class DBDef implements Serializable{
 					int slotCount = ois.readInt();
 
 					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
+					System.out.println("Affichage X170 - Affichage de la relation cree " +relation.toString());
+					
+					FileManager.getInstance().createHeapFileWithRelation(relation);
+					FileManager.getInstance().getHeapFiles().add(new HeapFile(relation));
 					relDefTab.add(relation);
 					System.out.println("Affichage X159 : Affichage de toutes les relations dispo : " );
 					for(RelDef relDef : relDefTab) {
@@ -119,9 +123,9 @@ public class DBDef implements Serializable{
 		} catch (IOException e) {
 			System.err.println("Erreur d'I/O lors du fermeture du DBDef (1)");
 		}
-		System.out.println("Vous avez demande la fermeture du programme. "
-				+ "Le programme s'est arrete correctement ! "
-				+ "Merci d'avoir utiliser le SGBD LYZ");
+		System.out.println("Vous avez demande du SGBD LYZ"
+				+ "\nLe programme s'est arrete correctement ! "
+				+ "\nMerci d'avoir utiliser le SGBD LYZ");
 	}
 
 	/**

@@ -159,12 +159,18 @@ public class FileManager {
 		List<Record> listeDeRecord_relation2 = new ArrayList<>();
 		List<String> listeDeValeur = new ArrayList<>();
 		
-		// On affecte a la liste de record les record de la page
+		/**
+		 * On affecte a la liste de record les record de la page
+		 * On fait une recherche en parallele pour evite la consommation inutile de ressources
+		 */
 		for(HeapFile hf : heapFiles) {
+			
 			// Recupere une page de record de la relation 1
 			if(hf.getRelDef().getNomRelation().equals(relName1)) {
+				
 				// On recupere la page qu'on souhaite
 				ByteBuffer pageBufferRel1 = BufferManager.getInstance().getPage(new PageId(numPageRel1, hf.getRelDef().getFileIdx())); // get
+				
 				// Parcours pour recuper les records de la relation 1 d'une page qu'on ajoute dans la liste
 				for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
 					if(pageBufferRel1.get(compteurRecord) == (byte) 1) {
@@ -174,12 +180,16 @@ public class FileManager {
 						listeDeRecord_relation1.add(r);
 					}
 				}
+				
 				BufferManager.getInstance().freePage(new PageId(numPageRel1, hf.getRelDef().getFileIdx()), false); // free
 			}
+			
 			// Recupere une page de record de la relation 2
 			if(hf.getRelDef().getNomRelation().equals(relName2)) {
+				
 				// On recupere la page qu'on souhaite
 				ByteBuffer pageBufferRel2 = BufferManager.getInstance().getPage(new PageId(numPageRel2, hf.getRelDef().getFileIdx())); // get
+				
 				// Parcours pour recuper les records de la relation 2 d'une page qu'on ajoute dans la liste
 				for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
 					if(pageBufferRel2.get(compteurRecord) == (byte) 1) {
@@ -189,12 +199,14 @@ public class FileManager {
 						listeDeRecord_relation2.add(r);
 					}
 				}
+				
 				BufferManager.getInstance().freePage(new PageId(numPageRel2, hf.getRelDef().getFileIdx()), false);	// free
 			}
 		}
 		
-		// Si les deux liste ne sont pas vide 
+		// Si les deux liste ne sont pas vide , on les croises
 		if( (!listeDeRecord_relation1.isEmpty()) && (!listeDeRecord_relation2.isEmpty())) {
+			// -1 la premiere colonne correspond a l'index 0 d'une liste
 			listeDeValeur = fusion2Relation(listeDeRecord_relation1, indexColRel1-1, listeDeRecord_relation2, indexColRel2-1);
 		}
 		return listeDeValeur;
@@ -205,13 +217,17 @@ public class FileManager {
 		
 		// Apres avoir recuperer les records des pages maintenant en parametre, on cherche a comparer un par un les records entre eux
 		for(Record record1 : lr1) {
+			// Un record de liste de relation1
+			String colValueRecord1 = record1.getValues().get(indexColRel1) ;
+			
 			for(Record record2 : lr2) {
-				String colValueRecord1 = record1.getValues().get(indexColRel1) ;
+				// Un record de liste de relation2
 				String colValueRecord2 = record2.getValues().get(indexColRel2) ;
 				
-				// "Fusion" des deux relation
+				// Croisement des deux relations
 				if(colValueRecord1.equals(colValueRecord2)) {
-					// On cree
+					
+					// On cree la chaine de caractere qui representera le croisement des deux relations qu'on ajoutera a une liste
 					StringBuilder build = new StringBuilder();
 					for(String s : record1.getValues()) {
 						build.append(s + " | ");
@@ -220,6 +236,7 @@ public class FileManager {
 						build.append(s + " | ");
 					}
 					listeDeValeur.add(build.toString());
+				
 				}
 			}
 		}
