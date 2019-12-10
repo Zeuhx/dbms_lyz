@@ -78,10 +78,8 @@ public class DBDef implements Serializable{
 					int slotCount = ois.readInt();
 
 					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
-					System.out.println("Affichage X170 - Affichage de la relation cree " +relation.toString());
 					
-					FileManager.getInstance().createHeapFileWithRelation(relation);
-					FileManager.getInstance().getHeapFiles().add(new HeapFile(relation));
+					//FileManager.getInstance().getHeapFiles().add(new HeapFile(relation));
 					relDefTab.add(relation);
 					System.out.println("Affichage X159 : Affichage de toutes les relations dispo : " );
 					for(RelDef relDef : relDefTab) {

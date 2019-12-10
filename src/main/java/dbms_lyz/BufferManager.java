@@ -121,14 +121,16 @@ public class BufferManager {
 			 * Si le frame n'est pas vide et que son pin count est a 1, on l'enregistre sinon on vide juste
 			 */
 			if(frame != null) {
-				if(frame.getPin_count() == 1) {
-					frame.enregistrerPage();
-				}
+				frame.enregistrerPage();
 				frame.resetFrame();
 			}
 		}
 	}
 	
 	public Frame[] getFramePool() { return framePool; }
+
+	public void finish() {
+		flushAll();	
+	}
 
 }

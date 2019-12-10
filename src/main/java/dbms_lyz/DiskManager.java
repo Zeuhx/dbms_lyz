@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 /**
  * API : Important! (Cette classe comporte une unique instance)
@@ -114,7 +115,7 @@ public class DiskManager {
 		try (RandomAccessFile rf = new RandomAccessFile(f, "rw")){
 			
 			//Position du RandomAccessFile
-//			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
+			System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 			rf.write(buff.array());
 			

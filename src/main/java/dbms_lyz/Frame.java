@@ -1,6 +1,7 @@
 package main.java.dbms_lyz;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 /**
  * Classe Frame contenant des id de page 
@@ -71,7 +72,7 @@ public class Frame {
 	public ByteBuffer getBuffer() 			{ return buff; }
 	public int getPin_count() 				{ return pin_count ;}
 	public boolean getFlag_dirty() 			{ return flag_dirty; }
-	public ByteBuffer getByteBuffer() 		{ return buff; }
+	public void getByteBuffer() 			{ System.out.println(Arrays.toString(buff.array()));; }
 	public int getCompteurPersoLRU()		{ return compteurPersoLRU; }
 
 	// Setters

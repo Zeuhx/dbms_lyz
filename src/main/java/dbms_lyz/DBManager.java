@@ -44,7 +44,7 @@ public class DBManager {
 	 */
 	public void finish() {
 		DBDef.getInstance().finish();
-		BufferManager.getInstance().flushAll();
+		BufferManager.getInstance().finish();
 	}
 
 	/**
@@ -256,6 +256,7 @@ public class DBManager {
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
+		System.out.println("Affichage X180 - Affichage de la taille de la liste : " + listRecords.size());
 		for(Record r : listRecords) {
 			StringBuffer stringBuffRecord = new StringBuffer("[SELECTALL] Affichage des valeurs : ");
 			for(String s : r.getValues()) {

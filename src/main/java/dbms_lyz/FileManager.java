@@ -30,7 +30,6 @@ public class FileManager {
 			for(RelDef relDef : DBDef.getInstance().getRelDefTab()) {
 				HeapFile hf = new HeapFile(relDef);
 				heapFiles.add(hf);
-				FileManager.getInstance().createHeapFileWithRelation(hf.getRelDef());
 			}
 		}
 	}
@@ -99,14 +98,17 @@ public class FileManager {
 		
 		//Parcours du heapfile pour recuperer la liste de records dont le relName correspond
 		for(HeapFile hf : heapFiles) {
+			System.out.println("Affichage X183 - Affichage nombre de heapfiles  : "+ heapFiles.size());
 			if(hf.getRelDef().getNomRelation().equals(relName)){
 				ByteBuffer headerPageBuffer = BufferManager.getInstance().getPage(new PageId(0, hf.getRelDef().getFileIdx()));
 				int nbPages = headerPageBuffer.getInt(0);
 				
 				BufferManager.getInstance().freePage(new PageId(0, hf.getRelDef().getFileIdx()),  false);
 				for(int i=1; i<=nbPages; i++) {
+					System.out.println("Affichage X182 - Affichage nb de page " + nbPages);
 					ByteBuffer pageBuffer = BufferManager.getInstance().getPage(new PageId(i, hf.getRelDef().getFileIdx()));
 					for(int compteurRecord = 0; compteurRecord<hf.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
+						System.out.println("Affichage X181 - Affichage du compteur de record " + compteurRecord);
 						if(pageBuffer.get(compteurRecord) == (byte) 1) {
 							int positionSlot = hf.getRelDef().getSlotCount() + compteurRecord * hf.getRelDef().getRecordSize();
 							Record r = new Record(hf.getRelDef());
