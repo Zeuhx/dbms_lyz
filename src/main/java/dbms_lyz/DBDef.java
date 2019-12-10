@@ -65,7 +65,7 @@ public class DBDef implements Serializable{
 			try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def"))){
 				compteurRelation = ois.readInt();
 				/* Pour chaque relDef : on va creer un relDef */
-				System.out.println("Re, reprise du programme avec un compteur de relation du catalogue.def a " + compteurRelation);
+				System.out.println("Re, reprise du programme. Le catalogue indique " + compteurRelation + " relations : ");
 				for(int i = 0; i<compteurRelation ; i++) {
 					String relname = (String) ois.readObject();
 					int nbCol = ois.readInt();
@@ -81,10 +81,6 @@ public class DBDef implements Serializable{
 					
 					//FileManager.getInstance().getHeapFiles().add(new HeapFile(relation));
 					relDefTab.add(relation);
-					System.out.println("Affichage X159 : Affichage de toutes les relations dispo : " );
-					for(RelDef relDef : relDefTab) {
-						System.out.println("Affichage X160 : Affichage du record " + relDef.toString());
-					}
 				}
 			} catch (FileNotFoundException e) {
 				System.err.println("Le fichier catalogue n'existe pas");
@@ -94,6 +90,11 @@ public class DBDef implements Serializable{
 				System.err.println("La classe n'a pas ete trouver pour le fichier");
 			}
 		}
+		
+		for(RelDef relDef : relDefTab) {
+			System.out.println("Chargement de la relation " + relDef.getRelName() + "... OK");
+		}
+		System.out.println();
 	}
 	
 	/**

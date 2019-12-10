@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
@@ -148,7 +147,7 @@ public class DBManager {
 		int nbCol = Integer.parseInt(commande.nextToken()) ;
 		List<String> typeCol = new ArrayList<String>();
 		
-		System.out.println("La relation " + relName + " a ete cree");
+		System.out.println("La relation " + relName + " a ete cree avec succes");
 		
 		try {
 			for (int i = 3; commande.hasMoreElements(); i++) {
@@ -170,7 +169,7 @@ public class DBManager {
 		}
 		
 		RelDef relDefcree = createRelation(relName, nbCol, typeCol);
-		System.out.println("Affichage de la relation cree - " + relDefcree.toString());
+		System.out.println("\n\t[Info sur la relation cree]" + relDefcree.toString());
 		DBDef.getInstance().addRelationInRelDefTab(relDefcree);
 	}
 	
@@ -256,7 +255,6 @@ public class DBManager {
 		nomRelation = commande.nextToken();
 		
 		List<Record> listRecords = FileManager.getInstance().selectAllFromRelation(nomRelation);
-		System.out.println("Affichage X180 - Affichage de la taille de la liste : " + listRecords.size());
 		for(Record r : listRecords) {
 			StringBuffer stringBuffRecord = new StringBuffer("[SELECTALL] Affichage des valeurs : ");
 			for(String s : r.getValues()) {
@@ -267,7 +265,7 @@ public class DBManager {
 			System.out.println(stringRecord);
 			compteurRecord ++;
 		}
-		System.out.println("Total Records : "+ compteurRecord);
+		System.out.println("\n\tTotal Records : "+ compteurRecord);
 	}
 	
 	/**
@@ -291,7 +289,7 @@ public class DBManager {
 				cptRelation++;
 			}
 		}
-		System.out.println("Total Records : " + cptRelation);
+		System.out.println("\n\tTotal Records : " + cptRelation);
 	}
 		
 	/**
@@ -362,7 +360,7 @@ public class DBManager {
 //					}
 				}
 			}
-			System.out.println("Total Records : " + compteurRelation);
+			System.out.println("\n\tTotal Records : " + compteurRelation);
 		}
 		
 	}
@@ -455,7 +453,7 @@ public class DBManager {
 			}
 			BufferManager.getInstance().freePage(new PageId(0, reldef.getFileIdx()), headerPageModifiee);
 		}
-		System.out.println("Total Records supprimes : "+compteurRecordSup);
+		System.out.println("\n\tTotal Records supprimes : "+compteurRecordSup);
 	
 	}
 	

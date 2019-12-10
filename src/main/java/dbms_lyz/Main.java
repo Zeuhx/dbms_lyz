@@ -28,10 +28,8 @@ public class Main {
 				menu();
 			}
 			else if(commande.equals("devoirs") || commande.equals("devoir")) {
-				System.out.println("Devoir : \nFinir le init lorsqu'on lance le programme");
-				System.out.println("Changer les descriptions des methodes");
-				System.out.println("Regler le probleme pour la byteMap lorsque c'est le meme nom de relation");
-				System.out.println("Demander si c'est bien comme ca pour le oriented page");
+				System.out.println("Devoir : ");
+				System.out.println("\nChanger les descriptions des methodes");
 				System.out.println("Commencer l'index");
 			}
 			else{

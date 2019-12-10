@@ -167,13 +167,18 @@ public class RelDef {
 				build.append(" ");
 			}
 		}
+		StringBuilder perfectNbTiret = new StringBuilder();
+		for(int i=0; i< new String("Relation " + relName).length() ; i++) {
+			perfectNbTiret.append("-");
+		}
 		return "\n"
-				+ "\nRelation " + relName 
-				+ "\nNombre de colonne : " + nbCol 
-				+ "\nType de colonne : " + build.toString() 
-				+ "\nID fichier : " + fileIdx
-				+ "\nTaille d'un record : " + recordSize 
-				+ "\nNombre de slot count sur une page=" + slotCount;
+				+ "\n\tRelation " + relName
+				+ "\n\t" + perfectNbTiret.toString()
+				+ "\n\tNombre de colonne : " + nbCol 
+				+ "\n\tType de colonne : " + build.toString() 
+				+ "\n\tID fichier : " + fileIdx
+				+ "\n\tTaille d'un record : " + recordSize 
+				+ "\n\tNombre de slot count sur une page : " + slotCount;
 	}
 
 	// Getters
