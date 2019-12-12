@@ -325,9 +325,6 @@ public class DBManager {
 		if(reldef1 == null || reldef2 == null ) {
 			System.err.println("Il y a une relation qui n'existe pas");
 		}
-		else if(reldef1 == reldef2) {
-			System.err.println("Les deux relations ne peuvent pas etre identique");
-		}
 		else {
 			// Nb de page pour rel1
 			ByteBuffer headerBuffer1 = BufferManager.getInstance().getPage(new PageId(0, reldef1.getFileIdx()));
@@ -344,10 +341,13 @@ public class DBManager {
 //				System.out.print("Voulez vous afficher les resultats de la jointure : ");
 //				affichage = scan.nextLine();
 //			}
+			
 			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
 				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
 					// On affecte une page a chaque fois (du coup la page est selectionnee)
-					List<String> listeDeJoinDeUnTourDeBoucle = FileManager.getInstance().joinPageOriented2Relation(relName1, relName2, indiceCol1, indiceCol2, indicePageRel1, indicePageRel2);
+					List<String> listeDeJoinDeUnTourDeBoucle = 
+							FileManager.getInstance().joinPageOriented2Relation(indiceCol1, indiceCol2, indicePageRel1, indicePageRel2, searchHeapFile(relName1), searchHeapFile(relName2));
+					
 					
 					// Le nombre total de record selectionnee correspond a la taille de la liste
 					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
@@ -361,8 +361,7 @@ public class DBManager {
 				}
 			}
 			System.out.println("\n\tTotal Records : " + compteurRelation);
-		}
-		
+		}	
 	}
 
 	/**
@@ -455,6 +454,16 @@ public class DBManager {
 		}
 		System.out.println("\n\tTotal Records supprimes : "+compteurRecordSup);
 	
+	}
+	
+	public HeapFile searchHeapFile(String relName) {
+		for(HeapFile hf : FileManager.getInstance().getHeapFiles()) {
+			// Recupere une page de record de la relation 1
+			if(hf.getRelDef().getNomRelation().equals(relName)) {
+				return hf ;
+			}
+		}
+		return null;
 	}
 	
 	/**
