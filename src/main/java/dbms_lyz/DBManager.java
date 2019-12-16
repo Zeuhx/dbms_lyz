@@ -319,7 +319,6 @@ public class DBManager {
 			if(r.getRelName().equals(relName2)) {
 				reldef2 = r;
 			}
-			
 		}
 		
 		if(reldef1 == null || reldef2 == null ) {

@@ -73,6 +73,9 @@ public class BufferManager {
 	/**
 	 * Cette methode devra decrementer le pin_count 
 	 * et actualiser le flag dirty de la page pour savoir si elle a ete modifier
+	 * On appelle une fonction qui permet de chercher une frame depuis une pageId
+	 * Si cette frame existe, on va decrementer son pinCount et mettre a 1 le dirty
+	 * Si la pageId n'existe pas 
 	 * 
 	 * @param pageId une PageId
 	 * @param valdirty un entier booleen
