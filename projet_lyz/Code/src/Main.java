@@ -6,13 +6,12 @@ import java.util.Scanner;
 
 /**
  * Classe Main
- *
  */
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Scanner scan = new Scanner(System.in);
+		Constants.PATH = System.getProperty("user.dir") + File.separator + ".." + File.separator + ".." +File.separator + "DB" + File.separator;
 		launch(scan);
-		// System.out.println();
 	}
 	
 	public static void launch(Scanner scan) {

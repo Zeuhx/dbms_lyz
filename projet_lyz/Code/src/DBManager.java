@@ -227,8 +227,7 @@ public class DBManager {
 		String relName = commande.nextToken();
 		
 		String nomFichierCSV = commande.nextToken();
-		String path = new String("resources" + File.separator);
-	
+		String path = Constants.PATH + File.separator + ".." + File.separator;
 		try(FileReader readFile = new FileReader(path+nomFichierCSV)) {
 			BufferedReader br = new BufferedReader(readFile);
 			String ligne;
@@ -380,7 +379,6 @@ public class DBManager {
 	 */
 	private void clean(){
 		BufferManager.getInstance().flushAll();
-//		int compteurRelation = DBDef.getCompteurRelation() ;
 		int cptDataFile=0;
 		
 		//recuperer les fichier commencant par "Data_" dans une listData
@@ -475,7 +473,6 @@ public class DBManager {
 	}
 	
 	/**
-	 * TODO description
 	 * @param commande
 	 */
 	private void exit(StringTokenizer commande) {

@@ -47,13 +47,19 @@ public class DBDef implements Serializable{
 	 * 
 	 */
 	public void init() {
-		 		
+		
+		File dir = new File(Constants.PATH);
+		if(!dir.exists() && !dir.mkdir())
+			throw new RuntimeException("Impossible de créér le Dossier Code");
+		if(!dir.canRead() && !dir.canWrite())
+			throw new RuntimeException("Impossible de lire/ecrire dans le dossier Code");
+		
 		boolean isFile = new File(Constants.PATH+"catalogue.def").exists();
 		
 		File file = new File(Constants.PATH+"catalogue.def"); 
 		
 		if(!(file.isFile())) {
-			System.out.println("Affichage Y1 - Verification du fichier s'il doit etre cree : Fichier est cree");
+			System.out.println("Verification du fichier s'il doit etre cree : Fichier est cree");
 			File creatingCatalogue = new File (Constants.PATH + "catalogue.def");
 			isFile = true;
 			try {
