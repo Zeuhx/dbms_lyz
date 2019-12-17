@@ -6,5 +6,5 @@ import java.io.File;
 public final class Constants {
 	public static final int PAGE_SIZE = 4096;
 	public static final int FRAME_COUNT = 2;
-	public static String PATH = new String("DB" + File.separator);
+	public static String PATH = new String(".." + File.separator + ".." + File.separator + "DB" + File.separator);
 }

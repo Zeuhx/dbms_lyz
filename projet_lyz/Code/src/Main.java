@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -10,7 +9,6 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Scanner scan = new Scanner(System.in);
-		Constants.PATH = System.getProperty("user.dir") + File.separator + ".." + File.separator + ".." +File.separator + "DB" + File.separator;
 		launch(scan);
 	}
 	
