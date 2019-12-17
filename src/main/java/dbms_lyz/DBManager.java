@@ -380,7 +380,6 @@ public class DBManager {
 	 * Remet a 0 le programme
 	 * Efface le contenu du catalogue.def
 	 * Supprime les fichiers Data
-	 * TODO a completer
 	 */
 	private void clean(){
 		BufferManager.getInstance().flushAll();

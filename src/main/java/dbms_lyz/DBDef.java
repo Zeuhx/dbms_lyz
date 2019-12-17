@@ -134,6 +134,7 @@ public class DBDef implements Serializable{
 
 	/**
 	 * Rajoute une relation dans la liste et actualise le compteur de relation
+	 * 
 	 * @param rd la relation a ajoute
 	 */
 	public void addRelationInRelDefTab(RelDef rd) {
