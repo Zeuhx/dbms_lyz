@@ -152,7 +152,7 @@ public class FileManager {
 		return listeDeRecordsAvecValeur;
 	}
 	
-	public List<String> joinPageOriented2Relation(int indexColRel1, int indexColRel2, int numPageRel1, int numPageRel2, HeapFile heapFileRel1, HeapFile heapFileRel2){
+	public List<String> joinPageOriented2Relation(int indexColRel1, int indexColRel2, PageId page1, PageId page2, HeapFile heapFileRel1, HeapFile heapFileRel2){
 		// Maintenant qu'on a nos relations et les pages qu'on souhaite, on verifie qu'elle existe bien
 		
 		List<Record> listeDeRecord_relation1 = new ArrayList<>();
@@ -165,7 +165,7 @@ public class FileManager {
 		 */
 
 		// On recupere la page qu'on souhaite
-		ByteBuffer pageBufferRel1 = BufferManager.getInstance().getPage(new PageId(numPageRel1, heapFileRel1.getRelDef().getFileIdx())); // get
+		ByteBuffer pageBufferRel1 = BufferManager.getInstance().getPage(page1); // get
 		
 		// Parcours pour recuper les records de la relation 1 d'une page qu'on ajoute dans la liste
 		for(int compteurRecord = 0; compteurRecord<heapFileRel1.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
@@ -176,12 +176,12 @@ public class FileManager {
 				listeDeRecord_relation1.add(r);
 			}
 		}
-		BufferManager.getInstance().freePage(new PageId(numPageRel1, heapFileRel1.getRelDef().getFileIdx()), false); // free
+		BufferManager.getInstance().freePage(page1, false); // free
 	
 		// Recupere une page de record de la relation 2
 
 		// On recupere la page qu'on souhaite
-		ByteBuffer pageBufferRel2 = BufferManager.getInstance().getPage(new PageId(numPageRel2, heapFileRel2.getRelDef().getFileIdx())); // get
+		ByteBuffer pageBufferRel2 = BufferManager.getInstance().getPage(page2); // get
 		
 		// Parcours pour recuper les records de la relation 2 d'une page qu'on ajoute dans la liste
 		for(int compteurRecord = 0; compteurRecord<heapFileRel2.getRelDef().getSlotCount(); compteurRecord +=Byte.BYTES) {
@@ -193,7 +193,7 @@ public class FileManager {
 			}
 		}
 		
-		BufferManager.getInstance().freePage(new PageId(numPageRel2, heapFileRel2.getRelDef().getFileIdx()), false);	// free
+		BufferManager.getInstance().freePage(page2 , false);	// free
 
 	
 		// Si les deux liste ne sont pas vide , on les croises

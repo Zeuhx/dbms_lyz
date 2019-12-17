@@ -342,22 +342,22 @@ public class DBManager {
 //			}
 			
 			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
+				PageId pageId1 = new PageId(indicePageRel1, searchHeapFile(relName1).getRelDef().getFileIdx());
+				
 				for(int indicePageRel2 = 1 ; indicePageRel2<=nbPageRel2 ; indicePageRel2++) {
+					PageId pageId2 = new PageId(indicePageRel2, searchHeapFile(relName2).getRelDef().getFileIdx());
 					// On affecte une page a chaque fois (du coup la page est selectionnee)
 					List<String> listeDeJoinDeUnTourDeBoucle = 
-							FileManager.getInstance().joinPageOriented2Relation(indiceCol1, indiceCol2, indicePageRel1, indicePageRel2, searchHeapFile(relName1), searchHeapFile(relName2));
-					
-					
+							FileManager.getInstance().joinPageOriented2Relation(indiceCol1, indiceCol2, pageId1, pageId2, searchHeapFile(relName1), searchHeapFile(relName2));
 					// Le nombre total de record selectionnee correspond a la taille de la liste
 					compteurRelation+=listeDeJoinDeUnTourDeBoucle.size() ;
 					
 					// Affichage des records 
-//					if(affichage.equals("oui")) {
-						for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
-							System.out.println("[JOIN] Affichage des records : " + uneLigneJoin.substring(0, uneLigneJoin.length()-3));
-						}
-//					}
+					for(String uneLigneJoin : listeDeJoinDeUnTourDeBoucle) {
+						System.out.println("[JOIN] Affichage des records : " + uneLigneJoin.substring(0, uneLigneJoin.length()-3));
+					}
 				}
+				
 			}
 			System.out.println("\n\tTotal Records : " + compteurRelation);
 		}	
