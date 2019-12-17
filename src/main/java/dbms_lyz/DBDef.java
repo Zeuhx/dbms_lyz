@@ -44,10 +44,14 @@ public class DBDef implements Serializable{
 
 	/**
 	 * Ouvre les infos deja stocker dans catalogue.def
+	 * On cree toutes les relations stockees puis on les ajoute dans le relDefTab
+	 * Si le fichier catalogue.def n'existe pas, on le cree
+	 * 
 	 */
 	public void init() {
-		//condition si le fichier n'exist pas on le cree
+		 		
 		boolean isFile = new File(Constants.PATH+"catalogue.def").exists();
+		
 		File file = new File(Constants.PATH+"catalogue.def"); 
 		
 		if(!(file.isFile())) {
@@ -64,7 +68,6 @@ public class DBDef implements Serializable{
 		if(isFile) {
 			try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Constants.PATH + "catalogue.def"))){
 				compteurRelation = ois.readInt();
-				/* Pour chaque relDef : on va creer un relDef */
 				System.out.println("Re, reprise du programme. Le catalogue indique " + compteurRelation + " relations : ");
 				for(int i = 0; i<compteurRelation ; i++) {
 					String relname = (String) ois.readObject();
@@ -79,7 +82,6 @@ public class DBDef implements Serializable{
 
 					RelDef relation = new RelDef(relname, typeCol, fileIdx, recordSize, slotCount);
 					
-					//FileManager.getInstance().getHeapFiles().add(new HeapFile(relation));
 					relDefTab.add(relation);
 				}
 			} catch (FileNotFoundException e) {
@@ -99,6 +101,9 @@ public class DBDef implements Serializable{
 	
 	/**
 	 * Sauvegarde les infos de DBDef dans catalogue.def
+	 * On recupere pour chaque relation l'objet, le nombre de colonnes, le type de chaque colonne,
+	 * le file id, le record size et le slot count
+	 * 
 	 */
 	public void finish(){
 		try(ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream (Constants.PATH + "catalogue.def"))) {
@@ -142,8 +147,9 @@ public class DBDef implements Serializable{
 	
 	/**
 	 * Pour la commande clean
-	 * Remet DBDef a 0 avec relDefTab
-	 * Remet a 0 le compteur
+	 * vide le relDefTab
+	 * Remet a 0 le compteur de relations
+	 * Supprime le fichier catalogue.def
 	 */
 	public void reset() {
 		relDefTab = new ArrayList<>();

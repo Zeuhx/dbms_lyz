@@ -39,7 +39,7 @@ public class DBManager {
 	}
 
 	/**
-	 * Fait appel au finish de DBDef seulement
+	 * Fait appel au finish de DBDef et de BufferManager
 	 */
 	public void finish() {
 		DBDef.getInstance().finish();
@@ -47,8 +47,9 @@ public class DBManager {
 	}
 
 	/**
-	 * @param commande, la commande qu'on va saisir Methode qui permet d'executer
-	 *                  une commande entrer en parametre sous forme d'un String
+	 * la commande qu'on va saisir Methode qui permet d'executer
+	 * une commande entree en parametre sous forme d'un String
+	 * @param la commande a traiter 
 	 */
 	public void processCommand(String commande) {
 		StringTokenizer commandeSaisie;
@@ -81,11 +82,13 @@ public class DBManager {
 	/**
 	 * Methode qui creer une relation de type RelDef avec son nom, le nb de col , et les types de col
 	 * On ajotuera cette relation par la suite lors de l'appel 
+	 * On cree le heapFile correspondant grace a la methode createHeapFileWithRelation 
+	 * de FileManager
 	 * 
 	 * @param nomRelation
 	 * @param nombreCol
 	 * @param typeCol     
-	 * @return, une relation RelDef conformement aux arguments et ajoute dans DBDef
+	 * @return une relation RelDef conformement aux arguments et ajoute dans DBDef
 	 */
 	private RelDef createRelation(String nomRelation, int nombreCol, List<String> typeCol) {
 		RelDef reldef = new RelDef (nomRelation, typeCol); 
@@ -104,7 +107,8 @@ public class DBManager {
 
 	/**
 	 * On calcule la taille d'un record dans une page
-	 * @return  : ici qu'on calcule recordSize 
+	 * 
+	 * @return le record size
 	 */
 	private int calculRecordSize(RelDef rd) {
 		int recordSize = 0;
@@ -130,17 +134,19 @@ public class DBManager {
 	/**
 	 * Calcul du nombre de slot qu'on peut avoir sur une page 
 	 * Donc division de la taille de la page par la taille d'un record + 1 pour la bytemap qui prend 1
-	 * @param rd la relation concernee
-	 * @return  : ici qu'on calcule slotCount
+	 * @param la relation concernee
+	 * @return le slot count
 	 */
 	private int calculSlotCount(RelDef rd) {
 		return Constants.PAGE_SIZE/(rd.getRecordSize()+1);
 	}
 	
 	/**
-	 * TODO a completer
 	 * Lit la commande et creer la relation
-	 * @param commande la commande qui va creer la relation
+	 * On recupere le nombre de colonne et on cree la relation en fonction des
+	 * types de colonnes
+	 * On cree le heapFile grace au FileManager
+	 * @param la commande
 	 */
 	private void create(StringTokenizer commande) {
 		String relName = commande.nextToken();
@@ -174,17 +180,19 @@ public class DBManager {
 	}
 	
 	/**
-	 * Cette commande demande l'inserttion d'un record dans une
+	 * Cette commande demande l'insertion d'un record dans une
 	 *  relation, en indiquant les valeurs (pour chaque 
 	 *  colonne) du record et le nom de la relation.
-	 *  TODO A detailler
+	 *  On va chercher le heapFile qui correspond a la relation
+	 *  Si on le trouve, on utilise la methode insertRecordInRelation de
+	 *  FileManager afin d'ajouter le record
+	 *  
 	 * @param commande
 	 */
 	private void insert(StringTokenizer commande) {
 		String relName = commande.nextToken();
-		List<String> valeurs = new ArrayList<String>(); //list valeurs de records
+		List<String> valeurs = new ArrayList<String>();
 		boolean relationExistante = false ;
-		//System.out.println("Les valeurs ont bien ete saisie dans la relation " + relName);
 		
 		while(commande.hasMoreTokens()) {
 			valeurs.add(commande.nextToken());
@@ -192,12 +200,10 @@ public class DBManager {
 		
 		List <HeapFile> heapFiles = (ArrayList<HeapFile>) FileManager.getInstance().getHeapFiles();
 
-		//parcourir Heapfiles pour comparer les relName
 		for(int i=0; i<heapFiles.size(); i++) {
 			RelDef reldef = heapFiles.get(i).getRelDef() ; 
 			if(reldef.getNomRelation().equals(relName)) {
 				relationExistante = true ;
-				//ecriture du record dans la relation
 				Record r = new Record(reldef, valeurs);
 				FileManager.getInstance().insertRecordInRelation(r, reldef.getNomRelation());
 			}
@@ -214,7 +220,10 @@ public class DBManager {
 	 * separateur.
 	 * On suppose que le fichier se trouve a la racine de votre dossier projet (au meme niveau donc que
 	 * les sous-repertoires Code et DB).
-	 * @param commande
+	 * Pour chaque ligne du fichier csv, on va recuperer les infos du record puis utiliser la methode
+	 * insert pour ajouter 
+	 * 
+	 * @param la commande
 	 */
 	private void insertAll(StringTokenizer commande) {
 		String relName = commande.nextToken();
@@ -246,8 +255,11 @@ public class DBManager {
 	}
 	
 	/**
-	 * TODO description
-	 * @param commande
+	 * Cette methode permet d'afficher tous les records d'une relation
+	 * On utilise la methode selectAllFromRelation de FileManager pour recuperer tous les
+	 * records de la relation dans une liste
+	 * On les affiche ensuite
+	 * @param la commande
 	 */
 	private void selectAll(StringTokenizer commande) {
 		String nomRelation = "";
@@ -269,7 +281,12 @@ public class DBManager {
 	}
 	
 	/**
-	 * TODO description
+	 * Cette methode doit permettre de retourner les records correspondant a la condition ecrite
+	 * On recupere la nom de relation, la colonne et la valeur concernee
+	 * On utilise la methode selectAllFromRelation de FileManager
+	 * afin de recuperer toutes les records
+	 * On affiche ensuite les records qui correspondent a la condition
+	 * Enfin on affiche le nombre total de records qu'on a affiche
 	 * @param commande
 	 */
 	private void select(StringTokenizer commande) {
@@ -293,14 +310,17 @@ public class DBManager {
 	}
 		
 	/**
-	 * TODO description pour join : produit cartesien puis selection
-	 * On charge la premiere page de la relation R
-	 * On charge la premiere page de la relation S
-	 * On ne fait pas de sÃ©lection (select)
-	 * On compare tuple par tuple entre R et S sur ces 2 pages
-	 * On parcours les pages de S tant qu'il y en a
-	 * On passe Ã  la deuxiÃ¨me page de R 
-	 * etc...
+	 * Cette methode permet de calculer l’equijointure de deux relations spécifiees par leurs noms, 
+	 * pour deux colonnes specifiees par leurs indices
+	 * On recupere le nom des 2 relations et l'indice des 2 colonnes
+	 * On recupere ensuite les relations correspondantes
+	 * On recupere ensuite le nombre de pages des 2 relations
+	 * Pour chaque page de la premiere relation 
+	 * on va utliser la methode joinPageOriented2Relation avec cette page et les pages de
+	 * la deuxieme relation pour recuperer les jointures
+	 * On affiche les records qui correspondent
+	 * 
+	 * @param la commande
 	 */
 	private void join(StringTokenizer commande) {
 		String relName1 = commande.nextToken();
@@ -325,21 +345,14 @@ public class DBManager {
 			System.err.println("Il y a une relation qui n'existe pas");
 		}
 		else {
-			// Nb de page pour rel1
+		
 			ByteBuffer headerBuffer1 = BufferManager.getInstance().getPage(new PageId(0, reldef1.getFileIdx()));
 			int nbPageRel1 = headerBuffer1.getInt(0);
 			BufferManager.getInstance().freePage(new PageId(0, reldef1.getFileIdx()), false);
 			
-			// Nb de page pour rel2
 			ByteBuffer headerBuffer2 = BufferManager.getInstance().getPage(new PageId(0, reldef2.getFileIdx()));
 			int nbPageRel2 = headerBuffer2.getInt(0);
 			BufferManager.getInstance().freePage(new PageId(0, reldef2.getFileIdx()), false);
-//			String affichage ;
-			
-//			try(Scanner scan = new Scanner(System.in)){
-//				System.out.print("Voulez vous afficher les resultats de la jointure : ");
-//				affichage = scan.nextLine();
-//			}
 			
 			for(int indicePageRel1 = 1 ; indicePageRel1<=nbPageRel1 ; indicePageRel1++) {
 				PageId pageId1 = new PageId(indicePageRel1, searchHeapFile(relName1).getRelDef().getFileIdx());
