@@ -475,7 +475,7 @@ public class DBManager {
 	}
 	
 	/**
-	 * TODO description
+	 * Quitte le programme et lance la methode finish de DBManager 
 	 * @param commande
 	 */
 	private void exit(StringTokenizer commande) {
