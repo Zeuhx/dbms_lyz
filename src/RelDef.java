@@ -1,5 +1,3 @@
-package main.java.dbms_lyz;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;

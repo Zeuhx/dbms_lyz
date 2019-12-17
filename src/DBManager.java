@@ -1,5 +1,3 @@
-package main.java.dbms_lyz;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -229,8 +227,7 @@ public class DBManager {
 		String relName = commande.nextToken();
 		
 		String nomFichierCSV = commande.nextToken();
-		String path = new String("src" + File.separator + "main" + 
-						File.separator + "resources" + File.separator );
+		String path = new String("resources" + File.separator);
 	
 		try(FileReader readFile = new FileReader(path+nomFichierCSV)) {
 			BufferedReader br = new BufferedReader(readFile);
@@ -310,7 +307,7 @@ public class DBManager {
 	}
 		
 	/**
-	 * Cette methode permet de calculer l’equijointure de deux relations spécifiees par leurs noms, 
+	 * Cette methode permet de calculer lï¿½equijointure de deux relations spï¿½cifiees par leurs noms, 
 	 * pour deux colonnes specifiees par leurs indices
 	 * On recupere le nom des 2 relations et l'indice des 2 colonnes
 	 * On recupere ensuite les relations correspondantes

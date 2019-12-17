@@ -1,4 +1,3 @@
-package main.java.dbms_lyz;
 /**
  * Votre classe contiendra deux variables membres :
  * 	pageId, un PageId qui indique la page a laquelle appartient le Record

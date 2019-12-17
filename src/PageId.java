@@ -1,5 +1,3 @@
-package main.java.dbms_lyz;
-
 /**
  * 
  * @author Groupe LYZ Chaque fichier est identifier par un PageId Permet

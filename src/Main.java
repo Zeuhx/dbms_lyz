@@ -1,5 +1,4 @@
-package main.java.dbms_lyz;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,6 +12,7 @@ public class Main {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		Scanner scan = new Scanner(System.in);
 		launch(scan);
+		// System.out.println();
 	}
 	
 	public static void launch(Scanner scan) {
