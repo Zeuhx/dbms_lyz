@@ -75,7 +75,7 @@ public class BufferManager {
 	 * et actualiser le flag dirty de la page pour savoir si elle a ete modifier
 	 * On appelle une fonction qui permet de chercher une frame depuis une pageId
 	 * Si cette frame existe, on va decrementer son pinCount et mettre a 1 le dirty
-	 * Si la pageId n'existe pas 
+	 * Si la pageId n'existe pas, une erreur se produit
 	 * 
 	 * @param pageId une PageId
 	 * @param valdirty un entier booleen
@@ -91,7 +91,11 @@ public class BufferManager {
 		}
 	}
 	
-	public int indexLibre() {
+	/**
+	 * Cette methode permet un entier qui correspond a l'index libre qui correpond au frame libre
+	 * @return l'index libre
+	 */
+	private int indexLibre() {
 		for(int i = 0 ; i<framePool.length ; i++) {
 			if(framePool[i] == null) {
 				return i ;
@@ -100,6 +104,10 @@ public class BufferManager {
 		return -1 ;
 	}
 
+	/**
+	 * Algorithme LRU : frame dispo
+	 * @return position de la frame dispo
+	 */
 	public int calcul_LRU() {
 		int min = Integer.MAX_VALUE;
 		int position = -2;
@@ -130,10 +138,8 @@ public class BufferManager {
 		}
 	}
 	
-	public Frame[] getFramePool() { return framePool; }
+	public Frame[] getFramePool() 	{ return framePool; }
 
-	public void finish() {
-		flushAll();	
-	}
+	public void finish() 			{ flushAll();	}
 
 }
