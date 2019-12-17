@@ -27,11 +27,6 @@ public class Main {
 			if(commande.equals("commandes") || commande.equals("commande")) {
 				menu();
 			}
-			else if(commande.equals("devoirs") || commande.equals("devoir")) {
-				System.out.println("Devoir : ");
-				System.out.println("\nChanger les descriptions des methodes");
-				System.out.println("Commencer l'index");
-			}
 			else{
 				manager.processCommand(commande);	
 			}

@@ -222,10 +222,10 @@ public class FileManager {
 					// On cree la chaine de caractere qui representera le croisement des deux relations qu'on ajoutera a une liste
 					StringBuilder build = new StringBuilder();
 					for(String s : record1.getValues()) {
-						build.append(s + " | ");
+						build.append(s + " ; ");
 					}
 					for(String s : record2.getValues()) {
-						build.append(s + " | ");
+						build.append(s + " ; ");
 					}
 					listeDeValeur.add(build.toString());
 				}

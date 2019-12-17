@@ -271,7 +271,7 @@ public class DBManager {
 			StringBuffer stringBuffRecord = new StringBuffer("[SELECTALL] Affichage des valeurs : ");
 			for(String s : r.getValues()) {
 				stringBuffRecord.append(s);
-				stringBuffRecord.append(" | ");
+				stringBuffRecord.append(" ; ");
 			}
 			String stringRecord = stringBuffRecord.substring(0, stringBuffRecord.toString().length()-3);
 			System.out.println(stringRecord);

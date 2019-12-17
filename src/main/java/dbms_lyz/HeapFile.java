@@ -21,8 +21,9 @@ public class HeapFile {
 	}
 
 	/**
-	 * On creer, on ajoute la page On prend un buffer qu'on remplit de 0 Et on "
-	 * affecte " ce buffer a la page et on libere avec 1 car on a modifier la page
+	 * On creer, on ajoute une page 
+	 * On prend un buffer qu'on remplit de 0 (headerPage)
+	 * Et on "affecte" ce buffer a la page et on libere avec 1 car on a modifier la page
 	 */
 	public void createNewOnDisk() {
 		// L'indice du fichier est donnee par relDef
@@ -58,8 +59,10 @@ public class HeapFile {
 		return pageId;
 	}
 
-	/*
-	 * return PageId d'une page de donnees qui a encore des cases libres
+	/**
+	 * On parcourt les slots count, si ce dernier n'est pas a 0, on va a la
+	 * page destination
+	 * @return la pageId de la page libre
 	 */
 	public PageId getFreeDataPageId() {
 		/**
@@ -97,15 +100,16 @@ public class HeapFile {
 
 	/**
 	 * Ecrit les record dans une page
+	 * On ecrit un record sur une page donnee, on actualise la byteMap du la page
+	 * On actualise la headerpage en decremetant le nb de slot dispo sur la page
 	 * 
 	 * @param record
 	 * @param pageId
-	 * @return
+	 * @return le rid du record
 	 */
 	public Rid writeRecordToDataPage(Record record, PageId pageId) {
 		int positionByteMap = 0;
 		ByteBuffer bufferPage = BufferManager.getInstance().getPage(pageId);	// get
-//		bufferPage.position(pageId.getPageIdx() * Constants.PAGE_SIZE);
 		boolean caseLibre = false;
 		
 		while (!caseLibre && positionByteMap <= bufferPage.getInt(0)) {
@@ -188,6 +192,11 @@ public class HeapFile {
 		return listRecord;
 	}
 	
+	/**
+	 * Renvoie le rid d'un record
+	 * @param record
+	 * @return rid d'un record
+	 */
 	public Rid insertRecord(Record record) {
 		PageId pageLibre = getFreeDataPageId();
 		if(pageLibre == null) {

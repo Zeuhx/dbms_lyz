@@ -31,6 +31,7 @@ public class DiskManager {
 	/**
 	 * Avec fileIdx un entier correspondant a un identifiant / indice de fichier.
 	 * Cette methode cree (dans le sous-dossier DB) un fichier Data_fileIdx.rf initialement vide.
+	 * Si ce fichier existe deja, on ne peut pas le recree
 	 * @param fileIdx un entier correspondant a un identifiant de fichier
 	 */
 	public void createFile(int fileIdx) {
@@ -80,10 +81,7 @@ public class DiskManager {
 	 * @param buff un buffer : byte[], ByteBuffer...
 	 * @return Remplir l argument buff avec le contenu disque de la page identifiee
 	 *         par l argument pageId. c est l appelant de cette mehode qui cree et
-	 *         fournit le buffer a remplir!
-	 *         
-	 * @Attention : c est l appelant de cette methode qui cree et fournit 
-	 * 					le buffer a remplir!        
+	 *         fournit le buffer a remplir    
 	 * @throws IOException
 	 */
 	public void readPage(PageId pageId, ByteBuffer buff) {
@@ -112,12 +110,8 @@ public class DiskManager {
 		File f = new File(Constants.PATH + "Data_" + pageId.getFileIdx() + ".rf");
 		int positionPage = pageId.getPageIdx();
 		try (RandomAccessFile rf = new RandomAccessFile(f, "rw")){
-			
-			//Position du RandomAccessFile
-			//System.out.println("Affichage X16 - ByteBuffer : " + Arrays.toString(buff.array()));
 			rf.seek(positionPage * Constants.PAGE_SIZE);
 			rf.write(buff.array());
-			
 		} catch (FileNotFoundException e1) {
 			System.err.println("Erreur X164 - Le fichier saisie n'a pas ete trouve !");
 		} catch (IllegalArgumentException e2) {

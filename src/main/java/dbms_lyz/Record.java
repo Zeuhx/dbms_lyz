@@ -121,7 +121,7 @@ public class Record {
 		StringBuilder build = new StringBuilder();
 		for(String s : values) {
 			build.append(s);
-			build.append(" | ");
+			build.append(" ; ");
 		}
 		return build.toString();
 	}
