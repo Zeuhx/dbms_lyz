@@ -12,7 +12,7 @@ public class DiskManager {
 	// Chemin du fichier src/main/resources/DB/
 
 	/* Constructeur prive */
-	private DiskManager() {
+	private DiskManager() { 
 	}
 
 	/* Instance unique non preinitialisee */
